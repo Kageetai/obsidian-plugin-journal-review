@@ -1,11 +1,11 @@
 {
-	"id": "obsidian-sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-plugin-journal-review",
+	"name": "Journal Review",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\".",
+	"author": "Kageetai",
+	"authorUrl": "https://kageetai.net",
 	"fundingUrl": "https://obsidian.md/pricing",
 	"isDesktopOnly": false
 }

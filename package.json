@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "obsidian-plugin-journal-review",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\"\n\n",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
