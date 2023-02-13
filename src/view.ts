@@ -6,19 +6,19 @@ import {
 } from "obsidian-daily-notes-interface";
 import { reviewTimeSpans } from "./constants";
 
-export const VIEW_TYPE_EXAMPLE = "example-view";
+export const VIEW_TYPE = "on-this-day-view";
 
-export default class ExampleView extends ItemView {
+export default class OnThisDayView extends ItemView {
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
 	}
 
 	getViewType() {
-		return VIEW_TYPE_EXAMPLE;
+		return VIEW_TYPE;
 	}
 
 	getDisplayText() {
-		return "Example view";
+		return "On this day";
 	}
 
 	async onOpen() {
