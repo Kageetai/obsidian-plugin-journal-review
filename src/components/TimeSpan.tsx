@@ -1,17 +1,18 @@
 import * as React from "react";
-import { getAllDailyNotes, getDailyNote } from "obsidian-daily-notes-interface";
+import { getDailyNote } from "obsidian-daily-notes-interface";
 import { moment } from "obsidian";
 
 import { reviewTimeSpans } from "src/constants";
 import useApp from "src/hooks/useApp";
+import useAllDailyNotes from "src/hooks/useAllDailyNotes";
 
 interface Props {
-	allDailyNotes: ReturnType<typeof getAllDailyNotes>;
 	span: keyof typeof reviewTimeSpans;
 	moment: moment.Moment;
 }
 
-const TimeSpan = ({ allDailyNotes, span, moment }: Props) => {
+const TimeSpan = ({ span, moment }: Props) => {
+	const allDailyNotes = useAllDailyNotes();
 	const { workspace } = useApp();
 	const note = getDailyNote(moment, allDailyNotes);
 

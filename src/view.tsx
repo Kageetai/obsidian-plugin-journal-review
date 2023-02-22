@@ -42,8 +42,8 @@ export default class OnThisDayView extends ItemView {
 
 		root.render(
 			<React.StrictMode>
-				<AppContext.Provider value={this.app}>
-					<Main allDailyNotes={allDailyNotes} />
+				<AppContext.Provider value={{ app: this.app, allDailyNotes }}>
+					<Main />
 				</AppContext.Provider>
 			</React.StrictMode>
 		);
