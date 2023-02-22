@@ -4,7 +4,11 @@ import {
 	getAllDailyNotes,
 	getDailyNote,
 } from "obsidian-daily-notes-interface";
+import { createRoot } from "react-dom/client";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { reviewTimeSpans } from "./constants";
+import Main from "./components/Main";
 
 export const VIEW_TYPE = "on-this-day-view";
 
@@ -41,13 +45,15 @@ export default class OnThisDayView extends ItemView {
 			console.log(getDailyNote(value, allDailyNotes));
 		}
 
-		container.empty();
-		container.createEl("h4", {
-			text: "On this day:",
-		});
+		const root = createRoot(container);
+		root.render(
+			<React.StrictMode>
+				<Main dailyNotes={allDailyNotes} />
+			</React.StrictMode>
+		);
 	}
 
 	async onClose() {
-		// Nothing to clean up.
+		ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
 	}
 }
