@@ -1,18 +1,27 @@
 import * as React from "react";
 import { getAllDailyNotes } from "obsidian-daily-notes-interface";
+import { reviewTimeSpans } from "../constants";
+import TimeSpan from "./TimeSpan";
 
 interface Props {
-	dailyNotes: ReturnType<typeof getAllDailyNotes>;
+	allDailyNotes: ReturnType<typeof getAllDailyNotes>;
 }
 
-const Main = ({ dailyNotes }: Props) => (
-	<div>
-		<h4>On this day:</h4>
+const Main = ({ allDailyNotes }: Props) => {
+	return (
+		<div>
+			<h3>On this day:</h3>
 
-		{Object.values(dailyNotes).map((dailyNote) => (
-			<div key={dailyNote.name}>{dailyNote.name}</div>
-		))}
-	</div>
-);
+			{Object.entries(reviewTimeSpans).map(([key, moment]) => (
+				<TimeSpan
+					allDailyNotes={allDailyNotes}
+					key={key}
+					span={key}
+					moment={moment}
+				/>
+			))}
+		</div>
+	);
+};
 
 export default Main;

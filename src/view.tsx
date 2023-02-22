@@ -2,12 +2,10 @@ import { ItemView, WorkspaceLeaf } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
-	getDailyNote,
 } from "obsidian-daily-notes-interface";
 import { createRoot } from "react-dom/client";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { reviewTimeSpans } from "./constants";
 import Main from "./components/Main";
 
 export const VIEW_TYPE = "on-this-day-view";
@@ -38,17 +36,11 @@ export default class OnThisDayView extends ItemView {
 		}
 
 		const allDailyNotes = getAllDailyNotes();
-		console.log("allDailyNotes", allDailyNotes);
-
-		for (const [key, value] of Object.entries(reviewTimeSpans)) {
-			console.log(`${key}: ${value}`);
-			console.log(getDailyNote(value, allDailyNotes));
-		}
 
 		const root = createRoot(container);
 		root.render(
 			<React.StrictMode>
-				<Main dailyNotes={allDailyNotes} />
+				<Main allDailyNotes={allDailyNotes} />
 			</React.StrictMode>
 		);
 	}
