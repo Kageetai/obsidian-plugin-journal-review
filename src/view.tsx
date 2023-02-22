@@ -7,6 +7,7 @@ import { createRoot } from "react-dom/client";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Main from "./components/Main";
+import AppContext from "./components/context";
 
 export const VIEW_TYPE = "on-this-day-view";
 
@@ -38,9 +39,12 @@ export default class OnThisDayView extends ItemView {
 		const allDailyNotes = getAllDailyNotes();
 
 		const root = createRoot(container);
+
 		root.render(
 			<React.StrictMode>
-				<Main allDailyNotes={allDailyNotes} />
+				<AppContext.Provider value={this.app}>
+					<Main allDailyNotes={allDailyNotes} />
+				</AppContext.Provider>
 			</React.StrictMode>
 		);
 	}
