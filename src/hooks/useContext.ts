@@ -2,6 +2,6 @@ import * as React from "react";
 
 import AppContext from "src/components/context";
 
-const useApp = () => React.useContext(AppContext).app;
+const useContext = () => React.useContext(AppContext);
 
-export default useApp;
+export default useContext;

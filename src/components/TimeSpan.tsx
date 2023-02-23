@@ -3,8 +3,7 @@ import { getDailyNote } from "obsidian-daily-notes-interface";
 import { moment } from "obsidian";
 
 import { reviewTimeSpans } from "src/constants";
-import useApp from "src/hooks/useApp";
-import useAllDailyNotes from "src/hooks/useAllDailyNotes";
+import useContext from "src/hooks/useContext";
 
 interface Props {
 	span: keyof typeof reviewTimeSpans;
@@ -12,8 +11,10 @@ interface Props {
 }
 
 const TimeSpan = ({ span, moment }: Props) => {
-	const allDailyNotes = useAllDailyNotes();
-	const { workspace } = useApp();
+	const {
+		allDailyNotes,
+		app: { workspace },
+	} = useContext();
 	const note = getDailyNote(moment, allDailyNotes);
 
 	if (!note) {
