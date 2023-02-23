@@ -7,3 +7,7 @@ export const reviewTimeSpans = {
 	twoYears: moment().subtract(2, "years"),
 	threeYears: moment().subtract(3, "years"),
 };
+
+export type Entries<T> = {
+	[K in keyof T]: [K, T[K]];
+}[keyof T][];

@@ -20,9 +20,7 @@ const TimeSpan = ({ span, moment }: Props) => {
 		return null;
 	}
 
-	const onClick = async () => {
-		await workspace.getLeaf(false).openFile(note);
-	};
+	const onClick = () => workspace.getLeaf(false).openFile(note);
 
 	return (
 		<div>
