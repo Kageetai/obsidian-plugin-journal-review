@@ -3,17 +3,20 @@ import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
 } from "obsidian-daily-notes-interface";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 
 export const VIEW_TYPE = "on-this-day-view";
 
 export default class OnThisDayView extends ItemView {
+	private root: Root;
+
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
+
+		this.root = createRoot(this.containerEl.children[1]);
 	}
 
 	getViewType() {
@@ -38,9 +41,7 @@ export default class OnThisDayView extends ItemView {
 
 		const allDailyNotes = getAllDailyNotes();
 
-		const root = createRoot(container);
-
-		root.render(
+		this.root.render(
 			<React.StrictMode>
 				<AppContext.Provider value={{ app: this.app, allDailyNotes }}>
 					<Main />
@@ -50,6 +51,6 @@ export default class OnThisDayView extends ItemView {
 	}
 
 	async onClose() {
-		ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+		this.root.unmount();
 	}
 }
