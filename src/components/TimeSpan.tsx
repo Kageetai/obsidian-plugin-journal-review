@@ -23,14 +23,7 @@ const TimeSpan = ({ span, moment }: Props) => {
 
 	const onClick = () => workspace.getLeaf(false).openFile(note);
 
-	return (
-		<div>
-			<h4>{span}</h4>
-			<ul>
-				<li onClick={onClick}>{note.name}</li>
-			</ul>
-		</div>
-	);
+	return <button onClick={onClick}>{span}</button>;
 };
 
 export default TimeSpan;
