@@ -7,11 +7,14 @@ import { createRoot, Root } from "react-dom/client";
 import * as React from "react";
 import Main from "./components/Main";
 import AppContext from "./components/context";
+import { icon } from "./main";
 
 export const VIEW_TYPE = "on-this-day-view";
 
 export default class OnThisDayView extends ItemView {
 	private root: Root;
+
+	icon = icon;
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);

@@ -12,6 +12,8 @@ const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: "default",
 };
 
+export const icon = "calendar-clock";
+
 export default class MyPlugin extends Plugin {
 	settings: MyPluginSettings;
 
@@ -19,7 +21,7 @@ export default class MyPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		this.addRibbonIcon("calendar", "Activate view", () => {
+		this.addRibbonIcon(icon, "Activate view", () => {
 			this.activateView();
 		});
 
@@ -29,8 +31,8 @@ export default class MyPlugin extends Plugin {
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
-			id: "open-sample-modal-simple",
-			name: "Open sample modal (simple)",
+			id: "open-on-this-day",
+			name: "Open 'On this day' view",
 			callback: () => {
 				// new SampleModal(this.app).open();
 				this.activateView();
