@@ -1,0 +1,7 @@
+.list {
+	list-style: none;
+}
+
+.list:empty:before {
+	content: 'nothing to show';
+}

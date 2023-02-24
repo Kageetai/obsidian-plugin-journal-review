@@ -10,11 +10,14 @@ const Main = () => (
 	<div>
 		<h3>On this day:</h3>
 
-		<ul style={{ listStyle: "none" }}>
+		<ul className="list">
 			{entries.map(([key, moment]) => (
-				<li>
-					<TimeSpan key={key} span={key} moment={moment} />
-				</li>
+				<TimeSpan
+					key={key}
+					span={key}
+					moment={moment}
+					wrapper={<li />}
+				/>
 			))}
 		</ul>
 	</div>

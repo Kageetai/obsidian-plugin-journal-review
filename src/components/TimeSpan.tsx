@@ -8,9 +8,10 @@ import useContext from "src/hooks/useContext";
 interface Props {
 	span: keyof typeof reviewTimeSpans;
 	moment: moment.Moment;
+	wrapper?: React.ReactElement;
 }
 
-const TimeSpan = ({ span, moment }: Props) => {
+const TimeSpan = ({ span, moment, wrapper }: Props) => {
 	const {
 		allDailyNotes,
 		app: { workspace },
@@ -22,8 +23,13 @@ const TimeSpan = ({ span, moment }: Props) => {
 	}
 
 	const onClick = () => workspace.getLeaf(false).openFile(note);
+	const button = <button onClick={onClick}>{span}</button>;
 
-	return <button onClick={onClick}>{span}</button>;
+	if (wrapper) {
+		return React.cloneElement(wrapper, {}, button);
+	}
+
+	return button;
 };
 
 export default TimeSpan;
