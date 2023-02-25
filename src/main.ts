@@ -1,7 +1,8 @@
-import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { Plugin } from "obsidian";
 
 import OnThisDayView, { VIEW_TYPE } from "./view";
-import { timeSpans, Unit } from "./constants";
+import { timeSpans } from "./constants";
+import { SettingsTab } from "./SettingsTab";
 
 // Remember to rename these classes and interfaces!
 
@@ -72,7 +73,7 @@ export default class JournalReviewPlugin extends Plugin {
 		// });
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new SettingsTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -131,52 +132,3 @@ export default class JournalReviewPlugin extends Plugin {
 // 		contentEl.empty();
 // 	}
 // }
-
-class SampleSettingTab extends PluginSettingTab {
-	plugin: JournalReviewPlugin;
-
-	constructor(app: App, plugin: JournalReviewPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-
-		containerEl.empty();
-
-		new Setting(containerEl)
-			.setName("TimeSpans")
-			.setDesc(
-				'Time spans to review, one per line, in the format "number unit", with unit being one of "day", "week", "month" or "year"'
-			)
-			.addTextArea((text) =>
-				text
-					.setValue(
-						this.plugin.settings.timeSpans
-							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
-							.join("\n")
-					)
-					.onChange(async (value) => {
-						this.plugin.settings.timeSpans = value
-							.split("\n")
-							.map((t) => {
-								const [number, unit] = t
-									.split(" ")
-									.filter((t) => !!t);
-
-								if (
-									!Object.values(Unit).includes(unit as Unit)
-								) {
-									throw new Error(
-										`Invalid unit '${unit}' in time span`
-									);
-								}
-
-								return [Number(number), unit as Unit];
-							});
-						await this.plugin.saveSettings();
-					})
-			);
-	}
-}
