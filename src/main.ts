@@ -4,15 +4,11 @@ import OnThisDayView, { VIEW_TYPE } from "./view";
 import { defaultTimeSpans, TimeSpans } from "./constants";
 import { SettingsTab } from "./settingsTab";
 
-// Remember to rename these classes and interfaces!
-
 export interface Settings {
-	mySetting: string;
 	timeSpans: TimeSpans;
 }
 
 const DEFAULT_SETTINGS: Settings = {
-	mySetting: "default",
 	timeSpans: defaultTimeSpans,
 };
 

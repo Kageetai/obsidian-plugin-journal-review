@@ -13,7 +13,7 @@ export const VIEW_TYPE = "on-this-day-view";
 
 export default class OnThisDayView extends ItemView {
 	private root: Root;
-	private settings: Settings;
+	private readonly settings: Settings;
 
 	icon = icon;
 
