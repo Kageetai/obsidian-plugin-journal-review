@@ -21,13 +21,17 @@ const TimeSpan = ({ title, moment, wrapper }: Props) => {
 	}
 
 	const onClick = () => workspace.getLeaf(false).openFile(note);
-	const button = <button onClick={onClick}>{title}</button>;
+	const component = (
+		<button onClick={onClick}>
+			<b>{title}</b>: {moment.format("llll")}
+		</button>
+	);
 
 	if (wrapper) {
-		return React.cloneElement(wrapper, {}, button);
+		return React.cloneElement(wrapper, {}, component);
 	}
 
-	return button;
+	return component;
 };
 
 export default TimeSpan;

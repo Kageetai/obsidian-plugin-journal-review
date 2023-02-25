@@ -1,7 +1,12 @@
 .list {
 	list-style: none;
+	padding: 0;
+}
+
+.list > * {
+	margin-bottom: 1em;
 }
 
 .list:empty:before {
-	content: 'nothing to show';
+	content: "nothing to show";
 }
