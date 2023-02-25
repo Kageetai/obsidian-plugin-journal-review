@@ -1,20 +1,23 @@
 import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
 
 import OnThisDayView, { VIEW_TYPE } from "./view";
+import { timeSpans, Unit } from "./constants";
 
 // Remember to rename these classes and interfaces!
 
 interface MyPluginSettings {
 	mySetting: string;
+	timeSpans: typeof timeSpans;
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
 	mySetting: "default",
+	timeSpans,
 };
 
 export const icon = "calendar-clock";
 
-export default class MyPlugin extends Plugin {
+export default class JournalReviewPlugin extends Plugin {
 	settings: MyPluginSettings;
 
 	async onload() {
@@ -130,9 +133,9 @@ export default class MyPlugin extends Plugin {
 // }
 
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: JournalReviewPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: JournalReviewPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -142,18 +145,36 @@ class SampleSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h2", { text: "Settings for my awesome plugin." });
-
 		new Setting(containerEl)
-			.setName("Setting #1")
-			.setDesc("It's a secret")
-			.addText((text) =>
+			.setName("TimeSpans")
+			.setDesc(
+				'Time spans to review, one per line, in the format "number unit", with unit being one of "day", "week", "month" or "year"'
+			)
+			.addTextArea((text) =>
 				text
-					.setPlaceholder("Enter your secret")
-					.setValue(this.plugin.settings.mySetting)
+					.setValue(
+						this.plugin.settings.timeSpans
+							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
+							.join("\n")
+					)
 					.onChange(async (value) => {
-						console.log("Secret: " + value);
-						this.plugin.settings.mySetting = value;
+						this.plugin.settings.timeSpans = value
+							.split("\n")
+							.map((t) => {
+								const [number, unit] = t
+									.split(" ")
+									.filter((t) => !!t);
+
+								if (
+									!Object.values(Unit).includes(unit as Unit)
+								) {
+									throw new Error(
+										`Invalid unit '${unit}' in time span`
+									);
+								}
+
+								return [Number(number), unit as Unit];
+							});
 						await this.plugin.saveSettings();
 					})
 			);
