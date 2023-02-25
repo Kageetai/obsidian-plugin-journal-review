@@ -1,12 +1,16 @@
 import * as React from "react";
 
-import { Entries, reviewTimeSpans } from "../constants";
+import { reduceTimeSpans } from "../constants";
 import TimeSpan from "./TimeSpan";
-
-type ReviewEntries = Entries<typeof reviewTimeSpans>;
-const entries = Object.entries(reviewTimeSpans) as ReviewEntries;
+import useContext from "src/hooks/useContext";
 
 const Main = () => {
+	const {
+		settings: { timeSpans },
+	} = useContext();
+
+	const entries = Object.entries(reduceTimeSpans(timeSpans));
+
 	return (
 		<div>
 			<h3>On this day:</h3>
@@ -15,7 +19,7 @@ const Main = () => {
 				{entries.map(([key, moment]) => (
 					<TimeSpan
 						key={key}
-						span={key}
+						title={key}
 						moment={moment}
 						wrapper={<li />}
 					/>

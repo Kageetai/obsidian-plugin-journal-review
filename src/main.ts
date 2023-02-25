@@ -1,25 +1,25 @@
 import { Plugin } from "obsidian";
 
 import OnThisDayView, { VIEW_TYPE } from "./view";
-import { timeSpans } from "./constants";
-import { SettingsTab } from "./SettingsTab";
+import { defaultTimeSpans, TimeSpans } from "./constants";
+import { SettingsTab } from "./settingsTab";
 
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
+export interface Settings {
 	mySetting: string;
-	timeSpans: typeof timeSpans;
+	timeSpans: TimeSpans;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: Settings = {
 	mySetting: "default",
-	timeSpans,
+	timeSpans: defaultTimeSpans,
 };
 
 export const icon = "calendar-clock";
 
 export default class JournalReviewPlugin extends Plugin {
-	settings: MyPluginSettings;
+	settings: Settings;
 
 	async onload() {
 		await this.loadSettings();
@@ -86,7 +86,10 @@ export default class JournalReviewPlugin extends Plugin {
 		// 	window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000)
 		// );
 
-		this.registerView(VIEW_TYPE, (leaf) => new OnThisDayView(leaf));
+		this.registerView(
+			VIEW_TYPE,
+			(leaf) => new OnThisDayView(leaf, this.settings)
+		);
 	}
 
 	async activateView() {

@@ -1,17 +1,15 @@
 import * as React from "react";
 import { getDailyNote } from "obsidian-daily-notes-interface";
 import { moment } from "obsidian";
-
-import { reviewTimeSpans } from "src/constants";
 import useContext from "src/hooks/useContext";
 
 interface Props {
-	span: keyof typeof reviewTimeSpans;
+	title: string;
 	moment: moment.Moment;
 	wrapper?: React.ReactElement;
 }
 
-const TimeSpan = ({ span, moment, wrapper }: Props) => {
+const TimeSpan = ({ title, moment, wrapper }: Props) => {
 	const {
 		allDailyNotes,
 		app: { workspace },
@@ -23,7 +21,7 @@ const TimeSpan = ({ span, moment, wrapper }: Props) => {
 	}
 
 	const onClick = () => workspace.getLeaf(false).openFile(note);
-	const button = <button onClick={onClick}>{span}</button>;
+	const button = <button onClick={onClick}>{title}</button>;
 
 	if (wrapper) {
 		return React.cloneElement(wrapper, {}, button);
