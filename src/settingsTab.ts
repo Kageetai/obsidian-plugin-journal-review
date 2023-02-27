@@ -48,5 +48,21 @@ export class SettingsTab extends PluginSettingTab {
 						}, DEBOUNCE_DELAY)
 					)
 			);
+
+		new Setting(containerEl)
+			.setName("Day Margin")
+			.setDesc(
+				"The number of days to include before and after the date being checked"
+			)
+			.addText((text) =>
+				text
+					.setValue(this.plugin.settings.dayMargin.toString())
+					.onChange(
+						debounce((value: string | number) => {
+							this.plugin.settings.dayMargin = Number(value);
+							this.plugin.saveSettings();
+						}, DEBOUNCE_DELAY)
+					)
+			);
 	}
 }
