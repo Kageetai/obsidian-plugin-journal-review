@@ -1,7 +1,8 @@
-import { ItemView, WorkspaceLeaf } from "obsidian";
+import { ItemView, TFile, WorkspaceLeaf } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
+	getDateFromFile,
 } from "obsidian-daily-notes-interface";
 import { createRoot, Root } from "react-dom/client";
 import * as React from "react";
@@ -22,6 +23,21 @@ export default class OnThisDayView extends ItemView {
 
 		this.root = createRoot(this.containerEl.children[1]);
 		this.settings = settings;
+
+		this.registerEvent(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(this.app.workspace as any).on(
+				"journal-review:settings-updated",
+				() => this.renderView()
+			)
+		);
+		this.registerEvent(
+			this.app.workspace.on("file-open", (file: TFile) => {
+				if (getDateFromFile(file, "day")) {
+					this.renderView();
+				}
+			})
+		);
 	}
 
 	getViewType() {
@@ -32,7 +48,8 @@ export default class OnThisDayView extends ItemView {
 		return "On this day";
 	}
 
-	async onOpen() {
+	renderView() {
+		console.log("renderView");
 		const container = this.containerEl.children[1];
 		const hasDailyNotesPluginLoaded = appHasDailyNotesPluginLoaded();
 
@@ -59,6 +76,10 @@ export default class OnThisDayView extends ItemView {
 				</AppContext.Provider>
 			</React.StrictMode>
 		);
+	}
+
+	async onOpen() {
+		this.renderView();
 	}
 
 	async onClose() {

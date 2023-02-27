@@ -113,6 +113,7 @@ export default class JournalReviewPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+		this.app.workspace.trigger("journal-review:settings-updated");
 	}
 }
 
