@@ -11,6 +11,7 @@ export class SettingsTab extends PluginSettingTab {
 	}
 
 	parseSettingsInput(t: string) {
+		console.log("parseSettingsInput", t);
 		const [number, unit] = t.split(" ").filter((t) => !!t);
 
 		if (!Object.values(Unit).includes(unit as Unit)) {
@@ -36,6 +37,7 @@ export class SettingsTab extends PluginSettingTab {
 				text
 					.setValue(
 						this.plugin.settings.timeSpans
+							.filter(Boolean)
 							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
 							.join("\n")
 					)
@@ -43,6 +45,7 @@ export class SettingsTab extends PluginSettingTab {
 						debounce((value) => {
 							this.plugin.settings.timeSpans = value
 								.split("\n")
+								.filter(Boolean)
 								.map(this.parseSettingsInput);
 							this.plugin.saveSettings();
 						}, DEBOUNCE_DELAY)

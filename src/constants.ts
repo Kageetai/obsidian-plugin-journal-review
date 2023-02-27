@@ -22,6 +22,7 @@ export const defaultTimeSpans: TimeSpans = [
 
 export const reduceTimeSpans = (timeSpans: TimeSpans) =>
 	timeSpans.reduce<Record<string, moment.Moment>>((acc, t) => {
+		if (!t) return acc;
 		const [number, unit] = t;
 
 		acc[moment.duration(-number, unit).humanize(true)] = moment().subtract(

@@ -33,13 +33,13 @@ const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
 
 			<ul className="list">
 				{notes.map((note) => (
-					<li>
+					<li key={note.name}>
 						<button
 							onClick={() =>
 								workspace.getLeaf(false).openFile(note)
 							}
 						>
-							{note.name}
+							{note.basename}
 						</button>
 					</li>
 				))}
