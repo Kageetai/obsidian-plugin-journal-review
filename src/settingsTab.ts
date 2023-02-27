@@ -29,9 +29,9 @@ export class SettingsTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName("TimeSpans")
+			.setName("Time Spans")
 			.setDesc(
-				'Time spans to review, one per line, in the format "number unit", with unit being one of "day", "week", "month" or "year"'
+				'Time spans to review, one per line, in the format "number unit", with unit being one of "days", "weeks", "months" or "years", see here for more info: https://momentjs.com/docs/#/durations/'
 			)
 			.addTextArea((text) =>
 				text
@@ -53,7 +53,7 @@ export class SettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Day Margin")
+			.setName("Lookup Margin")
 			.setDesc(
 				"The number of days to include before and after the date being checked"
 			)
