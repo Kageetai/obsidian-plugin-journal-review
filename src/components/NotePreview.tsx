@@ -9,6 +9,7 @@ interface Props {
 const NotePreview = ({ note }: Props) => {
 	const {
 		app: { workspace, vault },
+		settings: { previewLength },
 	} = useContext();
 	const ref = React.useRef<HTMLDivElement>(null);
 
@@ -17,9 +18,9 @@ const NotePreview = ({ note }: Props) => {
 			if (content.startsWith("---")) {
 				// remove frontmatter
 				const index = content.indexOf("---", 3);
-				content = content.slice(index + 3, index + 103);
+				content = content.slice(index + 3, index + previewLength + 3);
 			} else {
-				content = content.slice(0, 100);
+				content = content.slice(0, previewLength);
 			}
 
 			console.log("content", content);

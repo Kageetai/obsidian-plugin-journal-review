@@ -7,11 +7,13 @@ import { SettingsTab } from "./settingsTab";
 export interface Settings {
 	timeSpans: TimeSpans;
 	dayMargin: number;
+	previewLength: number;
 }
 
 const DEFAULT_SETTINGS: Settings = {
 	timeSpans: defaultTimeSpans,
 	dayMargin: 0,
+	previewLength: 100,
 };
 
 export const icon = "calendar-clock";

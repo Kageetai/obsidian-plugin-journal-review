@@ -67,5 +67,19 @@ export class SettingsTab extends PluginSettingTab {
 						}, DEBOUNCE_DELAY)
 					)
 			);
+
+		new Setting(containerEl)
+			.setName("Preview Length")
+			.setDesc("Length of the preview text to show for each note")
+			.addText((text) =>
+				text
+					.setValue(this.plugin.settings.previewLength.toString())
+					.onChange(
+						debounce((value) => {
+							this.plugin.settings.previewLength = Number(value);
+							this.plugin.saveSettings();
+						}, DEBOUNCE_DELAY)
+					)
+			);
 	}
 }
