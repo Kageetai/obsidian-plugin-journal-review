@@ -1,7 +1,7 @@
 import { Plugin } from "obsidian";
 
-import OnThisDayView, { VIEW_TYPE } from "./view";
-import { defaultTimeSpans, TimeSpans } from "./constants";
+import OnThisDayView from "./view";
+import { defaultTimeSpans, TimeSpans, VIEW_TYPE } from "./constants";
 import { SettingsTab } from "./settingsTab";
 
 export interface Settings {

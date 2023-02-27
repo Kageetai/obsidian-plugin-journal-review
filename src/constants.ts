@@ -1,5 +1,8 @@
 import { moment } from "obsidian";
 
+export const DEBOUNCE_DELAY = 500;
+export const VIEW_TYPE = "on-this-day-view";
+
 export enum Unit {
 	Days = "days",
 	Weeks = "weeks",

@@ -1,5 +1,5 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
-import { Unit } from "./constants";
+import { App, debounce, Notice, PluginSettingTab, Setting } from "obsidian";
+import { DEBOUNCE_DELAY, Unit } from "./constants";
 import JournalReviewPlugin from "./main";
 
 export class SettingsTab extends PluginSettingTab {
@@ -14,7 +14,9 @@ export class SettingsTab extends PluginSettingTab {
 		const [number, unit] = t.split(" ").filter((t) => !!t);
 
 		if (!Object.values(Unit).includes(unit as Unit)) {
-			throw new Error(`Invalid unit '${unit}' in time span`);
+			const message = `Invalid unit "${unit}" in time span`;
+			new Notice(message);
+			throw new Error(message);
 		}
 
 		return [Number(number), unit as Unit] as [number, Unit];
@@ -37,12 +39,14 @@ export class SettingsTab extends PluginSettingTab {
 							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
 							.join("\n")
 					)
-					.onChange(async (value) => {
-						this.plugin.settings.timeSpans = value
-							.split("\n")
-							.map(this.parseSettingsInput);
-						await this.plugin.saveSettings();
-					})
+					.onChange(
+						debounce((value) => {
+							this.plugin.settings.timeSpans = value
+								.split("\n")
+								.map(this.parseSettingsInput);
+							this.plugin.saveSettings();
+						}, DEBOUNCE_DELAY)
+					)
 			);
 	}
 }

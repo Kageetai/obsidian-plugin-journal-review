@@ -9,8 +9,7 @@ import * as React from "react";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon, Settings } from "./main";
-
-export const VIEW_TYPE = "on-this-day-view";
+import { VIEW_TYPE } from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private root: Root;
