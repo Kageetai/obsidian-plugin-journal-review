@@ -2,6 +2,7 @@ import * as React from "react";
 import { getDailyNote } from "obsidian-daily-notes-interface";
 import { moment } from "obsidian";
 import useContext from "src/hooks/useContext";
+import NotePreview from "./NotePreview";
 
 interface Props {
 	title: string;
@@ -12,7 +13,6 @@ interface Props {
 const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
 	const {
 		allDailyNotes,
-		app: { workspace },
 		settings: { dayMargin },
 	} = useContext();
 
@@ -34,13 +34,7 @@ const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
 			<ul className="list">
 				{notes.map((note) => (
 					<li key={note.name}>
-						<button
-							onClick={() =>
-								workspace.getLeaf(false).openFile(note)
-							}
-						>
-							{note.basename}
-						</button>
+						<NotePreview note={note} />
 					</li>
 				))}
 			</ul>

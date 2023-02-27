@@ -61,7 +61,7 @@ export class SettingsTab extends PluginSettingTab {
 				text
 					.setValue(this.plugin.settings.dayMargin.toString())
 					.onChange(
-						debounce((value: string | number) => {
+						debounce((value) => {
 							this.plugin.settings.dayMargin = Number(value);
 							this.plugin.saveSettings();
 						}, DEBOUNCE_DELAY)

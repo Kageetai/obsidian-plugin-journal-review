@@ -48,7 +48,6 @@ export default class OnThisDayView extends ItemView {
 	}
 
 	renderView() {
-		console.log("renderView");
 		const container = this.containerEl.children[1];
 		const hasDailyNotesPluginLoaded = appHasDailyNotesPluginLoaded();
 
