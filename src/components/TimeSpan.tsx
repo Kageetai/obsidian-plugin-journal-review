@@ -9,22 +9,42 @@ interface Props {
 	wrapper?: React.ReactElement;
 }
 
-const TimeSpan = ({ title, moment, wrapper }: Props) => {
+const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
 	const {
 		allDailyNotes,
 		app: { workspace },
+		settings: { dayMargin },
 	} = useContext();
-	const note = getDailyNote(moment, allDailyNotes);
 
-	if (!note) {
+	const notes = Array(dayMargin * 2 + 1)
+		.fill(0)
+		.map((_, i) =>
+			getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes)
+		)
+		.filter(Boolean);
+
+	if (!notes.length) {
 		return null;
 	}
 
-	const onClick = () => workspace.getLeaf(false).openFile(note);
 	const component = (
-		<button onClick={onClick}>
-			<b>{title}</b>: {moment.format("llll")}
-		</button>
+		<>
+			<h4>{title}:</h4>
+
+			<ul className="list">
+				{notes.map((note) => (
+					<li>
+						<button
+							onClick={() =>
+								workspace.getLeaf(false).openFile(note)
+							}
+						>
+							{note.name}
+						</button>
+					</li>
+				))}
+			</ul>
+		</>
 	);
 
 	if (wrapper) {

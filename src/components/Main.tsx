@@ -13,7 +13,7 @@ const Main = () => {
 
 	return (
 		<div>
-			<h3>On this day:</h3>
+			<h3>On this day</h3>
 
 			<ul className="list">
 				{entries.map(([key, moment]) => (
