@@ -29,12 +29,16 @@ const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
 
 	const component = (
 		<>
-			<h4>{title}:</h4>
+			<h3>
+				{title} {dayMargin && <small>(+/- {dayMargin} days)</small>}:
+			</h3>
 
 			<ul className="list">
-				{notes.map((note) => (
+				{notes.map((note, index) => (
 					<li key={note.name}>
 						<NotePreview note={note} />
+
+						{index < notes.length - 1 && <hr />}
 					</li>
 				))}
 			</ul>

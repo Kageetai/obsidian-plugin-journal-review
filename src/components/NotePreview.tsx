@@ -37,11 +37,18 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<>
+			<h4>{note.basename} </h4>
+
 			<div ref={ref} />
 
-			<button onClick={() => workspace.getLeaf(false).openFile(note)}>
-				read more
-			</button>
+			<small>
+				<a
+					href="#"
+					onClick={() => workspace.getLeaf(false).openFile(note)}
+				>
+					read more...
+				</a>
+			</small>
 		</>
 	);
 };
