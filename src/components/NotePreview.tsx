@@ -14,7 +14,9 @@ const NotePreview = ({ note }: Props) => {
 	const ref = React.useRef<HTMLDivElement>(null);
 
 	React.useEffect(() => {
-		vault.cachedRead(note).then((content) => {
+		const read = async () => {
+			let content = await vault.cachedRead(note);
+
 			if (content.startsWith("---")) {
 				// remove frontmatter
 				const index = content.indexOf("---", 3);
@@ -30,7 +32,9 @@ const NotePreview = ({ note }: Props) => {
 					note.path,
 					new Component()
 				);
-		});
+		};
+
+		read();
 	}, [note]);
 
 	return (
