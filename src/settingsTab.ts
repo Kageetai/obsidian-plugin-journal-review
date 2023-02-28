@@ -11,7 +11,6 @@ export class SettingsTab extends PluginSettingTab {
 	}
 
 	parseSettingsInput(t: string) {
-		console.log("parseSettingsInput", t);
 		const [number, unit] = t.split(" ").filter((t) => !!t);
 
 		if (!Object.values(Unit).includes(unit as Unit)) {

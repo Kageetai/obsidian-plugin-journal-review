@@ -23,8 +23,6 @@ const NotePreview = ({ note }: Props) => {
 				content = content.slice(0, previewLength);
 			}
 
-			console.log("content", content);
-
 			ref.current &&
 				MarkdownRenderer.renderMarkdown(
 					content + " ...",
