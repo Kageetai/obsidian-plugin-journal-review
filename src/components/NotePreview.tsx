@@ -42,13 +42,11 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<>
-			<h4>{note.basename} </h4>
+			<h4>{note.basename}</h4>
 
 			<small className="markdown-rendered">
 				<blockquote id={id} />
-			</small>
 
-			<small>
 				<a
 					href="#"
 					onClick={() => workspace.getLeaf(false).openFile(note)}

@@ -3,10 +3,6 @@
 	padding: 0;
 }
 
-.list > * {
-	margin-bottom: 1em;
-}
-
 .list:empty:before {
 	content: "nothing to show";
 }
@@ -15,5 +11,6 @@
 	border: none;
 	border-bottom: var(--hr-thickness) solid;
 	border-color: var(--hr-color);
-	margin: 1.5em 0;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
 }
