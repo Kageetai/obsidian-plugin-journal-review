@@ -7,7 +7,7 @@ import NotePreview from "./NotePreview";
 interface Props {
 	title: string;
 	moment: moment.Moment;
-	wrapper?: React.ReactElement;
+	wrapper?: JSX.Element;
 }
 
 const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
