@@ -10,3 +10,10 @@
 .list:empty:before {
 	content: "nothing to show";
 }
+
+.list > li:not(:last-child) {
+	border: none;
+	border-bottom: var(--hr-thickness) solid;
+	border-color: var(--hr-color);
+	margin: 1.5em 0;
+}

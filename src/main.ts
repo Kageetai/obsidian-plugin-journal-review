@@ -13,7 +13,7 @@ export interface Settings {
 const DEFAULT_SETTINGS: Settings = {
 	timeSpans: defaultTimeSpans,
 	dayMargin: 0,
-	previewLength: 100,
+	previewLength: 200,
 };
 
 export const icon = "calendar-clock";
