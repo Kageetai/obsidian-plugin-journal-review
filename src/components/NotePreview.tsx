@@ -1,5 +1,6 @@
 import { Component, MarkdownRenderer, TFile } from "obsidian";
-import * as React from "react";
+import * as React from "preact";
+import { useEffect, useId } from "preact/hooks";
 import useContext from "../hooks/useContext";
 
 interface Props {
@@ -11,9 +12,9 @@ const NotePreview = ({ note }: Props) => {
 		app: { workspace, vault },
 		settings: { previewLength },
 	} = useContext();
-	const ref = React.useRef<HTMLDivElement>(null);
+	const id = useId();
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const read = async () => {
 			let content = await vault.cachedRead(note);
 
@@ -25,10 +26,12 @@ const NotePreview = ({ note }: Props) => {
 				content = content.slice(0, previewLength);
 			}
 
-			ref.current &&
+			const element = document.getElementById(id);
+
+			element &&
 				MarkdownRenderer.renderMarkdown(
 					content + " ...",
-					ref.current,
+					element,
 					note.path,
 					new Component()
 				);
@@ -41,7 +44,7 @@ const NotePreview = ({ note }: Props) => {
 		<>
 			<h4>{note.basename} </h4>
 
-			<div ref={ref} />
+			<div id={id} />
 
 			<small>
 				<a

@@ -1,7 +1,7 @@
-import * as React from "react";
+import { useContext as PreUseContext } from "preact/hooks";
 
 import AppContext from "src/components/context";
 
-const useContext = () => React.useContext(AppContext);
+const useContext = () => PreUseContext(AppContext);
 
 export default useContext;

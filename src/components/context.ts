@@ -1,4 +1,4 @@
-import * as React from "react";
+import { createContext } from "preact";
 import { App } from "obsidian";
 import { getAllDailyNotes } from "obsidian-daily-notes-interface";
 import { Settings } from "src/main";
@@ -9,6 +9,6 @@ type Context = {
 	allDailyNotes: ReturnType<typeof getAllDailyNotes>;
 };
 
-const AppContext = React.createContext<Context>({} as Context);
+const AppContext = createContext<Context>({} as Context);
 
 export default AppContext;

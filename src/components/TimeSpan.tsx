@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "preact";
 import { getDailyNote } from "obsidian-daily-notes-interface";
 import { moment } from "obsidian";
 import useContext from "src/hooks/useContext";
@@ -7,7 +7,7 @@ import NotePreview from "./NotePreview";
 interface Props {
 	title: string;
 	moment: moment.Moment;
-	wrapper?: JSX.Element;
+	wrapper?: React.JSX.Element;
 }
 
 const TimeSpan = ({ title, moment: mom, wrapper }: Props) => {
