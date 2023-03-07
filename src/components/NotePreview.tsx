@@ -44,9 +44,9 @@ const NotePreview = ({ note }: Props) => {
 		<>
 			<h4>{note.basename} </h4>
 
-			<div className="markdown-rendered">
+			<small className="markdown-rendered">
 				<blockquote id={id} />
-			</div>
+			</small>
 
 			<small>
 				<a
