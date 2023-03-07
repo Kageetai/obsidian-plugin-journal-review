@@ -17,3 +17,7 @@
 	border-color: var(--hr-color);
 	margin: 1.5em 0;
 }
+
+.markdown-rendered {
+	font-size: 0.8em;
+}
