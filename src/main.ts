@@ -25,7 +25,7 @@ export default class JournalReviewPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		this.addRibbonIcon(icon, "Activate view", () => {
+		this.addRibbonIcon(icon, "Open 'On this day' view", () => {
 			this.activateView();
 		});
 
