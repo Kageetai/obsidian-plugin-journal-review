@@ -37,6 +37,15 @@ export default class OnThisDayView extends ItemView {
 				}
 			})
 		);
+
+		// rerender at midnight
+		this.registerInterval(
+			window.setInterval(() => {
+				if (new Date().getHours() === 0) {
+					this.renderView();
+				}
+			}, 60 * 60 * 1000)
+		);
 	}
 
 	getViewType() {
