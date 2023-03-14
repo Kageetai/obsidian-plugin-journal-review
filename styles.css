@@ -1,13 +1,13 @@
-.list {
+#journal-review .list {
 	list-style: none;
 	padding: 0;
 }
 
-.list:empty:before {
+#journal-review .list:empty:before {
 	content: "nothing to show";
 }
 
-.list > li:not(:last-child) {
+#journal-review .list > li:not(:last-child) {
 	border: none;
 	border-bottom: var(--hr-thickness) solid;
 	border-color: var(--hr-color);

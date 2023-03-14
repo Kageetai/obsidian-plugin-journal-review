@@ -12,7 +12,7 @@ const Main = () => {
 	const entries = Object.entries(reduceTimeSpans(timeSpans));
 
 	return (
-		<div>
+		<div id="journal-review">
 			<h2>On this day</h2>
 
 			<ul className="list">
