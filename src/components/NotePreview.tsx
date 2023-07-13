@@ -1,6 +1,6 @@
-import { Component, MarkdownRenderer, TFile } from "obsidian";
+import { Keymap, MarkdownRenderer, TFile } from "obsidian";
 import * as React from "preact";
-import { useEffect, useId } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";
 
 interface Props {
@@ -10,9 +10,10 @@ interface Props {
 const NotePreview = ({ note }: Props) => {
 	const {
 		app: { workspace, vault },
+		view,
 		settings: { previewLength },
 	} = useContext();
-	const id = useId();
+	const ref = useRef<HTMLQuoteElement>(null);
 
 	useEffect(() => {
 		const read = async () => {
@@ -26,14 +27,12 @@ const NotePreview = ({ note }: Props) => {
 				content = content.slice(0, previewLength);
 			}
 
-			const element = document.getElementById(id);
-
-			element &&
+			ref.current &&
 				MarkdownRenderer.renderMarkdown(
 					content + " ...",
-					element,
+					ref.current,
 					note.path,
-					new Component()
+					view
 				);
 		};
 
@@ -42,17 +41,17 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<>
-			<h4>{note.basename}</h4>
+			<a
+				href="#"
+				onClick={(evt) =>
+					workspace.getLeaf(Keymap.isModEvent(evt)).openFile(note)
+				}
+			>
+				<h4>{note.basename}</h4>
+			</a>
 
 			<small className="markdown-rendered">
-				<blockquote id={id} />
-
-				<a
-					href="#"
-					onClick={() => workspace.getLeaf(false).openFile(note)}
-				>
-					read more...
-				</a>
+				<blockquote ref={ref} />
 			</small>
 		</>
 	);

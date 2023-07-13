@@ -18,3 +18,15 @@
 	margin-bottom: 1em;
 	padding-bottom: 1em;
 }
+
+#journal-review .list h4:after {
+	content: " read more...";
+	display: none;
+	font-size: 0.8em;
+	font-style: italic;
+	color: var(--link-color-hover);
+}
+
+#journal-review .list h4:hover:after {
+	display: initial;
+}

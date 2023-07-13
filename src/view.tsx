@@ -74,6 +74,7 @@ export default class OnThisDayView extends ItemView {
 			<AppContext.Provider
 				value={{
 					app: this.app,
+					view: this,
 					settings: this.settings,
 					allDailyNotes,
 				}}

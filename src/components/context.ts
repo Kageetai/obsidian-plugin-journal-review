@@ -1,9 +1,10 @@
 import { createContext } from "preact";
-import { App } from "obsidian";
+import { App, View } from "obsidian";
 import { getAllDailyNotes } from "obsidian-daily-notes-interface";
 import { Settings } from "src/main";
 
 type Context = {
+	view: View;
 	app: App;
 	settings: Settings;
 	allDailyNotes: ReturnType<typeof getAllDailyNotes>;
