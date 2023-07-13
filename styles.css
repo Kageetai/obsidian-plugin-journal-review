@@ -1,3 +1,7 @@
+#journal-review > h2 {
+	margin-top: 0;
+}
+
 #journal-review .list {
 	list-style: none;
 	padding: 0;
