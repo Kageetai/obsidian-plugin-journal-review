@@ -33,10 +33,7 @@ export default class JournalReviewPlugin extends Plugin {
 		this.addCommand({
 			id: "open-on-this-day",
 			name: "Open 'On this day' view",
-			callback: () => {
-				// new SampleModal(this.app).open();
-				this.activateView();
-			},
+			callback: () => this.activateView(),
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
