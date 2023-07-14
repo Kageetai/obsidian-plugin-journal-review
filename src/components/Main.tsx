@@ -1,6 +1,6 @@
 import * as React from "preact";
 
-import { reduceTimeSpans } from "../constants";
+import { mapTimeSpans } from "../constants";
 import TimeSpan from "./TimeSpan";
 import useContext from "src/hooks/useContext";
 
@@ -9,17 +9,17 @@ const Main = () => {
 		settings: { timeSpans },
 	} = useContext();
 
-	const entries = Object.entries(reduceTimeSpans(timeSpans));
+	const entries = mapTimeSpans(timeSpans);
 
 	return (
 		<div id="journal-review">
 			<h2>On this day...</h2>
 
 			<ul className="list">
-				{entries.map(([key, moment]) => (
+				{entries.map(({ title, moment }) => (
 					<TimeSpan
-						key={key}
-						title={key}
+						key={title}
+						title={title}
 						moment={moment}
 						wrapper={<li />}
 					/>

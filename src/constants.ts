@@ -20,18 +20,11 @@ export const defaultTimeSpans: TimeSpans = [
 	[3, Unit.Years],
 ];
 
-export const reduceTimeSpans = (timeSpans: TimeSpans) =>
-	timeSpans.reduce<Record<string, moment.Moment>>((acc, t) => {
-		if (!t) return acc;
-		const [number, unit] = t;
-
-		acc[moment.duration(-number, unit).humanize(true)] = moment().subtract(
-			number,
-			unit
-		);
-
-		return acc;
-	}, {});
+export const mapTimeSpans = (timeSpans: TimeSpans) =>
+	timeSpans.map(([number, unit]) => ({
+		title: moment.duration(-number, unit).humanize(true),
+		moment: moment().subtract(number, unit),
+	}));
 
 export type Entries<T> = {
 	[K in keyof T]: [K, T[K]];
