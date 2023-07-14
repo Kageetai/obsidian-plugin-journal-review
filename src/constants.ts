@@ -41,12 +41,12 @@ export const mapTimeSpans = (
 	timeSpans.map(([number, unit]) => {
 		const mom = moment().subtract(number, unit);
 		const humanizedTitle = moment.duration(-number, unit).humanize(true);
+		const margins = Array(dayMargin * 2 + 1).fill(0);
 
 		return {
 			title: useHumanize ? humanizedTitle : `${number} ${unit}`,
 			moment: mom,
-			notes: Array(dayMargin * 2 + 1)
-				.fill(0)
+			notes: margins
 				.map((_, i) =>
 					getDailyNote(
 						moment(mom).add(i - dayMargin, "days"),

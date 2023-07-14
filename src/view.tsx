@@ -9,7 +9,7 @@ import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon, Settings } from "./main";
-import { SETTINGS_UPDATED_EVENT, VIEW_TYPE } from "./constants";
+import { mapTimeSpans, SETTINGS_UPDATED_EVENT, VIEW_TYPE } from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private root: Element;
@@ -25,8 +25,9 @@ export default class OnThisDayView extends ItemView {
 
 		this.registerEvent(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(this.app.vault as any).on(SETTINGS_UPDATED_EVENT, () =>
-				this.renderView()
+			(this.app.workspace as any).on(
+				SETTINGS_UPDATED_EVENT,
+				() => this.renderView()
 			)
 		);
 		this.registerEvent(
@@ -81,7 +82,11 @@ export default class OnThisDayView extends ItemView {
 			return;
 		}
 
-		const allDailyNotes = getAllDailyNotes();
+		const timeSpans = mapTimeSpans(
+			this.settings.timeSpans,
+			getAllDailyNotes(),
+			this.settings.dayMargin
+		);
 
 		render(
 			<AppContext.Provider
@@ -89,10 +94,9 @@ export default class OnThisDayView extends ItemView {
 					app: this.app,
 					view: this,
 					settings: this.settings,
-					allDailyNotes,
 				}}
 			>
-				<Main />
+				<Main timeSpans={timeSpans} />
 			</AppContext.Provider>,
 			this.root
 		);

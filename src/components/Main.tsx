@@ -1,39 +1,32 @@
 import * as React from "preact";
+import { TFile } from "obsidian";
 
-import { mapTimeSpans } from "../constants";
 import TimeSpan from "./TimeSpan";
-import useContext from "../hooks/useContext";
 
-const Main = () => {
-	const {
-		settings: { timeSpans, dayMargin, useHumanize },
-		allDailyNotes,
-	} = useContext();
+interface Props {
+	timeSpans: Array<{
+		title: string;
+		moment: moment.Moment;
+		notes: TFile[];
+	}>;
+}
 
-	const entries = mapTimeSpans(
-		timeSpans,
-		allDailyNotes,
-		dayMargin,
-		useHumanize
-	);
+const Main = ({ timeSpans }: Props) => (
+	<div id="journal-review">
+		<h2>On this day...</h2>
 
-	return (
-		<div id="journal-review">
-			<h2>On this day...</h2>
-
-			<ul className="list">
-				{entries.map(({ title, moment, notes }) => (
-					<TimeSpan
-						key={title}
-						title={title}
-						moment={moment}
-						notes={notes}
-						wrapper={<li />}
-					/>
-				))}
-			</ul>
-		</div>
-	);
-};
+		<ul className="list">
+			{timeSpans.map(({ title, moment, notes }) => (
+				<TimeSpan
+					key={title}
+					title={title}
+					moment={moment}
+					notes={notes}
+					wrapper={<li />}
+				/>
+			))}
+		</ul>
+	</div>
+);
 
 export default Main;

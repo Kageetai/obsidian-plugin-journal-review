@@ -17,6 +17,7 @@ export interface Settings {
 }
 
 export const icon = "calendar-clock";
+const label = "Open 'On this day' view";
 
 export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
@@ -25,14 +26,14 @@ export default class JournalReviewPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		this.addRibbonIcon(icon, "Open 'On this day' view", () => {
+		this.addRibbonIcon(icon, label, () => {
 			this.activateView();
 		});
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
 			id: "open-on-this-day",
-			name: "Open 'On this day' view",
+			name: label,
 			callback: () => this.activateView(),
 		});
 
