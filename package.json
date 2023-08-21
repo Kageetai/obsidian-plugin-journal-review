@@ -10,7 +10,7 @@
 		"lint": "eslint --ext .ts,.js ."
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Kageetai",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",

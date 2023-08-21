@@ -6,5 +6,8 @@
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\".",
 	"author": "Kageetai",
 	"authorUrl": "https://kageetai.net",
-	"isDesktopOnly": false
+	"isDesktopOnly": false,
+	"fundingUrl": {
+		"Ko-Fi": "https://ko-fi.com/kageetai"
+	}
 }
