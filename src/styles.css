@@ -1,8 +1,32 @@
-/*
+#journal-review > h2 {
+	margin-top: 0;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+#journal-review .list {
+	list-style: none;
+	padding: 0;
+}
 
-If your plugin does not need CSS, delete this file.
+#journal-review .list:empty:before {
+	content: "nothing to show";
+}
 
-*/
+#journal-review .list > li:not(:last-child) {
+	border: none;
+	border-bottom: var(--hr-thickness) solid;
+	border-color: var(--hr-color);
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}
+
+#journal-review .list h4:after {
+	content: " read more...";
+	display: none;
+	font-size: 0.8em;
+	font-style: italic;
+	color: var(--link-color-hover);
+}
+
+#journal-review .list h4:hover:after {
+	display: initial;
+}

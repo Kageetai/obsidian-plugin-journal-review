@@ -16,6 +16,12 @@ the same day in previous time spans in a view, that can be activated via ribbon 
 Open the "On this day" view via the ribbon icon or the command palette and it will display excerpts from previous daily notes.
 The view will refresh when a new daily note is created or around midnight to reflect the changes.
 
+## Release
+
+1. `npm run version` to update necessary manifest files
+2. Push a new tag to GitHub with the corresponding version number
+3. This automatically triggers a GitHub action that builds the plugin, creates a release and uploads the artifacts to the release
+
 ## Options
 
 ### Time Spans
