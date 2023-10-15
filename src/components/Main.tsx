@@ -2,15 +2,20 @@ import * as React from "preact";
 
 import { mapTimeSpans } from "../constants";
 import TimeSpan from "./TimeSpan";
-import useContext from "src/hooks/useContext";
+import useContext from "../hooks/useContext";
 
 const Main = () => {
 	const {
-		settings: { timeSpans, dayMargin },
+		settings: { timeSpans, dayMargin, useHumanize },
 		allDailyNotes,
 	} = useContext();
 
-	const entries = mapTimeSpans(timeSpans, allDailyNotes, dayMargin);
+	const entries = mapTimeSpans(
+		timeSpans,
+		allDailyNotes,
+		dayMargin,
+		useHumanize
+	);
 
 	return (
 		<div id="journal-review">

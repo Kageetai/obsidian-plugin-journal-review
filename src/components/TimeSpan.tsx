@@ -1,6 +1,6 @@
 import * as React from "preact";
 import { moment, TFile } from "obsidian";
-import useContext from "src/hooks/useContext";
+import useContext from "../hooks/useContext";
 import NotePreview from "./NotePreview";
 
 interface Props {

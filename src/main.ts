@@ -1,20 +1,20 @@
 import { Plugin } from "obsidian";
 
 import OnThisDayView from "./view";
-import { defaultTimeSpans, TimeSpans, VIEW_TYPE } from "./constants";
+import {
+	DEFAULT_SETTINGS,
+	SETTINGS_UPDATED_EVENT,
+	TimeSpans,
+	VIEW_TYPE,
+} from "./constants";
 import { SettingsTab } from "./settingsTab";
 
 export interface Settings {
 	timeSpans: TimeSpans;
 	dayMargin: number;
 	previewLength: number;
+	useHumanize: boolean;
 }
-
-const DEFAULT_SETTINGS: Settings = {
-	timeSpans: defaultTimeSpans,
-	dayMargin: 0,
-	previewLength: 100,
-};
 
 export const icon = "calendar-clock";
 
@@ -70,6 +70,6 @@ export default class JournalReviewPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		this.app.workspace.trigger("journal-review:settings-updated");
+		this.app.vault.trigger(SETTINGS_UPDATED_EVENT);
 	}
 }

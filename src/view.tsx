@@ -9,7 +9,7 @@ import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon, Settings } from "./main";
-import { VIEW_TYPE } from "./constants";
+import { SETTINGS_UPDATED_EVENT, VIEW_TYPE } from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private root: Element;
@@ -25,7 +25,7 @@ export default class OnThisDayView extends ItemView {
 
 		this.registerEvent(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(this.app.vault as any).on("journal-review:settings-updated", () =>
+			(this.app.vault as any).on(SETTINGS_UPDATED_EVENT, () =>
 				this.renderView()
 			)
 		);

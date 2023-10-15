@@ -52,6 +52,20 @@ export class SettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName("Humanize Time Spans")
+			.setDesc(
+				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans"
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.useHumanize)
+					.onChange((value) => {
+						this.plugin.settings.useHumanize = value;
+						this.plugin.saveSettings();
+					})
+			);
+
+		new Setting(containerEl)
 			.setName("Lookup Margin")
 			.setDesc(
 				"The number of days to include before and after the date being checked"
