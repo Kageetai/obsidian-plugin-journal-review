@@ -22,7 +22,7 @@
 #journal-review .list h4:after {
 	content: " read more...";
 	display: none;
-	font-size: 0.8em;
+	font-size: smaller;
 	font-style: italic;
 	color: var(--link-color-hover);
 }

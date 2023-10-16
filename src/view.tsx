@@ -25,40 +25,42 @@ export default class OnThisDayView extends ItemView {
 
 		this.registerEvent(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(this.app.workspace as any).on(
-				SETTINGS_UPDATED_EVENT,
-				() => this.renderView()
-			)
+			(this.app.vault as any).on(SETTINGS_UPDATED_EVENT, () =>
+				this.renderView(),
+			),
 		);
 		this.registerEvent(
 			this.app.vault.on("create", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("delete", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("rename", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 
 		// rerender at midnight
 		this.registerInterval(
-			window.setInterval(() => {
-				if (new Date().getHours() === 0) {
-					this.renderView();
-				}
-			}, 60 * 60 * 1000)
+			window.setInterval(
+				() => {
+					if (new Date().getHours() === 0) {
+						this.renderView();
+					}
+				},
+				60 * 60 * 1000,
+			),
 		);
 	}
 
@@ -85,7 +87,8 @@ export default class OnThisDayView extends ItemView {
 		const timeSpans = mapTimeSpans(
 			this.settings.timeSpans,
 			getAllDailyNotes(),
-			this.settings.dayMargin
+			this.settings.dayMargin,
+			this.settings.useHumanize,
 		);
 
 		render(
@@ -98,7 +101,7 @@ export default class OnThisDayView extends ItemView {
 			>
 				<Main timeSpans={timeSpans} />
 			</AppContext.Provider>,
-			this.root
+			this.root,
 		);
 	}
 
