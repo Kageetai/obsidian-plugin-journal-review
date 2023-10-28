@@ -1,5 +1,5 @@
 import * as React from "preact";
-import { moment, TFile } from "obsidian";
+import { Keymap, moment, TFile } from "obsidian";
 import useContext from "../hooks/useContext";
 import NotePreview from "./NotePreview";
 
@@ -12,6 +12,7 @@ interface Props {
 
 const TimeSpan = ({ title, notes, wrapper }: Props) => {
 	const {
+		app: { workspace },
 		settings: { dayMargin },
 	} = useContext();
 
@@ -28,7 +29,14 @@ const TimeSpan = ({ title, notes, wrapper }: Props) => {
 
 			<ul className="list">
 				{notes.map((note) => (
-					<li key={note.name}>
+					<li
+						key={note.name}
+						onClick={(evt) =>
+							workspace
+								.getLeaf(Keymap.isModEvent(evt))
+								.openFile(note)
+						}
+					>
 						<NotePreview note={note} />
 					</li>
 				))}

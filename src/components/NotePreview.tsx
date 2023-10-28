@@ -1,4 +1,4 @@
-import { Keymap, MarkdownRenderer, TFile } from "obsidian";
+import { MarkdownRenderer, TFile } from "obsidian";
 import * as React from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";
@@ -9,7 +9,7 @@ interface Props {
 
 const NotePreview = ({ note }: Props) => {
 	const {
-		app: { workspace, vault },
+		app: { vault },
 		view,
 		settings: { previewLength },
 	} = useContext();
@@ -32,7 +32,7 @@ const NotePreview = ({ note }: Props) => {
 					content + " ...",
 					ref.current,
 					note.path,
-					view
+					view,
 				);
 		};
 
@@ -41,14 +41,7 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<>
-			<a
-				href="#"
-				onClick={(evt) =>
-					workspace.getLeaf(Keymap.isModEvent(evt)).openFile(note)
-				}
-			>
-				<h4>{note.basename}</h4>
-			</a>
+			<h4>{note.basename}</h4>
 
 			<small className="markdown-rendered">
 				<blockquote ref={ref} />

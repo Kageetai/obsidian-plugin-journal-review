@@ -11,6 +11,10 @@
 	content: "nothing to show";
 }
 
+#journal-review .list > li {
+	cursor: pointer;
+}
+
 #journal-review .list > li:not(:last-child) {
 	border: none;
 	border-bottom: var(--hr-thickness) solid;
@@ -27,6 +31,6 @@
 	color: var(--link-color-hover);
 }
 
-#journal-review .list h4:hover:after {
+#journal-review .list > li:hover h4:after {
 	display: initial;
 }
