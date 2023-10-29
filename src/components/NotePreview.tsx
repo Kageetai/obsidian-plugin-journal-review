@@ -1,4 +1,4 @@
-import { MarkdownRenderer, TFile } from "obsidian";
+import { Keymap, MarkdownRenderer, TFile } from "obsidian";
 import * as React from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";
@@ -41,7 +41,12 @@ const NotePreview = ({ note }: Props) => {
 	}, [note]);
 
 	return (
-		<div class="callout">
+		<div
+			class="callout"
+			onClick={(evt) =>
+				app.workspace.getLeaf(Keymap.isModEvent(evt)).openFile(note)
+			}
+		>
 			<div class="callout-title">
 				<div class="callout-title-inner">{note.basename}</div>
 			</div>
