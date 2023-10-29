@@ -19,5 +19,6 @@ jobs:
       - name: Plugin release
         uses: ncipollo/release-action@v1.13.0
         with:
-          artifacts: "main.js,manifest.json,styles.css"
+          artifacts: "dist/**/*"
+          generate_release_notes: "true"
           token: ${{ secrets.GITHUB_TOKEN }}
