@@ -26,7 +26,7 @@ const TimeSpan = ({ title, notes, wrapper }: Props) => {
 				{dayMargin ? <small> (+/- {dayMargin} days)</small> : ""}:
 			</h3>
 
-			<ul className="list">
+			<ul className="list notes">
 				{notes.map((note) => (
 					<li
 						key={note.name}

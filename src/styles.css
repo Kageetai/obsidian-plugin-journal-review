@@ -12,7 +12,7 @@
 		content: "nothing to show";
 	}
 
-	& > li {
+	&.notes > li {
 		cursor: pointer;
 
 		&:not(:last-child) {
@@ -23,16 +23,22 @@
 			padding-bottom: 1em;
 		}
 
-		&:hover h4:after {
-			display: initial;
+		& h4:after {
+			content: " read more...";
+			display: none;
+			font-size: smaller;
+			font-style: italic;
+			color: var(--link-color-hover);
 		}
-	}
 
-	& h4:after {
-		content: " read more...";
-		display: none;
-		font-size: smaller;
-		font-style: italic;
-		color: var(--link-color-hover);
+		&:hover {
+			& blockquote {
+				border-color: var(--link-color-hover);
+			}
+
+			& h4:after {
+				display: initial;
+			}
+		}
 	}
 }
