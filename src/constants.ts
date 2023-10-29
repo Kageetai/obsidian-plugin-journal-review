@@ -30,10 +30,10 @@ export type TimeSpan = {
 	recurring: boolean;
 };
 
-export type RenderedTimeSpans = Array<{
+export type RenderedTimeSpan = {
 	title: string;
 	notes: TFile[];
-}>;
+};
 
 export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.month, recurring: false },
@@ -68,7 +68,7 @@ export const reduceTimeSpans = (
 	allDailyNotes: AllDailyNotes,
 	dayMargin: number,
 	useHumanize: boolean,
-) => {
+): RenderedTimeSpan[] => {
 	const oldestNoteDate = Object.values(allDailyNotes).reduce(
 		(oldestDate, currentNote) => {
 			const currentDate = getDateFromFile(currentNote, "day");
@@ -79,23 +79,32 @@ export const reduceTimeSpans = (
 		moment(),
 	);
 
-	return timeSpans.reduce<RenderedTimeSpans>(
-		(acc, { number, unit, recurring }) => {
-			const mom = moment();
+	return Object.values(
+		timeSpans.reduce<Record<string, RenderedTimeSpan>>(
+			(acc, { number, unit, recurring }) => {
+				const mom = moment();
 
-			// if we have a recurring time span, we want to go back until we reach the oldest note
-			do {
-				mom.subtract(number, unit);
-				acc.push({
-					title: useHumanize
+				// if we have a recurring time span, we want to go back until we reach the oldest note
+				do {
+					mom.subtract(number, unit);
+					const title = useHumanize
 						? mom.fromNow()
-						: getTimeSpanTitle({ number, unit, recurring }),
-					notes: getNotesOverMargins(dayMargin, mom, allDailyNotes),
-				});
-			} while (mom.isAfter(oldestNoteDate) && recurring);
+						: getTimeSpanTitle({ number, unit, recurring });
+					// used mapped object type to group notes together under same titles,
+					// even if they come from different time span settings
+					acc[title] = {
+						title,
+						notes: getNotesOverMargins(
+							dayMargin,
+							mom,
+							allDailyNotes,
+						),
+					};
+				} while (mom.isAfter(oldestNoteDate) && recurring);
 
-			return acc;
-		},
-		[],
+				return acc;
+			},
+			{},
+		),
 	);
 };

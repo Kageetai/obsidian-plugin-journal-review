@@ -1,10 +1,10 @@
 import * as React from "preact";
 
 import TimeSpan from "./TimeSpan";
-import { RenderedTimeSpans } from "../constants";
+import { RenderedTimeSpan } from "../constants";
 
 interface Props {
-	timeSpans: RenderedTimeSpans;
+	timeSpans: RenderedTimeSpan[];
 }
 
 const Main = ({ timeSpans }: Props) => (

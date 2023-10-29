@@ -23,7 +23,7 @@ const TimeSpan = ({ title, notes, wrapper }: Props) => {
 		<>
 			<h3>
 				{title}
-				{dayMargin ? <small> (+/- {dayMargin} days)</small> : ""}:
+				{dayMargin ? <small> (+/- {dayMargin} day(s))</small> : ""}:
 			</h3>
 
 			<ul className="list notes">
