@@ -1,5 +1,9 @@
 import { moment } from "obsidian";
-import { getAllDailyNotes, getDailyNote } from "obsidian-daily-notes-interface";
+import {
+	getAllDailyNotes,
+	getDailyNote,
+	getDateFromFile,
+} from "obsidian-daily-notes-interface";
 import { Settings } from "./main";
 
 export const DEBOUNCE_DELAY = 1000;
@@ -39,52 +43,48 @@ export const DEFAULT_SETTINGS: Settings = {
 	useHumanize: true,
 };
 
+const getNotesOverMargins = (
+	dayMargin: number,
+	mom: moment.Moment,
+	allDailyNotes: AllDailyNotes,
+) =>
+	Array(dayMargin * 2 + 1)
+		.fill(0)
+		.map((_, i) =>
+			getDailyNote(mom.add(i - dayMargin, "days"), allDailyNotes),
+		)
+		.filter(Boolean);
+
 export const mapTimeSpans = (
 	timeSpans: TimeSpans,
 	allDailyNotes: AllDailyNotes,
 	dayMargin: number,
 	useHumanize: boolean,
 ) => {
-	// const oldestNoteDate = Object.values(allDailyNotes).reduce(
-	// 	(oldestDate, currentNote) => {
-	// 		const currentDate = getDateFromFile(currentNote, "day");
-	// 		if (currentDate?.isBefore(oldestDate)) {
-	// 			return currentDate;
-	// 		}
-	// 	},
-	// 	moment(),
-	// );
-	//
-	// const date = moment();
-	// const notes = [];
-	//
-	// while (date.isAfter(oldestNoteDate)) {
-	// 	date.subtract(1, "month");
-	// 	notes.push(getDailyNote(date, allDailyNotes));
-	// }
-	//
-	// console.log("mapTimeSpans", notes);
+	const oldestNoteDate = Object.values(allDailyNotes).reduce(
+		(oldestDate, currentNote) => {
+			const currentDate = getDateFromFile(currentNote, "day");
+			if (currentDate?.isBefore(oldestDate)) {
+				return currentDate;
+			}
+		},
+		moment(),
+	);
 
-	return timeSpans.map(({ number, unit }) => {
-		const mom = moment().subtract(number, unit);
+	return timeSpans.map(({ number, unit, recurring }) => {
+		const notes = [];
+		const mom = moment();
 		const humanizedTitle = moment.duration(-number, unit).humanize(true);
-		const margins = Array(dayMargin * 2 + 1).fill(0);
+
+		do {
+			mom.subtract(number, unit);
+			notes.push(...getNotesOverMargins(dayMargin, mom, allDailyNotes));
+			// if we have a recurring time span, we want go back until we reach the oldest note
+		} while (mom.isAfter(oldestNoteDate) && recurring);
 
 		return {
 			title: useHumanize ? humanizedTitle : `${number} ${unit}`,
-			moment: mom,
-			notes: margins
-				.map((_, i) =>
-					getDailyNote(
-						moment(mom).add(i - dayMargin, "days"),
-						allDailyNotes,
-					),
-				)
-				.filter(Boolean),
+			notes,
 		};
 	});
 };
-
-export type Entries<T> = {
-	[K in keyof T]: [K, T[K]];
-}[keyof T][];

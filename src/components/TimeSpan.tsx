@@ -1,11 +1,10 @@
 import * as React from "preact";
-import { Keymap, moment, TFile } from "obsidian";
+import { Keymap, TFile } from "obsidian";
 import useContext from "../hooks/useContext";
 import NotePreview from "./NotePreview";
 
 interface Props {
 	title: string;
-	moment: moment.Moment;
 	notes: TFile[];
 	wrapper?: React.JSX.Element;
 }
