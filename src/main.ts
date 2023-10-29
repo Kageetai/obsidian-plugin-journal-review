@@ -62,11 +62,18 @@ export default class JournalReviewPlugin extends Plugin {
 	onunload() {}
 
 	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData(),
-		);
+		const loadedData = await this.loadData();
+		// check if v1 settings are loaded and convert them to v2
+		if (loadedData?.timeSpans?.[0].hasOwnProperty("length")) {
+			loadedData.timeSpans = loadedData.timeSpans.map(
+				([number, unit]: [number, string]) => ({
+					number,
+					unit: unit.endsWith("s") ? unit.slice(0, -1) : unit,
+					recurring: false,
+				}),
+			);
+		}
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
 	}
 
 	async saveSettings() {
