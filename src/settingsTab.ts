@@ -71,7 +71,10 @@ export class SettingsTab extends PluginSettingTab {
 		);
 
 		new Setting(container.createEl("li")).addButton((button) =>
-			button.setButtonText("Add Time Span").onClick(console.log),
+			button.setButtonText("Add Time Span").onClick(() => {
+				this.plugin.settings.timeSpans.push([1, Unit.years, false]);
+				this.display();
+			}),
 		);
 
 		new Setting(containerEl)
