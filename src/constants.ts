@@ -1,4 +1,4 @@
-import { moment } from "obsidian";
+import { moment, TFile } from "obsidian";
 import {
 	getAllDailyNotes,
 	getDailyNote,
@@ -20,17 +20,22 @@ export enum Unit {
 export type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
 
 /**
- * TimeSpans type to define possible time spans user can define
+ * TimeSpan type to define possible time span user can define
  * consisting of a number, e.g. 6, a unit, e.g. months, and whether it's recurring
- * @example [{number: 1, unit: Unit.months, recurring: false}]
+ * @example {number: 1, unit: Unit.months, recurring: false}
  */
-export type TimeSpans = Array<{
+export type TimeSpan = {
 	number: number;
 	unit: Unit;
 	recurring: boolean;
+};
+
+export type RenderedTimeSpans = Array<{
+	title: string;
+	notes: TFile[];
 }>;
 
-export const defaultTimeSpans: TimeSpans = [
+export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.months, recurring: false },
 	{ number: 6, unit: Unit.months, recurring: false },
 	{ number: 1, unit: Unit.years, recurring: true },
@@ -43,6 +48,9 @@ export const DEFAULT_SETTINGS: Settings = {
 	useHumanize: true,
 };
 
+export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
+	`${recurring ? "every" : ""} ${number} ${unit}`;
+
 const getNotesOverMargins = (
 	dayMargin: number,
 	mom: moment.Moment,
@@ -51,12 +59,12 @@ const getNotesOverMargins = (
 	Array(dayMargin * 2 + 1)
 		.fill(0)
 		.map((_, i) =>
-			getDailyNote(mom.add(i - dayMargin, "days"), allDailyNotes),
+			getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes),
 		)
 		.filter(Boolean);
 
-export const mapTimeSpans = (
-	timeSpans: TimeSpans,
+export const reduceTimeSpans = (
+	timeSpans: TimeSpan[],
 	allDailyNotes: AllDailyNotes,
 	dayMargin: number,
 	useHumanize: boolean,
@@ -71,20 +79,23 @@ export const mapTimeSpans = (
 		moment(),
 	);
 
-	return timeSpans.map(({ number, unit, recurring }) => {
-		const notes = [];
-		const mom = moment();
-		const humanizedTitle = moment.duration(-number, unit).humanize(true);
+	return timeSpans.reduce<RenderedTimeSpans>(
+		(acc, { number, unit, recurring }) => {
+			const mom = moment();
 
-		do {
-			mom.subtract(number, unit);
-			notes.push(...getNotesOverMargins(dayMargin, mom, allDailyNotes));
-			// if we have a recurring time span, we want go back until we reach the oldest note
-		} while (mom.isAfter(oldestNoteDate) && recurring);
+			// if we have a recurring time span, we want to go back until we reach the oldest note
+			do {
+				mom.subtract(number, unit);
+				acc.push({
+					title: useHumanize
+						? mom.fromNow()
+						: getTimeSpanTitle({ number, unit, recurring }),
+					notes: getNotesOverMargins(dayMargin, mom, allDailyNotes),
+				});
+			} while (mom.isAfter(oldestNoteDate) && recurring);
 
-		return {
-			title: useHumanize ? humanizedTitle : `${number} ${unit}`,
-			notes,
-		};
-	});
+			return acc;
+		},
+		[],
+	);
 };

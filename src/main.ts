@@ -4,13 +4,13 @@ import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
 	SETTINGS_UPDATED_EVENT,
-	TimeSpans,
+	TimeSpan,
 	VIEW_TYPE,
 } from "./constants";
 import { SettingsTab } from "./settingsTab";
 
 export interface Settings {
-	timeSpans: TimeSpans;
+	timeSpans: TimeSpan[];
 	dayMargin: number;
 	previewLength: number;
 	useHumanize: boolean;
@@ -42,7 +42,7 @@ export default class JournalReviewPlugin extends Plugin {
 
 		this.registerView(
 			VIEW_TYPE,
-			(leaf) => new OnThisDayView(leaf, this.settings)
+			(leaf) => new OnThisDayView(leaf, this.settings),
 		);
 	}
 
@@ -55,7 +55,7 @@ export default class JournalReviewPlugin extends Plugin {
 		});
 
 		this.app.workspace.revealLeaf(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0]
+			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0],
 		);
 	}
 
@@ -65,7 +65,7 @@ export default class JournalReviewPlugin extends Plugin {
 		this.settings = Object.assign(
 			{},
 			DEFAULT_SETTINGS,
-			await this.loadData()
+			await this.loadData(),
 		);
 	}
 

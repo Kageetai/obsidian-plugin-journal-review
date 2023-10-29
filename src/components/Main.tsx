@@ -1,13 +1,10 @@
 import * as React from "preact";
-import { TFile } from "obsidian";
 
 import TimeSpan from "./TimeSpan";
+import { RenderedTimeSpans } from "../constants";
 
 interface Props {
-	timeSpans: Array<{
-		title: string;
-		notes: TFile[];
-	}>;
+	timeSpans: RenderedTimeSpans;
 }
 
 const Main = ({ timeSpans }: Props) => (

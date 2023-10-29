@@ -9,7 +9,11 @@ import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon, Settings } from "./main";
-import { mapTimeSpans, SETTINGS_UPDATED_EVENT, VIEW_TYPE } from "./constants";
+import {
+	reduceTimeSpans,
+	SETTINGS_UPDATED_EVENT,
+	VIEW_TYPE,
+} from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private root: Element;
@@ -84,7 +88,7 @@ export default class OnThisDayView extends ItemView {
 			return;
 		}
 
-		const timeSpans = mapTimeSpans(
+		const timeSpans = reduceTimeSpans(
 			this.settings.timeSpans,
 			getAllDailyNotes(),
 			this.settings.dayMargin,

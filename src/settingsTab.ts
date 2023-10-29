@@ -1,5 +1,10 @@
 import { App, debounce, PluginSettingTab, Setting } from "obsidian";
-import { DEBOUNCE_DELAY, defaultTimeSpans, Unit } from "./constants";
+import {
+	DEBOUNCE_DELAY,
+	defaultTimeSpans,
+	getTimeSpanTitle,
+	Unit,
+} from "./constants";
 import JournalReviewPlugin from "./main";
 
 const getMaxTimeSpan = (unit: Unit) => {
@@ -9,7 +14,7 @@ const getMaxTimeSpan = (unit: Unit) => {
 		case Unit.weeks:
 			return 52;
 		case Unit.months:
-			return 12;
+			return 24;
 		case Unit.years:
 			return 100;
 	}
@@ -39,7 +44,7 @@ export class SettingsTab extends PluginSettingTab {
 				const timeSpanContainer = container.createEl("li");
 
 				new Setting(timeSpanContainer)
-					.setName(`${recurring ? "every" : ""} ${number} ${unit}`)
+					.setName(getTimeSpanTitle({ number, unit, recurring }))
 					.addSlider((slider) =>
 						slider
 							.setValue(number)
