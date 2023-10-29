@@ -32,7 +32,8 @@ export class SettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
-		containerEl.createEl("h1", { text: "Time Spans" });
+		containerEl.createEl("h1", { text: "Journal Review" });
+		containerEl.createEl("h2", { text: "Time Spans" });
 		containerEl.createEl("p", {
 			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'",
 		});
