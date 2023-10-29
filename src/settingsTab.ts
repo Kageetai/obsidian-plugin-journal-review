@@ -24,18 +24,20 @@ export class SettingsTab extends PluginSettingTab {
 		this.plugin.settings.timeSpans.forEach(
 			([number, unit, recurring], index) => {
 				const timeSpanContainer = container.createEl("li");
-				new Setting(timeSpanContainer).setName("Time").addText((text) =>
-					text.setValue(number.toString()).onChange(
-						debounce((value) => {
-							this.plugin.settings.timeSpans[index][0] =
-								Number(value);
-							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY),
-					),
-				);
 
 				new Setting(timeSpanContainer)
-					.setName("Unit")
+					.setName(`${recurring ? "every" : ""} ${number} ${unit}`)
+					.addSlider((slider) =>
+						slider
+							.setValue(number)
+							.setLimits(1, 100, 1)
+							.setDynamicTooltip()
+							.onChange((value) => {
+								this.plugin.settings.timeSpans[index][0] =
+									value;
+								this.plugin.saveSettings();
+							}),
+					)
 					.addDropdown((dropdown) =>
 						dropdown
 							.addOptions(Unit)
@@ -45,28 +47,28 @@ export class SettingsTab extends PluginSettingTab {
 									value as Unit;
 								this.plugin.saveSettings();
 							}),
-					);
-
-				new Setting(timeSpanContainer)
-					.setName("Recurring")
+					)
 					.addToggle((toggle) =>
-						toggle.setValue(recurring).onChange((value) => {
-							this.plugin.settings.timeSpans[index][2] = value;
-							this.plugin.saveSettings();
-						}),
-					);
-
-				new Setting(timeSpanContainer).addButton((button) => {
-					button
-						.setButtonText("X")
-						.setIcon("delete")
-						.setTooltip("Delete time span")
-						.onClick(() => {
-							this.plugin.settings.timeSpans.splice(index, 1);
-							this.plugin.saveSettings();
-							this.display();
-						});
-				});
+						toggle
+							.setValue(recurring)
+							.onChange((value) => {
+								this.plugin.settings.timeSpans[index][2] =
+									value;
+								this.plugin.saveSettings();
+							})
+							.setTooltip("Recurring?"),
+					)
+					.addButton((button) => {
+						button
+							.setButtonText("X")
+							.setIcon("delete")
+							.setTooltip("Delete")
+							.onClick(() => {
+								this.plugin.settings.timeSpans.splice(index, 1);
+								this.plugin.saveSettings();
+								this.display();
+							});
+					});
 			},
 		);
 
