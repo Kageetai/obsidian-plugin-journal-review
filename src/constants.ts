@@ -33,6 +33,7 @@ export type TimeSpan = {
 export type RenderedTimeSpan = {
 	title: string;
 	notes: TFile[];
+	moment: moment.Moment;
 };
 
 export const defaultTimeSpans: TimeSpan[] = [
@@ -94,6 +95,7 @@ export const reduceTimeSpans = (
 					// even if they come from different time span settings
 					acc[title] = {
 						title,
+						moment: mom,
 						notes: getNotesOverMargins(
 							dayMargin,
 							mom,
@@ -106,5 +108,5 @@ export const reduceTimeSpans = (
 			},
 			{},
 		),
-	);
+	).sort((a, b) => (a.moment.isBefore(b.moment) ? 1 : -1));
 };
