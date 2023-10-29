@@ -2,6 +2,19 @@ import { App, debounce, PluginSettingTab, Setting } from "obsidian";
 import { DEBOUNCE_DELAY, defaultTimeSpans, Unit } from "./constants";
 import JournalReviewPlugin from "./main";
 
+const getMaxTimeSpan = (unit: Unit) => {
+	switch (unit) {
+		case Unit.days:
+			return 31;
+		case Unit.weeks:
+			return 52;
+		case Unit.months:
+			return 12;
+		case Unit.years:
+			return 100;
+	}
+};
+
 export class SettingsTab extends PluginSettingTab {
 	plugin: JournalReviewPlugin;
 
@@ -30,7 +43,7 @@ export class SettingsTab extends PluginSettingTab {
 					.addSlider((slider) =>
 						slider
 							.setValue(number)
-							.setLimits(1, 100, 1)
+							.setLimits(1, getMaxTimeSpan(unit), 1)
 							.setDynamicTooltip()
 							.onChange((value) => {
 								this.plugin.settings.timeSpans[index].number =
