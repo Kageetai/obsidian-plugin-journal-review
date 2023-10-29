@@ -17,15 +17,19 @@ export type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
 
 /**
  * TimeSpans type to define possible time spans user can define
- * @example [1, 'months'] // Include notes from 1 month ago
- * @example [6, 'months', true] // Include notes from every 6 months ago
+ * consisting of a number, e.g. 6, a unit, e.g. months, and whether it's recurring
+ * @example [{number: 1, unit: Unit.months, recurring: false}]
  */
-export type TimeSpans = Array<[number, Unit, boolean]>;
+export type TimeSpans = Array<{
+	number: number;
+	unit: Unit;
+	recurring: boolean;
+}>;
 
 export const defaultTimeSpans: TimeSpans = [
-	[1, Unit.months, false],
-	[6, Unit.months, false],
-	[1, Unit.years, true],
+	{ number: 1, unit: Unit.months, recurring: false },
+	{ number: 6, unit: Unit.months, recurring: false },
+	{ number: 1, unit: Unit.years, recurring: true },
 ];
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -61,7 +65,7 @@ export const mapTimeSpans = (
 	//
 	// console.log("mapTimeSpans", notes);
 
-	return timeSpans.map(([number, unit]) => {
+	return timeSpans.map(({ number, unit }) => {
 		const mom = moment().subtract(number, unit);
 		const humanizedTitle = moment.duration(-number, unit).humanize(true);
 		const margins = Array(dayMargin * 2 + 1).fill(0);

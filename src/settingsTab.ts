@@ -1,5 +1,5 @@
 import { App, debounce, PluginSettingTab, Setting } from "obsidian";
-import { DEBOUNCE_DELAY, Unit } from "./constants";
+import { DEBOUNCE_DELAY, defaultTimeSpans, Unit } from "./constants";
 import JournalReviewPlugin from "./main";
 
 export class SettingsTab extends PluginSettingTab {
@@ -22,7 +22,7 @@ export class SettingsTab extends PluginSettingTab {
 		container.addClass("time-spans-container");
 
 		this.plugin.settings.timeSpans.forEach(
-			([number, unit, recurring], index) => {
+			({ number, unit, recurring }, index) => {
 				const timeSpanContainer = container.createEl("li");
 
 				new Setting(timeSpanContainer)
@@ -33,7 +33,7 @@ export class SettingsTab extends PluginSettingTab {
 							.setLimits(1, 100, 1)
 							.setDynamicTooltip()
 							.onChange((value) => {
-								this.plugin.settings.timeSpans[index][0] =
+								this.plugin.settings.timeSpans[index].number =
 									value;
 								this.plugin.saveSettings();
 							}),
@@ -43,7 +43,7 @@ export class SettingsTab extends PluginSettingTab {
 							.addOptions(Unit)
 							.setValue(unit)
 							.onChange((value) => {
-								this.plugin.settings.timeSpans[index][1] =
+								this.plugin.settings.timeSpans[index].unit =
 									value as Unit;
 								this.plugin.saveSettings();
 							}),
@@ -52,8 +52,9 @@ export class SettingsTab extends PluginSettingTab {
 						toggle
 							.setValue(recurring)
 							.onChange((value) => {
-								this.plugin.settings.timeSpans[index][2] =
-									value;
+								this.plugin.settings.timeSpans[
+									index
+								].recurring = value;
 								this.plugin.saveSettings();
 							})
 							.setTooltip("Recurring?"),
@@ -74,7 +75,7 @@ export class SettingsTab extends PluginSettingTab {
 
 		new Setting(container.createEl("li")).addButton((button) =>
 			button.setButtonText("Add Time Span").onClick(() => {
-				this.plugin.settings.timeSpans.push([1, Unit.years, false]);
+				this.plugin.settings.timeSpans.push(defaultTimeSpans[0]);
 				this.display();
 			}),
 		);
