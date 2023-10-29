@@ -26,11 +26,54 @@ export class SettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
+		containerEl.createEl("h1", { text: "Time Spans" });
+		containerEl.createEl("p", {
+			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'",
+		});
+		const container = containerEl.createEl("ul");
+		container.addClass("time-spans-container");
+
+		this.plugin.settings.timeSpans.forEach(([number, unit, recurring]) => {
+			console.log(number, unit, recurring);
+			const timeSpanContainer = container.createEl("li");
+			new Setting(timeSpanContainer)
+				.setName("Time")
+				.addText((text) =>
+					text.setValue(number.toString()).onChange(console.log),
+				);
+
+			new Setting(timeSpanContainer)
+				.setName("Unit")
+				.addDropdown((dropdown) =>
+					dropdown
+						.addOptions(Unit)
+						.setValue(unit)
+						.onChange(console.log),
+				);
+
+			new Setting(timeSpanContainer)
+				.setName("Recurring")
+				.addToggle((toggle) =>
+					toggle.setValue(recurring).onChange(console.log),
+				);
+
+			new Setting(timeSpanContainer).addButton((button) => {
+				button
+					.setButtonText("X")
+					.setIcon("delete")
+					.setTooltip("Delete time span")
+					.onClick(console.log);
+			});
+		});
+
+		new Setting(containerEl).addButton((button) =>
+			button.setButtonText("Add Time Span").onClick(console.log),
+		);
 
 		new Setting(containerEl)
 			.setName("Time Spans")
 			.setDesc(
-				'Time spans to review, one per line, in the format "number unit", with unit being one of "days", "weeks", "months" or "years", see here for more info: https://momentjs.com/docs/#/durations/'
+				'Time spans to review, one per line, in the format "number unit", with unit being one of "days", "weeks", "months" or "years", see here for more info: https://momentjs.com/docs/#/durations/',
 			)
 			.addTextArea((text) =>
 				text
@@ -38,7 +81,7 @@ export class SettingsTab extends PluginSettingTab {
 						this.plugin.settings.timeSpans
 							.filter(Boolean)
 							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
-							.join("\n")
+							.join("\n"),
 					)
 					.onChange(
 						debounce((value) => {
@@ -47,14 +90,14 @@ export class SettingsTab extends PluginSettingTab {
 								.filter(Boolean)
 								.map(this.parseSettingsInput);
 							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY)
-					)
+						}, DEBOUNCE_DELAY),
+					),
 			);
 
 		new Setting(containerEl)
 			.setName("Humanize Time Spans")
 			.setDesc(
-				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans"
+				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans",
 			)
 			.addToggle((toggle) =>
 				toggle
@@ -62,13 +105,13 @@ export class SettingsTab extends PluginSettingTab {
 					.onChange((value) => {
 						this.plugin.settings.useHumanize = value;
 						this.plugin.saveSettings();
-					})
+					}),
 			);
 
 		new Setting(containerEl)
 			.setName("Lookup Margin")
 			.setDesc(
-				"The number of days to include before and after the date being checked"
+				"The number of days to include before and after the date being checked",
 			)
 			.addText((text) =>
 				text
@@ -77,8 +120,8 @@ export class SettingsTab extends PluginSettingTab {
 						debounce((value) => {
 							this.plugin.settings.dayMargin = Number(value);
 							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY)
-					)
+						}, DEBOUNCE_DELAY),
+					),
 			);
 
 		new Setting(containerEl)
@@ -91,8 +134,8 @@ export class SettingsTab extends PluginSettingTab {
 						debounce((value) => {
 							this.plugin.settings.previewLength = Number(value);
 							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY)
-					)
+						}, DEBOUNCE_DELAY),
+					),
 			);
 	}
 }
