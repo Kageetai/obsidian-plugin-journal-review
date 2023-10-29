@@ -1,11 +1,10 @@
 import * as React from "preact";
-import { moment, TFile } from "obsidian";
+import { TFile } from "obsidian";
 import useContext from "../hooks/useContext";
 import NotePreview from "./NotePreview";
 
 interface Props {
 	title: string;
-	moment: moment.Moment;
 	notes: TFile[];
 	wrapper?: React.JSX.Element;
 }
@@ -23,10 +22,10 @@ const TimeSpan = ({ title, notes, wrapper }: Props) => {
 		<>
 			<h3>
 				{title}
-				{dayMargin ? <small> (+/- {dayMargin} days)</small> : ""}:
+				{dayMargin ? <small> (+/- {dayMargin} day(s))</small> : ""}:
 			</h3>
 
-			<ul className="list">
+			<ul className="list notes">
 				{notes.map((note) => (
 					<li key={note.name}>
 						<NotePreview note={note} />

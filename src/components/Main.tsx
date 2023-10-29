@@ -1,39 +1,27 @@
 import * as React from "preact";
 
-import { mapTimeSpans } from "../constants";
 import TimeSpan from "./TimeSpan";
-import useContext from "../hooks/useContext";
+import { RenderedTimeSpan } from "../constants";
 
-const Main = () => {
-	const {
-		settings: { timeSpans, dayMargin, useHumanize },
-		allDailyNotes,
-	} = useContext();
+interface Props {
+	timeSpans: RenderedTimeSpan[];
+}
 
-	const entries = mapTimeSpans(
-		timeSpans,
-		allDailyNotes,
-		dayMargin,
-		useHumanize
-	);
+const Main = ({ timeSpans }: Props) => (
+	<div id="journal-review">
+		<h2>On this day...</h2>
 
-	return (
-		<div id="journal-review">
-			<h2>On this day...</h2>
-
-			<ul className="list">
-				{entries.map(({ title, moment, notes }) => (
-					<TimeSpan
-						key={title}
-						title={title}
-						moment={moment}
-						notes={notes}
-						wrapper={<li />}
-					/>
-				))}
-			</ul>
-		</div>
-	);
-};
+		<ul className="list">
+			{timeSpans.map(({ title, notes }) => (
+				<TimeSpan
+					key={title}
+					title={title}
+					notes={notes}
+					wrapper={<li />}
+				/>
+			))}
+		</ul>
+	</div>
+);
 
 export default Main;

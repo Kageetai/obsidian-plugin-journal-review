@@ -1,3 +1,5 @@
+@import "styles-settings.css";
+
 #journal-review > h2 {
 	margin-top: 0;
 }
@@ -5,28 +7,18 @@
 #journal-review .list {
 	list-style: none;
 	padding: 0;
-}
 
-#journal-review .list:empty:before {
-	content: "nothing to show";
-}
+	&:empty:before {
+		content: "nothing to show";
+	}
 
-#journal-review .list > li:not(:last-child) {
-	border: none;
-	border-bottom: var(--hr-thickness) solid;
-	border-color: var(--hr-color);
-	margin-bottom: 1em;
-	padding-bottom: 1em;
-}
+	&.notes > li {
+		cursor: pointer;
+		transition: transform 0.5s ease-out;
 
-#journal-review .list h4:after {
-	content: " read more...";
-	display: none;
-	font-size: 0.8em;
-	font-style: italic;
-	color: var(--link-color-hover);
-}
-
-#journal-review .list h4:hover:after {
-	display: initial;
+		&:hover {
+			transform: translateY(-0.25rem);
+			transition: transform 0.5s ease-out;
+		}
+	}
 }

@@ -9,7 +9,11 @@ import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon, Settings } from "./main";
-import { SETTINGS_UPDATED_EVENT, VIEW_TYPE } from "./constants";
+import {
+	reduceTimeSpans,
+	SETTINGS_UPDATED_EVENT,
+	VIEW_TYPE,
+} from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private root: Element;
@@ -26,38 +30,41 @@ export default class OnThisDayView extends ItemView {
 		this.registerEvent(
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(this.app.vault as any).on(SETTINGS_UPDATED_EVENT, () =>
-				this.renderView()
-			)
+				this.renderView(),
+			),
 		);
 		this.registerEvent(
 			this.app.vault.on("create", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("delete", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("rename", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
 					this.renderView();
 				}
-			})
+			}),
 		);
 
 		// rerender at midnight
 		this.registerInterval(
-			window.setInterval(() => {
-				if (new Date().getHours() === 0) {
-					this.renderView();
-				}
-			}, 60 * 60 * 1000)
+			window.setInterval(
+				() => {
+					if (new Date().getHours() === 0) {
+						this.renderView();
+					}
+				},
+				60 * 60 * 1000,
+			),
 		);
 	}
 
@@ -81,7 +88,12 @@ export default class OnThisDayView extends ItemView {
 			return;
 		}
 
-		const allDailyNotes = getAllDailyNotes();
+		const timeSpans = reduceTimeSpans(
+			this.settings.timeSpans,
+			getAllDailyNotes(),
+			this.settings.dayMargin,
+			this.settings.useHumanize,
+		);
 
 		render(
 			<AppContext.Provider
@@ -89,12 +101,11 @@ export default class OnThisDayView extends ItemView {
 					app: this.app,
 					view: this,
 					settings: this.settings,
-					allDailyNotes,
 				}}
 			>
-				<Main />
+				<Main timeSpans={timeSpans} />
 			</AppContext.Provider>,
-			this.root
+			this.root,
 		);
 	}
 

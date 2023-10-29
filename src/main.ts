@@ -4,19 +4,20 @@ import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
 	SETTINGS_UPDATED_EVENT,
-	TimeSpans,
+	TimeSpan,
 	VIEW_TYPE,
 } from "./constants";
 import { SettingsTab } from "./settingsTab";
 
 export interface Settings {
-	timeSpans: TimeSpans;
+	timeSpans: TimeSpan[];
 	dayMargin: number;
 	previewLength: number;
 	useHumanize: boolean;
 }
 
 export const icon = "calendar-clock";
+const label = "Open 'On this day' view";
 
 export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
@@ -25,14 +26,14 @@ export default class JournalReviewPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		this.addRibbonIcon(icon, "Open 'On this day' view", () => {
+		this.addRibbonIcon(icon, label, () => {
 			this.activateView();
 		});
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
 			id: "open-on-this-day",
-			name: "Open 'On this day' view",
+			name: label,
 			callback: () => this.activateView(),
 		});
 
@@ -41,7 +42,7 @@ export default class JournalReviewPlugin extends Plugin {
 
 		this.registerView(
 			VIEW_TYPE,
-			(leaf) => new OnThisDayView(leaf, this.settings)
+			(leaf) => new OnThisDayView(leaf, this.settings),
 		);
 	}
 
@@ -54,18 +55,25 @@ export default class JournalReviewPlugin extends Plugin {
 		});
 
 		this.app.workspace.revealLeaf(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0]
+			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0],
 		);
 	}
 
 	onunload() {}
 
 	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData()
-		);
+		const loadedData = await this.loadData();
+		// check if v1 settings are loaded and convert them to v2
+		if (loadedData?.timeSpans?.[0].hasOwnProperty("length")) {
+			loadedData.timeSpans = loadedData.timeSpans.map(
+				([number, unit]: [number, string]) => ({
+					number,
+					unit: unit.endsWith("s") ? unit.slice(0, -1) : unit,
+					recurring: false,
+				}),
+			);
+		}
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
 	}
 
 	async saveSettings() {
