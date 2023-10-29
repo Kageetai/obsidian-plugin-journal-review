@@ -1,4 +1,4 @@
-import { App, debounce, Notice, PluginSettingTab, Setting } from "obsidian";
+import { App, debounce, PluginSettingTab, Setting } from "obsidian";
 import { DEBOUNCE_DELAY, Unit } from "./constants";
 import JournalReviewPlugin from "./main";
 
@@ -8,18 +8,6 @@ export class SettingsTab extends PluginSettingTab {
 	constructor(app: App, plugin: JournalReviewPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
-	}
-
-	parseSettingsInput(t: string) {
-		const [number, unit] = t.split(" ").filter((t) => !!t);
-
-		if (!Object.values(Unit).includes(unit as Unit)) {
-			const message = `Invalid unit "${unit}" in time span`;
-			new Notice(message);
-			throw new Error(message);
-		}
-
-		return [Number(number), unit as Unit] as [number, Unit];
 	}
 
 	display(): void {
@@ -33,66 +21,58 @@ export class SettingsTab extends PluginSettingTab {
 		const container = containerEl.createEl("ul");
 		container.addClass("time-spans-container");
 
-		this.plugin.settings.timeSpans.forEach(([number, unit, recurring]) => {
-			console.log(number, unit, recurring);
-			const timeSpanContainer = container.createEl("li");
-			new Setting(timeSpanContainer)
-				.setName("Time")
-				.addText((text) =>
-					text.setValue(number.toString()).onChange(console.log),
-				);
-
-			new Setting(timeSpanContainer)
-				.setName("Unit")
-				.addDropdown((dropdown) =>
-					dropdown
-						.addOptions(Unit)
-						.setValue(unit)
-						.onChange(console.log),
-				);
-
-			new Setting(timeSpanContainer)
-				.setName("Recurring")
-				.addToggle((toggle) =>
-					toggle.setValue(recurring).onChange(console.log),
-				);
-
-			new Setting(timeSpanContainer).addButton((button) => {
-				button
-					.setButtonText("X")
-					.setIcon("delete")
-					.setTooltip("Delete time span")
-					.onClick(console.log);
-			});
-		});
-
-		new Setting(containerEl).addButton((button) =>
-			button.setButtonText("Add Time Span").onClick(console.log),
-		);
-
-		new Setting(containerEl)
-			.setName("Time Spans")
-			.setDesc(
-				'Time spans to review, one per line, in the format "number unit", with unit being one of "days", "weeks", "months" or "years", see here for more info: https://momentjs.com/docs/#/durations/',
-			)
-			.addTextArea((text) =>
-				text
-					.setValue(
-						this.plugin.settings.timeSpans
-							.filter(Boolean)
-							.map((t) => `${Math.abs(t[0])} ${t[1]}`)
-							.join("\n"),
-					)
-					.onChange(
+		this.plugin.settings.timeSpans.forEach(
+			([number, unit, recurring], index) => {
+				const timeSpanContainer = container.createEl("li");
+				new Setting(timeSpanContainer).setName("Time").addText((text) =>
+					text.setValue(number.toString()).onChange(
 						debounce((value) => {
-							this.plugin.settings.timeSpans = value
-								.split("\n")
-								.filter(Boolean)
-								.map(this.parseSettingsInput);
+							this.plugin.settings.timeSpans[index][0] =
+								Number(value);
 							this.plugin.saveSettings();
 						}, DEBOUNCE_DELAY),
 					),
-			);
+				);
+
+				new Setting(timeSpanContainer)
+					.setName("Unit")
+					.addDropdown((dropdown) =>
+						dropdown
+							.addOptions(Unit)
+							.setValue(unit)
+							.onChange((value) => {
+								this.plugin.settings.timeSpans[index][1] =
+									value as Unit;
+								this.plugin.saveSettings();
+							}),
+					);
+
+				new Setting(timeSpanContainer)
+					.setName("Recurring")
+					.addToggle((toggle) =>
+						toggle.setValue(recurring).onChange((value) => {
+							this.plugin.settings.timeSpans[index][2] = value;
+							this.plugin.saveSettings();
+						}),
+					);
+
+				new Setting(timeSpanContainer).addButton((button) => {
+					button
+						.setButtonText("X")
+						.setIcon("delete")
+						.setTooltip("Delete time span")
+						.onClick(() => {
+							this.plugin.settings.timeSpans.splice(index, 1);
+							this.plugin.saveSettings();
+							this.display();
+						});
+				});
+			},
+		);
+
+		new Setting(container.createEl("li")).addButton((button) =>
+			button.setButtonText("Add Time Span").onClick(console.log),
+		);
 
 		new Setting(containerEl)
 			.setName("Humanize Time Spans")
