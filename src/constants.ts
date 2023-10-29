@@ -2,7 +2,7 @@ import { moment } from "obsidian";
 import { getAllDailyNotes, getDailyNote } from "obsidian-daily-notes-interface";
 import { Settings } from "./main";
 
-export const DEBOUNCE_DELAY = 500;
+export const DEBOUNCE_DELAY = 1000;
 export const VIEW_TYPE = "on-this-day-view";
 export const SETTINGS_UPDATED_EVENT = "journal-review:settings-updated";
 

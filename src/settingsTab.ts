@@ -45,11 +45,15 @@ export class SettingsTab extends PluginSettingTab {
 							.setValue(number)
 							.setLimits(1, getMaxTimeSpan(unit), 1)
 							.setDynamicTooltip()
-							.onChange((value) => {
-								this.plugin.settings.timeSpans[index].number =
-									value;
-								this.plugin.saveSettings();
-							}),
+							.onChange(
+								debounce((value) => {
+									this.plugin.settings.timeSpans[
+										index
+									].number = value;
+									this.plugin.saveSettings();
+									this.display();
+								}, DEBOUNCE_DELAY),
+							),
 					)
 					.addDropdown((dropdown) =>
 						dropdown
@@ -112,29 +116,28 @@ export class SettingsTab extends PluginSettingTab {
 			.setDesc(
 				"The number of days to include before and after the date being checked",
 			)
-			.addText((text) =>
-				text
-					.setValue(this.plugin.settings.dayMargin.toString())
-					.onChange(
-						debounce((value) => {
-							this.plugin.settings.dayMargin = Number(value);
-							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY),
-					),
-			);
+			.addSlider((slider) => {
+				slider
+					.setValue(this.plugin.settings.dayMargin)
+					.setDynamicTooltip()
+					.onChange((value) => {
+						this.plugin.settings.dayMargin = value;
+						this.plugin.saveSettings();
+					});
+			});
 
 		new Setting(containerEl)
 			.setName("Preview Length")
 			.setDesc("Length of the preview text to show for each note")
-			.addText((text) =>
-				text
-					.setValue(this.plugin.settings.previewLength.toString())
-					.onChange(
-						debounce((value) => {
-							this.plugin.settings.previewLength = Number(value);
-							this.plugin.saveSettings();
-						}, DEBOUNCE_DELAY),
-					),
-			);
+			.addSlider((slider) => {
+				slider
+					.setValue(this.plugin.settings.previewLength)
+					.setDynamicTooltip()
+					.setLimits(0, 1000, 10)
+					.onChange((value) => {
+						this.plugin.settings.previewLength = value;
+						this.plugin.saveSettings();
+					});
+			});
 	}
 }
