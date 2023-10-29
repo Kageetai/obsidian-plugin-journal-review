@@ -11,10 +11,10 @@ export const VIEW_TYPE = "on-this-day-view";
 export const SETTINGS_UPDATED_EVENT = "journal-review:settings-updated";
 
 export enum Unit {
-	days = "days",
-	weeks = "weeks",
-	months = "months",
-	years = "years",
+	day = "day",
+	week = "week",
+	month = "month",
+	year = "year",
 }
 
 export type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
@@ -36,9 +36,9 @@ export type RenderedTimeSpans = Array<{
 }>;
 
 export const defaultTimeSpans: TimeSpan[] = [
-	{ number: 1, unit: Unit.months, recurring: false },
-	{ number: 6, unit: Unit.months, recurring: false },
-	{ number: 1, unit: Unit.years, recurring: true },
+	{ number: 1, unit: Unit.month, recurring: false },
+	{ number: 6, unit: Unit.month, recurring: false },
+	{ number: 1, unit: Unit.year, recurring: true },
 ];
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -49,7 +49,7 @@ export const DEFAULT_SETTINGS: Settings = {
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
-	`${recurring ? "every" : ""} ${number} ${unit}`;
+	`${recurring ? "every" : ""} ${number} ${unit}${number > 1 ? "s" : ""}`;
 
 const getNotesOverMargins = (
 	dayMargin: number,

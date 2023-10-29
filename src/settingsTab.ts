@@ -9,13 +9,13 @@ import JournalReviewPlugin from "./main";
 
 const getMaxTimeSpan = (unit: Unit) => {
 	switch (unit) {
-		case Unit.days:
+		case Unit.day:
 			return 31;
-		case Unit.weeks:
+		case Unit.week:
 			return 52;
-		case Unit.months:
+		case Unit.month:
 			return 24;
-		case Unit.years:
+		case Unit.year:
 			return 100;
 	}
 };
