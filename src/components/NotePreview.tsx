@@ -9,15 +9,15 @@ interface Props {
 
 const NotePreview = ({ note }: Props) => {
 	const {
-		app: { vault },
+		app,
 		view,
 		settings: { previewLength },
 	} = useContext();
-	const ref = useRef<HTMLQuoteElement>(null);
+	const ref = useRef(null);
 
 	useEffect(() => {
 		const read = async () => {
-			let content = await vault.cachedRead(note);
+			let content = await app.vault.cachedRead(note);
 
 			if (content.startsWith("---")) {
 				// remove frontmatter
@@ -28,7 +28,8 @@ const NotePreview = ({ note }: Props) => {
 			}
 
 			ref.current &&
-				MarkdownRenderer.renderMarkdown(
+				MarkdownRenderer.render(
+					app,
 					content + " ...",
 					ref.current,
 					note.path,
@@ -40,13 +41,15 @@ const NotePreview = ({ note }: Props) => {
 	}, [note]);
 
 	return (
-		<>
-			<h4>{note.basename}</h4>
+		<div class="callout">
+			<div class="callout-title">
+				<div class="callout-title-inner">{note.basename}</div>
+			</div>
 
-			<small className="markdown-rendered">
-				<blockquote ref={ref} />
-			</small>
-		</>
+			<div class="callout-content">
+				<div ref={ref} />
+			</div>
+		</div>
 	);
 };
 

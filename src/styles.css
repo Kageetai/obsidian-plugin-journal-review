@@ -14,31 +14,11 @@
 
 	&.notes > li {
 		cursor: pointer;
-
-		&:not(:last-child) {
-			border: none;
-			border-bottom: var(--hr-thickness) solid;
-			border-color: var(--hr-color);
-			margin-bottom: 1em;
-			padding-bottom: 1em;
-		}
-
-		& h4:after {
-			content: " read more...";
-			display: none;
-			font-size: smaller;
-			font-style: italic;
-			color: var(--link-color-hover);
-		}
+		transition: transform 0.5s;
 
 		&:hover {
-			& blockquote {
-				border-color: var(--link-color-hover);
-			}
-
-			& h4:after {
-				display: initial;
-			}
+			transform: translateY(-0.25rem);
+			transition: transform 0.5s;
 		}
 	}
 }
