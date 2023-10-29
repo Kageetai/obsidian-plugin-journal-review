@@ -7,32 +7,32 @@
 #journal-review .list {
 	list-style: none;
 	padding: 0;
-}
 
-#journal-review .list:empty:before {
-	content: "nothing to show";
-}
+	&:empty:before {
+		content: "nothing to show";
+	}
 
-#journal-review .list > li {
-	cursor: pointer;
-}
+	& > li {
+		cursor: pointer;
 
-#journal-review .list > li:not(:last-child) {
-	border: none;
-	border-bottom: var(--hr-thickness) solid;
-	border-color: var(--hr-color);
-	margin-bottom: 1em;
-	padding-bottom: 1em;
-}
+		&:not(:last-child) {
+			border: none;
+			border-bottom: var(--hr-thickness) solid;
+			border-color: var(--hr-color);
+			margin-bottom: 1em;
+			padding-bottom: 1em;
+		}
 
-#journal-review .list h4:after {
-	content: " read more...";
-	display: none;
-	font-size: smaller;
-	font-style: italic;
-	color: var(--link-color-hover);
-}
+		&:hover h4:after {
+			display: initial;
+		}
+	}
 
-#journal-review .list > li:hover h4:after {
-	display: initial;
+	& h4:after {
+		content: " read more...";
+		display: none;
+		font-size: smaller;
+		font-style: italic;
+		color: var(--link-color-hover);
+	}
 }
