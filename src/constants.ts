@@ -91,16 +91,19 @@ export const reduceTimeSpans = (
 					const title = useHumanize
 						? mom.fromNow()
 						: getTimeSpanTitle({ number, unit, recurring });
+					const notes = getNotesOverMargins(
+						dayMargin,
+						mom,
+						allDailyNotes,
+					);
 					// used mapped object type to group notes together under same titles,
 					// even if they come from different time span settings
 					acc[title] = {
 						title,
 						moment: mom,
-						notes: getNotesOverMargins(
-							dayMargin,
-							mom,
-							allDailyNotes,
-						),
+						notes: acc[title]
+							? acc[title].notes.concat(notes)
+							: notes,
 					};
 				} while (mom.isAfter(oldestNoteDate) && recurring);
 
