@@ -13,44 +13,41 @@ the same day in previous time spans in a view, that can be activated via ribbon 
 
 ## Usage
 
-Open the "On this day" view via the ribbon icon or the command palette and it will display excerpts from previous daily notes.
+Open the "On this day" view via the ribbon icon or the command palette, and it will display excerpts from previous daily
+notes.
 The view will refresh when a new daily note is created or around midnight to reflect the changes.
 
 ## Release
 
 1. `npm run version` to update necessary manifest files
 2. Push a new tag to GitHub with the corresponding version number
-3. This automatically triggers a GitHub action that builds the plugin, creates a release and uploads the artifacts to the release
+3. This automatically triggers a GitHub action that builds the plugin, creates a release and uploads the artifacts to
+   the release
 
 ## Options
 
 ### Time Spans
 
-Time spans to review, one per line, in the format "number unit", with unit being one of "days", "weeks", "months" or "
-years", see here for more info: https://momentjs.com/docs/#/durations/
+Time spans to review, can be defined via three values: `number`, `unit` and `recurring`, meaning how many times of the
+given unit to look back to, either once or recurring.
 
-#### Default
-
-```
-1 months
-6 months
-1 years
-2 years
-3 years
+**Default (as configured via UI elements):**
+```js
+[
+	{ number: 1, unit: Unit.month, recurring: false },
+	{ number: 6, unit: Unit.month, recurring: false },
+	{ number: 1, unit: Unit.year, recurring: true },
+];
 ```
 
 ### Lookup Margin
 
 The number of days to include before and after the date being checked
 
-#### Default
-
-`0`
+**Default:** `0`
 
 ### Preview Length
 
 Length of the preview text to show for each note
 
-#### Default
-
-`200`
+**Default:** `200`
