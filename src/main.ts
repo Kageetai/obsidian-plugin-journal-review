@@ -64,7 +64,10 @@ export default class JournalReviewPlugin extends Plugin {
 	async loadSettings() {
 		const loadedData = await this.loadData();
 		// check if v1 settings are loaded and convert them to v2
-		if (loadedData?.timeSpans?.[0].hasOwnProperty("length")) {
+		if (
+			loadedData?.timeSpans?.length &&
+			loadedData.timeSpans[0].hasOwnProperty("length")
+		) {
 			loadedData.timeSpans = loadedData.timeSpans.map(
 				([number, unit]: [number, string]) => ({
 					number,

@@ -97,10 +97,14 @@ export class SettingsTab extends PluginSettingTab {
 		);
 
 		new Setting(container.createEl("li")).addButton((button) =>
-			button.setButtonText("Add Time Span").onClick(() => {
-				this.plugin.settings.timeSpans.push(defaultTimeSpans[0]);
-				this.display();
-			}),
+			button
+				.setCta()
+				.setButtonText("Add Time Span")
+				.onClick(() => {
+					this.plugin.settings.timeSpans.push(defaultTimeSpans[0]);
+					this.plugin.saveSettings();
+					this.display();
+				}),
 		);
 
 		new Setting(containerEl)
@@ -136,6 +140,7 @@ export class SettingsTab extends PluginSettingTab {
 			.setName("Preview Length")
 			.setDesc("Length of the preview text to show for each note")
 			.addSlider((slider) => {
+				console.log("slider", this.plugin.settings.previewLength);
 				slider
 					.setValue(this.plugin.settings.previewLength)
 					.setDynamicTooltip()

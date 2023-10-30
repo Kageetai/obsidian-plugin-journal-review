@@ -32,6 +32,7 @@ Time spans to review, can be defined via three values: `number`, `unit` and `rec
 given unit to look back to, either once or recurring.
 
 **Default (as configured via UI elements):**
+
 ```js
 [
 	{ number: 1, unit: Unit.month, recurring: false },

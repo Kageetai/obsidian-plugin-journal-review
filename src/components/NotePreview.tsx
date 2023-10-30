@@ -17,20 +17,16 @@ const NotePreview = ({ note }: Props) => {
 
 	useEffect(() => {
 		const read = async () => {
-			let content = await app.vault.cachedRead(note);
-
-			if (content.startsWith("---")) {
-				// remove frontmatter
-				const index = content.indexOf("---", 3);
-				content = content.slice(index + 3, index + previewLength + 3);
-			} else {
-				content = content.slice(0, previewLength);
-			}
+			const content = await app.vault.cachedRead(note);
+			const hasFrontMatter = content.startsWith("---");
+			const frontMatterEnd = content.indexOf("---", 3) + 3;
+			const sliceEnd = frontMatterEnd + previewLength;
+			const slicedContent = content.slice(0, sliceEnd) + " ...";
 
 			ref.current &&
 				MarkdownRenderer.render(
 					app,
-					content + " ...",
+					hasFrontMatter ? slicedContent : content,
 					ref.current,
 					note.path,
 					view,
