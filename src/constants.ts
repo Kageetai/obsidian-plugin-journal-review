@@ -96,20 +96,22 @@ export const reduceTimeSpans = (
 						mom,
 						allDailyNotes,
 					);
-					// used mapped object type to group notes together under same titles,
-					// even if they come from different time span settings
-					acc[title] = {
-						title,
-						moment: mom,
-						notes: acc[title]
-							? acc[title].notes.concat(notes)
-							: notes,
-					};
+					if (notes.length) {
+						// used mapped object type to group notes together under same titles,
+						// even if they come from different time span settings
+						acc[title] = {
+							title,
+							moment: mom,
+							notes: acc[title]
+								? acc[title].notes.concat(notes)
+								: notes,
+						};
+					}
 				} while (mom.isAfter(oldestNoteDate) && recurring);
 
 				return acc;
 			},
 			{},
 		),
-	).sort((a, b) => (a.moment.isBefore(b.moment) ? 1 : -1));
+	).sort((a, b) => (a.moment.isAfter(b.moment) ? -1 : 1));
 };
