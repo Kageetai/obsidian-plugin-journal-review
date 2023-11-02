@@ -69,6 +69,7 @@ export class SettingsTab extends PluginSettingTab {
 								this.plugin.settings.timeSpans[index].unit =
 									value as Unit;
 								this.plugin.saveSettings();
+								this.display();
 							}),
 					)
 					.addToggle((toggle) =>
@@ -79,6 +80,7 @@ export class SettingsTab extends PluginSettingTab {
 									index
 								].recurring = value;
 								this.plugin.saveSettings();
+								this.display();
 							})
 							.setTooltip("Recurring?"),
 					)
