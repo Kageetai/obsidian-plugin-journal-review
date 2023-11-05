@@ -1,6 +1,7 @@
 import { createContext } from "preact";
 import { App, View } from "obsidian";
-import { Settings } from "src/main";
+
+import { Settings } from "../constants";
 
 type Context = {
 	view: View;

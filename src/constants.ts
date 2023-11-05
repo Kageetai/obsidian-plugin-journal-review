@@ -4,7 +4,6 @@ import {
 	getDailyNote,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
-import { Settings } from "./main";
 
 export const DEBOUNCE_DELAY = 1000;
 export const VIEW_TYPE = "on-this-day-view";
@@ -42,11 +41,20 @@ export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.year, recurring: true },
 ];
 
+export interface Settings {
+	timeSpans: TimeSpan[];
+	dayMargin: number;
+	previewLength: number;
+	useHumanize: boolean;
+	useCallout: boolean;
+}
+
 export const DEFAULT_SETTINGS: Settings = {
 	timeSpans: defaultTimeSpans,
 	dayMargin: 0,
 	previewLength: 100,
 	useHumanize: true,
+	useCallout: true,
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>

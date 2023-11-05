@@ -1,6 +1,6 @@
 import { Keymap, MarkdownRenderer, TFile } from "obsidian";
 import * as React from "preact";
-import { useEffect, useRef } from "preact/hooks";
+import { useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";
 
 interface Props {
@@ -11,45 +11,51 @@ const NotePreview = ({ note }: Props) => {
 	const {
 		app,
 		view,
-		settings: { previewLength },
+		settings: { previewLength, useCallout },
 	} = useContext();
 	const ref = useRef(null);
 
-	useEffect(() => {
-		const read = async () => {
-			const content = await app.vault.cachedRead(note);
-			const hasFrontMatter = content.startsWith("---");
-			const frontMatterEnd = content.indexOf("---", 3) + 3;
-			const sliceEnd = frontMatterEnd + previewLength;
-			const slicedContent = content.slice(0, sliceEnd) + " ...";
+	(async () => {
+		const content = await app.vault.cachedRead(note);
+		const hasFrontMatter = content.startsWith("---");
+		const frontMatterEnd = content.indexOf("---", 3) + 3;
+		const sliceEnd = frontMatterEnd + previewLength;
+		const slicedContent = content.slice(0, sliceEnd) + " ...";
 
-			ref.current &&
-				MarkdownRenderer.render(
-					app,
-					hasFrontMatter ? slicedContent : content,
-					ref.current,
-					note.path,
-					view,
-				);
-		};
+		ref.current &&
+			MarkdownRenderer.render(
+				app,
+				hasFrontMatter ? slicedContent : content,
+				ref.current,
+				note.path,
+				view,
+			);
+	})();
 
-		read();
-	}, [note]);
+	const onClick = (evt: MouseEvent) =>
+		app.workspace.getLeaf(Keymap.isModEvent(evt)).openFile(note);
+
+	if (useCallout) {
+		return (
+			<div class="callout" onClick={onClick}>
+				<div class="callout-title">
+					<div class="callout-title-inner">{note.basename}</div>
+				</div>
+
+				<div class="callout-content">
+					<div ref={ref} />
+				</div>
+			</div>
+		);
+	}
 
 	return (
-		<div
-			class="callout"
-			onClick={(evt) =>
-				app.workspace.getLeaf(Keymap.isModEvent(evt)).openFile(note)
-			}
-		>
-			<div class="callout-title">
-				<div class="callout-title-inner">{note.basename}</div>
-			</div>
+		<div onClick={onClick}>
+			<h4>{note.basename}</h4>
 
-			<div class="callout-content">
-				<div ref={ref} />
-			</div>
+			<small className="markdown-rendered">
+				<blockquote ref={ref} />
+			</small>
 		</div>
 	);
 };

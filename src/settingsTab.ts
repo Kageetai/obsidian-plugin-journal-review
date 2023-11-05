@@ -124,6 +124,20 @@ export class SettingsTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName("Use Obsidian callouts for note previews")
+			.setDesc(
+				"Use callouts to render note previews, using their styles based on current theme. More info: https://help.obsidian.md/Editing+and+formatting/Callouts",
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.useCallout)
+					.onChange((value) => {
+						this.plugin.settings.useCallout = value;
+						this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
 			.setName("Lookup Margin")
 			.setDesc(
 				"The number of days to include before and after the date being checked",
@@ -142,7 +156,6 @@ export class SettingsTab extends PluginSettingTab {
 			.setName("Preview Length")
 			.setDesc("Length of the preview text to show for each note")
 			.addSlider((slider) => {
-				console.log("slider", this.plugin.settings.previewLength);
 				slider
 					.setValue(this.plugin.settings.previewLength)
 					.setDynamicTooltip()

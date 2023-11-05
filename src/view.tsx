@@ -8,9 +8,10 @@ import * as React from "preact";
 import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
-import { icon, Settings } from "./main";
+import { icon } from "./main";
 import {
 	reduceTimeSpans,
+	Settings,
 	SETTINGS_UPDATED_EVENT,
 	VIEW_TYPE,
 } from "./constants";

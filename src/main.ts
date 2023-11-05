@@ -3,18 +3,11 @@ import { Plugin } from "obsidian";
 import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
+	Settings,
 	SETTINGS_UPDATED_EVENT,
-	TimeSpan,
 	VIEW_TYPE,
 } from "./constants";
 import { SettingsTab } from "./settingsTab";
-
-export interface Settings {
-	timeSpans: TimeSpan[];
-	dayMargin: number;
-	previewLength: number;
-	useHumanize: boolean;
-}
 
 export const icon = "calendar-clock";
 const label = "Open 'On this day' view";

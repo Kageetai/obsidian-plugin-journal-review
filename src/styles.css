@@ -14,11 +14,14 @@
 
 	&.notes > li {
 		cursor: pointer;
-		transition: transform 0.5s ease-out;
 
-		&:hover {
-			transform: translateY(-0.25rem);
+		&:has(.callout) {
 			transition: transform 0.5s ease-out;
+
+			&:hover {
+				transform: translateY(-0.25rem);
+				transition: transform 0.5s ease-out;
+			}
 		}
 	}
 }
