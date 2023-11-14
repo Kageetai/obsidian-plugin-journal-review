@@ -21,12 +21,12 @@ export type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
 /**
  * TimeSpan type to define possible time span user can define
  * consisting of a number, e.g. 6, a unit, e.g. months, and whether it's recurring
- * @example {number: 1, unit: Unit.months, recurring: false}
+ * @example {number: 1, unit: Unit.month, recurring: false}
  */
 export type TimeSpan = {
 	number: number;
 	unit: Unit;
-	recurring: boolean;
+	recurring?: boolean;
 };
 
 export type RenderedTimeSpan = {
@@ -98,7 +98,10 @@ export const reduceTimeSpans = (
 					mom.subtract(number, unit);
 					const title = useHumanize
 						? mom.fromNow()
-						: getTimeSpanTitle({ number, unit, recurring });
+						: `${getTimeSpanTitle({
+								number: moment().diff(mom, unit),
+								unit,
+							})} ago`;
 					const notes = getNotesOverMargins(
 						dayMargin,
 						mom,
