@@ -74,7 +74,7 @@ export class SettingsTab extends PluginSettingTab {
 					)
 					.addToggle((toggle) =>
 						toggle
-							.setValue(recurring)
+							.setValue(Boolean(recurring))
 							.onChange((value) => {
 								this.plugin.settings.timeSpans[
 									index
