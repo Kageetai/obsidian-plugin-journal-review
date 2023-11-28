@@ -45,20 +45,25 @@ export class SettingsTab extends PluginSettingTab {
 				const timeSpanContainer = container.createEl("li");
 
 				new Setting(timeSpanContainer)
-					.setName(getTimeSpanTitle({ number, unit, recurring }))
+					.setName(`Time span #${index + 1}`)
+					.setDesc(getTimeSpanTitle({ number, unit, recurring }))
 					.addSlider((slider) =>
 						slider
 							.setValue(number)
 							.setLimits(1, getMaxTimeSpan(unit), 1)
 							.setDynamicTooltip()
 							.onChange(
-								debounce((value) => {
-									this.plugin.settings.timeSpans[
-										index
-									].number = value;
-									this.plugin.saveSettings();
-									this.display();
-								}, DEBOUNCE_DELAY),
+								debounce(
+									(value) => {
+										this.plugin.settings.timeSpans[
+											index
+										].number = value;
+										this.plugin.saveSettings();
+										this.display();
+									},
+									DEBOUNCE_DELAY,
+									true,
+								),
 							),
 					)
 					.addDropdown((dropdown) =>

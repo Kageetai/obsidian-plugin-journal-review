@@ -17,5 +17,18 @@
 		gap: 1rem;
 		padding-top: 0;
 		border-top: none;
+
+		/* hide setting name */
+		& .setting-item-name {
+			display: none;
+		}
+
+		/* display description instead */
+		& .setting-item-description {
+			color: var(--text-normal);
+			font-size: var(--font-ui-medium);
+			padding-top: 0;
+			line-height: var(--line-height-normal);
+		}
 	}
 }
