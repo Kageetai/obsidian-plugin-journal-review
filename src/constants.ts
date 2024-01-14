@@ -47,6 +47,7 @@ export interface Settings {
 	previewLength: number;
 	useHumanize: boolean;
 	useCallout: boolean;
+	openInNewPane: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -55,6 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	previewLength: 100,
 	useHumanize: true,
 	useCallout: true,
+	openInNewPane: false,
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
@@ -99,7 +101,7 @@ export const reduceTimeSpans = (
 						: `${getTimeSpanTitle({
 								number: moment().diff(mom, unit),
 								unit,
-							})} ago`;
+						  })} ago`;
 					const notes = getNotesOverMargins(
 						dayMargin,
 						mom,

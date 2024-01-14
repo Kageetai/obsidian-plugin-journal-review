@@ -170,5 +170,17 @@ export class SettingsTab extends PluginSettingTab {
 						this.plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl)
+			.setName("Open in new pane")
+			.setDesc("Open the notes in a new pane/tab")
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.openInNewPane)
+					.onChange((value) => {
+						this.plugin.settings.openInNewPane = value;
+						this.plugin.saveSettings();
+					});
+			});
 	}
 }

@@ -17,7 +17,6 @@ import {
 } from "./constants";
 
 export default class OnThisDayView extends ItemView {
-	private root: Element;
 	private readonly settings: Settings;
 
 	icon = icon;
@@ -25,7 +24,6 @@ export default class OnThisDayView extends ItemView {
 	constructor(leaf: WorkspaceLeaf, settings: Settings) {
 		super(leaf);
 
-		this.root = this.containerEl.children[1];
 		this.settings = settings;
 
 		this.registerEvent(
@@ -106,7 +104,7 @@ export default class OnThisDayView extends ItemView {
 			>
 				<Main timeSpans={timeSpans} />
 			</AppContext.Provider>,
-			this.root,
+			container,
 		);
 	}
 
