@@ -81,9 +81,7 @@ export const reduceTimeSpans = (
 	const oldestNoteDate = Object.values(allDailyNotes).reduce(
 		(oldestDate, currentNote) => {
 			const currentDate = getDateFromFile(currentNote, "day");
-			if (currentDate?.isBefore(oldestDate)) {
-				return currentDate;
-			}
+			return currentDate?.isBefore(oldestDate) ? currentDate : oldestDate;
 		},
 		moment(),
 	);
