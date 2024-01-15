@@ -108,7 +108,9 @@ export class SettingsTab extends PluginSettingTab {
 				.setCta()
 				.setButtonText("Add Time Span")
 				.onClick(() => {
-					this.plugin.settings.timeSpans.push(defaultTimeSpans[0]);
+					this.plugin.settings.timeSpans.push({
+						...defaultTimeSpans[0],
+					});
 					this.plugin.saveSettings();
 					this.display();
 				}),
