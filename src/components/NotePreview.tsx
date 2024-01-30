@@ -15,7 +15,7 @@ const NotePreview = ({ note }: Props) => {
 	} = useContext();
 	const ref = useRef<HTMLDivElement | HTMLQuoteElement>(null);
 
-	(async () => {
+	void (async () => {
 		const slicedContent = (await app.vault.cachedRead(note))
 			// remove frontmatter
 			.replace(/---.*?---/s, "")
@@ -26,7 +26,7 @@ const NotePreview = ({ note }: Props) => {
 			// clear the element before rendering, otherwise it will append
 			ref.current.innerHTML = "";
 
-			MarkdownRenderer.render(
+			await MarkdownRenderer.render(
 				app,
 				slicedContent,
 				ref.current,
@@ -38,26 +38,25 @@ const NotePreview = ({ note }: Props) => {
 
 	const onClick = (evt: MouseEvent) => {
 		const isMiddleButton = evt.button === 1;
-		const newLeaf =
-			Keymap.isModEvent(evt) || isMiddleButton || openInNewPane;
+		const newLeaf = Keymap.isModEvent(evt) || isMiddleButton || openInNewPane;
 
 		return app.workspace.getLeaf(newLeaf).openFile(note);
 	};
 
 	if (useCallout) {
 		return (
-			<div class="callout" onMouseUp={onClick}>
-				<div class="callout-title">
-					<div class="callout-title-inner">{note.basename}</div>
+			<div className="callout" onMouseUp={void onClick}>
+				<div className="callout-title">
+					<div className="callout-title-inner">{note.basename}</div>
 				</div>
 
-				<div class="callout-content" ref={ref as Ref<HTMLDivElement>} />
+				<div className="callout-content" ref={ref as Ref<HTMLDivElement>} />
 			</div>
 		);
 	}
 
 	return (
-		<div onMouseUp={onClick}>
+		<div onMouseUp={void onClick}>
 			<h4>{note.basename}</h4>
 
 			<small className="markdown-rendered">

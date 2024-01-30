@@ -102,20 +102,14 @@ export const reduceTimeSpans = (
 								number: moment().diff(mom, unit),
 								unit,
 						  })} ago`;
-					const notes = getNotesOverMargins(
-						dayMargin,
-						mom,
-						allDailyNotes,
-					);
+					const notes = getNotesOverMargins(dayMargin, mom, allDailyNotes);
 					if (notes.length) {
 						// used mapped object type to group notes together under same titles,
 						// even if they come from different time span settings
 						acc[title] = {
 							title,
 							moment: mom,
-							notes: acc[title]
-								? acc[title].notes.concat(notes)
-								: notes,
+							notes: acc[title] ? acc[title].notes.concat(notes) : notes,
 						};
 					}
 				} while (mom.isAfter(oldestNoteDate) && recurring);
