@@ -14,16 +14,16 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^20.4.2",
-		"@typescript-eslint/eslint-plugin": "6.0.0",
-		"@typescript-eslint/parser": "6.0.0",
-		"builtin-modules": "3.3.0",
-		"esbuild": "0.18.12",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"builtin-modules": "^3.3.0",
+		"esbuild": "^0.20.0",
 		"esbuild-plugin-copy": "^2.1.1",
 		"eslint": "^8.44.0",
 		"obsidian": "latest",
 		"prettier": "^3.0.0",
-		"tslib": "2.6.0",
-		"typescript": "5.1.6"
+		"tslib": "^2.6.0",
+		"typescript": "^5.1.6"
 	},
 	"dependencies": {
 		"obsidian-daily-notes-interface": "^0.9.4",
