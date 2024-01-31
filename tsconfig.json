@@ -19,5 +19,12 @@
 			"react-dom": ["./node_modules/preact/compat/"]
 		}
 	},
-	"include": ["**/*.ts"]
+	"include": ["**/*.ts"],
+	"ts-node": {
+		"transpileOnly": true,
+		"files": true,
+		"moduleTypes": {
+			"scripts/generateNotes.ts": "cjs"
+		}
+	}
 }
