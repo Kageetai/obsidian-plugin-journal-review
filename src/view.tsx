@@ -4,17 +4,13 @@ import {
 	getAllDailyNotes,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
+// noinspection ES6UnusedImports
 import * as React from "preact";
 import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon } from "./main";
-import {
-	reduceTimeSpans,
-	Settings,
-	SETTINGS_UPDATED_EVENT,
-	VIEW_TYPE,
-} from "./constants";
+import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -26,12 +22,6 @@ export default class OnThisDayView extends ItemView {
 
 		this.settings = settings;
 
-		this.registerEvent(
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(this.app.vault as any).on(SETTINGS_UPDATED_EVENT, () =>
-				this.renderView(),
-			),
-		);
 		this.registerEvent(
 			this.app.vault.on("create", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
@@ -108,6 +98,7 @@ export default class OnThisDayView extends ItemView {
 		);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/require-await
 	async onOpen() {
 		this.renderView();
 	}

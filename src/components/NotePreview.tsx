@@ -1,4 +1,5 @@
 import { Keymap, MarkdownRenderer, TFile } from "obsidian";
+// noinspection ES6UnusedImports
 import * as React from "preact";
 import { Ref, useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";

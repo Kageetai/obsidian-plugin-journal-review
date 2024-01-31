@@ -101,7 +101,7 @@ export const reduceTimeSpans = (
 						: `${getTimeSpanTitle({
 								number: moment().diff(mom, unit),
 								unit,
-						  })} ago`;
+							})} ago`;
 					const notes = getNotesOverMargins(dayMargin, mom, allDailyNotes);
 					if (notes.length) {
 						// used mapped object type to group notes together under same titles,

@@ -4,7 +4,8 @@ import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
 	Settings,
-	SETTINGS_UPDATED_EVENT,
+	TimeSpan,
+	Unit,
 	VIEW_TYPE,
 } from "./constants";
 import { SettingsTab } from "./settingsTab";
@@ -20,7 +21,7 @@ export default class JournalReviewPlugin extends Plugin {
 
 		// This creates an icon in the left ribbon.
 		this.addRibbonIcon(icon, label, () => {
-			this.activateView();
+			void this.activateView();
 		});
 
 		// This adds a simple command that can be triggered anywhere
@@ -55,25 +56,31 @@ export default class JournalReviewPlugin extends Plugin {
 	onunload() {}
 
 	async loadSettings() {
-		const loadedData = await this.loadData();
+		// the settings could be in an outdated format
+		const loadedData = (await this.loadData()) as Settings & {
+			timeSpans: [number, string][];
+		};
+		const parsedData: Settings = loadedData;
+
 		// check if v1 settings are loaded and convert them to v2
 		if (
 			loadedData?.timeSpans?.length &&
 			loadedData.timeSpans[0].hasOwnProperty("length")
 		) {
-			loadedData.timeSpans = loadedData.timeSpans.map(
+			parsedData.timeSpans = loadedData.timeSpans.map(
 				([number, unit]: [number, string]) => ({
 					number,
-					unit: unit.endsWith("s") ? unit.slice(0, -1) : unit,
+					unit: (unit.endsWith("s") ? unit.slice(0, -1) : unit) as Unit,
 					recurring: false,
 				}),
-			);
+			) as TimeSpan[];
 		}
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
+
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, parsedData);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		this.app.vault.trigger(SETTINGS_UPDATED_EVENT);
+		await this.activateView();
 	}
 }

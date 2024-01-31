@@ -55,10 +55,8 @@ export class SettingsTab extends PluginSettingTab {
 							.onChange(
 								debounce(
 									(value) => {
-										this.plugin.settings.timeSpans[
-											index
-										].number = value;
-										this.plugin.saveSettings();
+										this.plugin.settings.timeSpans[index].number = value;
+										void this.plugin.saveSettings();
 										this.display();
 									},
 									DEBOUNCE_DELAY,
@@ -71,9 +69,8 @@ export class SettingsTab extends PluginSettingTab {
 							.addOptions(Unit)
 							.setValue(unit)
 							.onChange((value) => {
-								this.plugin.settings.timeSpans[index].unit =
-									value as Unit;
-								this.plugin.saveSettings();
+								this.plugin.settings.timeSpans[index].unit = value as Unit;
+								void this.plugin.saveSettings();
 								this.display();
 							}),
 					)
@@ -81,10 +78,8 @@ export class SettingsTab extends PluginSettingTab {
 						toggle
 							.setValue(Boolean(recurring))
 							.onChange((value) => {
-								this.plugin.settings.timeSpans[
-									index
-								].recurring = value;
-								this.plugin.saveSettings();
+								this.plugin.settings.timeSpans[index].recurring = value;
+								void this.plugin.saveSettings();
 								this.display();
 							})
 							.setTooltip("Recurring?"),
@@ -96,7 +91,7 @@ export class SettingsTab extends PluginSettingTab {
 							.setTooltip("Delete")
 							.onClick(() => {
 								this.plugin.settings.timeSpans.splice(index, 1);
-								this.plugin.saveSettings();
+								void this.plugin.saveSettings();
 								this.display();
 							});
 					});
@@ -111,7 +106,7 @@ export class SettingsTab extends PluginSettingTab {
 					this.plugin.settings.timeSpans.push({
 						...defaultTimeSpans[0],
 					});
-					this.plugin.saveSettings();
+					void this.plugin.saveSettings();
 					this.display();
 				}),
 		);
@@ -122,12 +117,10 @@ export class SettingsTab extends PluginSettingTab {
 				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans",
 			)
 			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.useHumanize)
-					.onChange((value) => {
-						this.plugin.settings.useHumanize = value;
-						this.plugin.saveSettings();
-					}),
+				toggle.setValue(this.plugin.settings.useHumanize).onChange((value) => {
+					this.plugin.settings.useHumanize = value;
+					void this.plugin.saveSettings();
+				}),
 			);
 
 		new Setting(containerEl)
@@ -136,12 +129,10 @@ export class SettingsTab extends PluginSettingTab {
 				"Use callouts to render note previews, using their styles based on current theme. More info: https://help.obsidian.md/Editing+and+formatting/Callouts",
 			)
 			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.useCallout)
-					.onChange((value) => {
-						this.plugin.settings.useCallout = value;
-						this.plugin.saveSettings();
-					}),
+				toggle.setValue(this.plugin.settings.useCallout).onChange((value) => {
+					this.plugin.settings.useCallout = value;
+					void this.plugin.saveSettings();
+				}),
 			);
 
 		new Setting(containerEl)
@@ -155,7 +146,7 @@ export class SettingsTab extends PluginSettingTab {
 					.setDynamicTooltip()
 					.onChange((value) => {
 						this.plugin.settings.dayMargin = value;
-						this.plugin.saveSettings();
+						void this.plugin.saveSettings();
 					});
 			});
 
@@ -169,7 +160,7 @@ export class SettingsTab extends PluginSettingTab {
 					.setLimits(0, 1000, 10)
 					.onChange((value) => {
 						this.plugin.settings.previewLength = value;
-						this.plugin.saveSettings();
+						void this.plugin.saveSettings();
 					});
 			});
 
@@ -181,7 +172,7 @@ export class SettingsTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.openInNewPane)
 					.onChange((value) => {
 						this.plugin.settings.openInNewPane = value;
-						this.plugin.saveSettings();
+						void this.plugin.saveSettings();
 					});
 			});
 	}
