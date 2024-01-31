@@ -18,6 +18,10 @@ main.js
 
 # obsidian
 data.json
+workspace.json
+vault/**/*.md
+vault/.obsidian/plugins/*
+!vault/.obsidian/plugins/journal-review
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
