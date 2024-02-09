@@ -41,12 +41,12 @@ const NotePreview = ({ note }: Props) => {
 		const isMiddleButton = evt.button === 1;
 		const newLeaf = Keymap.isModEvent(evt) || isMiddleButton || openInNewPane;
 
-		return app.workspace.getLeaf(newLeaf).openFile(note);
+		void app.workspace.getLeaf(newLeaf).openFile(note);
 	};
 
 	if (useCallout) {
 		return (
-			<div className="callout" onMouseUp={void onClick}>
+			<div className="callout" onMouseUp={onClick}>
 				{showNoteTitle && (
 					<div className="callout-title">
 						<div className="callout-title-inner">{note.basename}</div>
@@ -59,7 +59,7 @@ const NotePreview = ({ note }: Props) => {
 	}
 
 	return (
-		<div onMouseUp={void onClick}>
+		<div onMouseUp={onClick}>
 			{showNoteTitle && <h4>{note.basename}</h4>}
 
 			<small className="markdown-rendered">
