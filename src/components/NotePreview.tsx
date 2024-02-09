@@ -9,11 +9,7 @@ interface Props {
 }
 
 const NotePreview = ({ note }: Props) => {
-	const {
-		app,
-		view,
-		settings: { previewLength, useCallout, openInNewPane, showNoteTitle },
-	} = useContext();
+	const { app, view, settings } = useContext();
 	const ref = useRef<HTMLDivElement | HTMLQuoteElement>(null);
 
 	void (async () => {
@@ -21,7 +17,7 @@ const NotePreview = ({ note }: Props) => {
 			// remove frontmatter
 			.replace(/---.*?---/s, "")
 			// restrict to chosen preview length
-			.substring(0, previewLength);
+			.substring(0, settings.previewLength);
 
 		if (ref.current) {
 			// clear the element before rendering, otherwise it will append
@@ -39,15 +35,16 @@ const NotePreview = ({ note }: Props) => {
 
 	const onClick = (evt: MouseEvent) => {
 		const isMiddleButton = evt.button === 1;
-		const newLeaf = Keymap.isModEvent(evt) || isMiddleButton || openInNewPane;
+		const newLeaf =
+			Keymap.isModEvent(evt) || isMiddleButton || settings.openInNewPane;
 
 		void app.workspace.getLeaf(newLeaf).openFile(note);
 	};
 
-	if (useCallout) {
+	if (settings.useCallout) {
 		return (
 			<div className="callout" onMouseUp={onClick}>
-				{showNoteTitle && (
+				{settings.showNoteTitle && (
 					<div className="callout-title">
 						<div className="callout-title-inner">{note.basename}</div>
 					</div>
@@ -60,10 +57,14 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<div onMouseUp={onClick}>
-			{showNoteTitle && <h4>{note.basename}</h4>}
+			{settings.showNoteTitle && <h4>{note.basename}</h4>}
 
 			<small className="markdown-rendered">
-				<blockquote ref={ref as Ref<HTMLQuoteElement>} />
+				{settings.useQuote ? (
+					<blockquote ref={ref as Ref<HTMLQuoteElement>} />
+				) : (
+					<div ref={ref as Ref<HTMLDivElement>} />
+				)}
 			</small>
 		</div>
 	);

@@ -146,8 +146,21 @@ export class SettingsTab extends PluginSettingTab {
 				toggle.setValue(this.plugin.settings.useCallout).onChange((value) => {
 					this.plugin.settings.useCallout = value;
 					void this.plugin.saveSettings();
+					this.display();
 				}),
 			);
+
+		if (!this.plugin.settings.useCallout) {
+			new Setting(containerEl)
+				.setName("Use quote element to render note previews")
+				.setDesc("Use `<blockquote>` element to render note previews")
+				.addToggle((toggle) =>
+					toggle.setValue(this.plugin.settings.useQuote).onChange((value) => {
+						this.plugin.settings.useQuote = value;
+						void this.plugin.saveSettings();
+					}),
+				);
+		}
 
 		new Setting(containerEl)
 			.setName("Lookup Margin")

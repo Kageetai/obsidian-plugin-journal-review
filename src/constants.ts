@@ -47,6 +47,7 @@ export interface Settings {
 	previewLength: number;
 	useHumanize: boolean;
 	useCallout: boolean;
+	useQuote: boolean;
 	openInNewPane: boolean;
 	showNoteTitle: boolean;
 }
@@ -57,6 +58,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	previewLength: 100,
 	useHumanize: true,
 	useCallout: true,
+	useQuote: true,
 	openInNewPane: false,
 	showNoteTitle: true,
 };
