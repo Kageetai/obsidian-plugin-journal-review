@@ -112,6 +112,20 @@ export class SettingsTab extends PluginSettingTab {
 		);
 
 		new Setting(containerEl)
+			.setName("Show Note Title with previews")
+			.setDesc(
+				"Render the note title above the preview text, when showing note previews",
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.showNoteTitle)
+					.onChange((value) => {
+						this.plugin.settings.showNoteTitle = value;
+						void this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
 			.setName("Humanize Time Spans")
 			.setDesc(
 				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans",

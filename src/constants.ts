@@ -48,6 +48,7 @@ export interface Settings {
 	useHumanize: boolean;
 	useCallout: boolean;
 	openInNewPane: boolean;
+	showNoteTitle: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -57,6 +58,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	useHumanize: true,
 	useCallout: true,
 	openInNewPane: false,
+	showNoteTitle: true,
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>

@@ -12,7 +12,7 @@ const NotePreview = ({ note }: Props) => {
 	const {
 		app,
 		view,
-		settings: { previewLength, useCallout, openInNewPane },
+		settings: { previewLength, useCallout, openInNewPane, showNoteTitle },
 	} = useContext();
 	const ref = useRef<HTMLDivElement | HTMLQuoteElement>(null);
 
@@ -47,9 +47,11 @@ const NotePreview = ({ note }: Props) => {
 	if (useCallout) {
 		return (
 			<div className="callout" onMouseUp={void onClick}>
-				<div className="callout-title">
-					<div className="callout-title-inner">{note.basename}</div>
-				</div>
+				{showNoteTitle && (
+					<div className="callout-title">
+						<div className="callout-title-inner">{note.basename}</div>
+					</div>
+				)}
 
 				<div className="callout-content" ref={ref as Ref<HTMLDivElement>} />
 			</div>
@@ -58,7 +60,7 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<div onMouseUp={void onClick}>
-			<h4>{note.basename}</h4>
+			{showNoteTitle && <h4>{note.basename}</h4>}
 
 			<small className="markdown-rendered">
 				<blockquote ref={ref as Ref<HTMLQuoteElement>} />
