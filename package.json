@@ -20,6 +20,7 @@
 		"builtin-modules": "^3.3.0",
 		"esbuild": "^0.20.0",
 		"esbuild-plugin-copy": "^2.1.1",
+		"esbuild-plugin-handlebars": "^1.0.3",
 		"eslint": "^8.44.0",
 		"obsidian": "latest",
 		"prettier": "^3.0.0",

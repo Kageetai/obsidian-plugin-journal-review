@@ -4,13 +4,10 @@ import {
 	getAllDailyNotes,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
-// noinspection ES6UnusedImports
-import * as React from "preact";
-import { render } from "preact";
-import Main from "./components/Main";
-import AppContext from "./components/context";
 import { icon } from "./main";
 import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
+// @ts-ignore
+import viewTemplate from "./template.hbs";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -84,18 +81,23 @@ export default class OnThisDayView extends ItemView {
 			this.settings.useHumanize,
 		);
 
-		render(
-			<AppContext.Provider
-				value={{
-					app: this.app,
-					view: this,
-					settings: this.settings,
-				}}
-			>
-				<Main timeSpans={timeSpans} />
-			</AppContext.Provider>,
-			container,
-		);
+		// const template = Handlebars.compile(viewTemplate);
+		// console.log(template({ name: "Nils" }));
+
+		container.innerHTML = viewTemplate({ name: "Nils" });
+
+		// render(
+		// 	<AppContext.Provider
+		// 		value={{
+		// 			app: this.app,
+		// 			view: this,
+		// 			settings: this.settings,
+		// 		}}
+		// 	>
+		// 		<Main timeSpans={timeSpans} />
+		// 	</AppContext.Provider>,
+		// 	container,
+		// );
 	}
 
 	// eslint-disable-next-line @typescript-eslint/require-await
