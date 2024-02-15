@@ -22,7 +22,7 @@
 		"esbuild-plugin-copy": "^2.1.1",
 		"eslint": "^8.44.0",
 		"obsidian": "latest",
-		"prettier": "^3.0.0",
+		"prettier": "^3.2.5",
 		"ts-node": "^10.9.2",
 		"tslib": "^2.6.0",
 		"typescript": "^5.1.6"
