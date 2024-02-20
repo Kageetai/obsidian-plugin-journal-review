@@ -4,8 +4,6 @@ import {
 	getAllDailyNotes,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
-// noinspection ES6UnusedImports
-import * as React from "preact";
 import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
