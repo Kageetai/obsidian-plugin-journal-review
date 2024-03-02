@@ -43,7 +43,7 @@ export default class JournalReviewPlugin extends Plugin {
 	async activateView() {
 		this.app.workspace.detachLeavesOfType(VIEW_TYPE);
 
-		await this.app.workspace.getRightLeaf(false).setViewState({
+		await this.app.workspace.getRightLeaf(false)?.setViewState({
 			type: VIEW_TYPE,
 			active: true,
 		});

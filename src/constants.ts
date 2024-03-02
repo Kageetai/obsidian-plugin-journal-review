@@ -73,13 +73,17 @@ const getNotesOverMargins = (
 ) =>
 	Array(dayMargin * 2 + 1)
 		.fill(0)
-		.map((_, i) =>
-			getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes),
+		.map(
+			(_, i) =>
+				getDailyNote(
+					moment(mom).add(i - dayMargin, "days"),
+					allDailyNotes,
+				) as TFile,
 		)
 		.filter(Boolean);
 
 export const reduceTimeSpans = (
-	timeSpans: TimeSpan[],
+	timeSpans: Array<TimeSpan>,
 	allDailyNotes: AllDailyNotes,
 	dayMargin: number,
 	useHumanize: boolean,
