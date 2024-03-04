@@ -1,8 +1,10 @@
-import { Plugin } from "obsidian";
+import { moment, Notice, Plugin, WorkspaceLeaf } from "obsidian";
+import { getAllDailyNotes } from "obsidian-daily-notes-interface";
 
 import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
+	reduceTimeSpans,
 	Settings,
 	TimeSpan,
 	Unit,
@@ -15,6 +17,38 @@ const label = "Open 'On this day' view";
 
 export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
+
+	checkIsNewDay = () => {
+		if (moment(new Date()).isAfter(this.settings.date, "day")) {
+			this.settings.date = new Date().toISOString();
+			void this.saveSettings();
+
+			const noteCount = reduceTimeSpans(
+				this.settings.timeSpans,
+				getAllDailyNotes(),
+				this.settings.dayMargin,
+				this.settings.useHumanize,
+			).reduce((count, timeSpan) => count + timeSpan.notes.length, 0);
+
+			if (noteCount) {
+				new Notice(
+					`It's a new day! You have ${noteCount} journal entries to review. Open the "On this day" view to see them.`,
+					0,
+				);
+			}
+		}
+	};
+
+	setupFocusListener = () => {
+		if (this.settings.useNotifications) {
+			// setup event listener to check if it's a new day and fire notification if so
+			// need to wait for notes to be loaded
+			setTimeout(this.checkIsNewDay, 500);
+			addEventListener("focus", this.checkIsNewDay);
+		} else {
+			removeEventListener("focus", this.checkIsNewDay);
+		}
+	};
 
 	async onload() {
 		await this.loadSettings();
@@ -38,6 +72,8 @@ export default class JournalReviewPlugin extends Plugin {
 			VIEW_TYPE,
 			(leaf) => new OnThisDayView(leaf, this.settings),
 		);
+
+		this.setupFocusListener();
 	}
 
 	async activateView() {
@@ -53,7 +89,9 @@ export default class JournalReviewPlugin extends Plugin {
 		);
 	}
 
-	onunload() {}
+	onunload() {
+		removeEventListener("focus", this.checkIsNewDay);
+	}
 
 	async loadSettings() {
 		// the settings could be in an outdated format

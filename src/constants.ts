@@ -7,7 +7,6 @@ import {
 
 export const DEBOUNCE_DELAY = 1000;
 export const VIEW_TYPE = "on-this-day-view";
-export const SETTINGS_UPDATED_EVENT = "journal-review:settings-updated";
 
 export enum Unit {
 	day = "day",
@@ -50,6 +49,8 @@ export interface Settings {
 	useQuote: boolean;
 	openInNewPane: boolean;
 	showNoteTitle: boolean;
+	useNotifications: boolean;
+	date: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -61,6 +62,8 @@ export const DEFAULT_SETTINGS: Settings = {
 	useQuote: true,
 	openInNewPane: false,
 	showNoteTitle: true,
+	useNotifications: true,
+	date: "",
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
