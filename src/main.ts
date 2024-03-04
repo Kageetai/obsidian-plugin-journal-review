@@ -77,16 +77,23 @@ export default class JournalReviewPlugin extends Plugin {
 	}
 
 	async activateView() {
-		this.app.workspace.detachLeavesOfType(VIEW_TYPE);
+		const { workspace } = this.app;
 
-		await this.app.workspace.getRightLeaf(false)?.setViewState({
-			type: VIEW_TYPE,
-			active: true,
-		});
+		let leaf: WorkspaceLeaf | null = null;
+		const leaves = workspace.getLeavesOfType(VIEW_TYPE);
 
-		this.app.workspace.revealLeaf(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0],
-		);
+		if (leaves.length > 0) {
+			// A leaf with our view already exists, use that
+			leaf = leaves[0];
+		} else {
+			// Our view could not be found in the workspace, create a new leaf
+			// in the right sidebar for it
+			leaf = workspace.getRightLeaf(false);
+			await leaf?.setViewState({ type: VIEW_TYPE, active: true });
+		}
+
+		// "Reveal" the leaf in case it is in a collapsed sidebar
+		workspace.revealLeaf(leaf!);
 	}
 
 	onunload() {
@@ -119,6 +126,12 @@ export default class JournalReviewPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		await this.activateView();
+
+		// rerender view
+		(
+			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0]?.view as OnThisDayView
+		)?.renderView();
+
+		this.setupFocusListener();
 	}
 }
