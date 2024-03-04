@@ -79,7 +79,7 @@ export default class JournalReviewPlugin extends Plugin {
 	async activateView() {
 		const { workspace } = this.app;
 
-		let leaf: WorkspaceLeaf | null = null;
+		let leaf: WorkspaceLeaf | null;
 		const leaves = workspace.getLeavesOfType(VIEW_TYPE);
 
 		if (leaves.length > 0) {
