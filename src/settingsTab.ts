@@ -35,6 +35,7 @@ export class SettingsTab extends PluginSettingTab {
 		containerEl.createEl("h1", { text: "Journal Review" });
 		containerEl.createEl("h2", { text: "Time Spans" });
 		containerEl.createEl("p", {
+			cls: "setting-item-description",
 			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'",
 		});
 		const container = containerEl.createEl("ul");
@@ -114,7 +115,7 @@ export class SettingsTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Show Note Title with previews")
 			.setDesc(
-				"Render the note title above the preview text, when showing note previews",
+				"Render the note title above the preview text, when showing note previews.",
 			)
 			.addToggle((toggle) =>
 				toggle
@@ -125,11 +126,19 @@ export class SettingsTab extends PluginSettingTab {
 					}),
 			);
 
+		const humanizeDescription = new DocumentFragment();
+		humanizeDescription.textContent =
+			"Use the 'humanization' feature from moment.js, when rendering the time spans titles. ";
+		humanizeDescription.createEl("a", {
+			text: "More info",
+			attr: {
+				href: "https://momentjs.com/docs/#/durations/humanize/",
+			},
+		});
+
 		new Setting(containerEl)
 			.setName("Humanize Time Spans")
-			.setDesc(
-				"Whether to use the 'humanization' feature from moment.js, when rendering the time spans",
-			)
+			.setDesc(humanizeDescription)
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.useHumanize).onChange((value) => {
 					this.plugin.settings.useHumanize = value;
@@ -137,11 +146,19 @@ export class SettingsTab extends PluginSettingTab {
 				}),
 			);
 
+		const calloutsDescription = new DocumentFragment();
+		calloutsDescription.textContent =
+			"Use callouts to render note previews, using their styles based on current theme. ";
+		calloutsDescription.createEl("a", {
+			text: "More info",
+			attr: {
+				href: "https://help.obsidian.md/Editing+and+formatting/Callouts",
+			},
+		});
+
 		new Setting(containerEl)
 			.setName("Use Obsidian callouts for note previews")
-			.setDesc(
-				"Use callouts to render note previews, using their styles based on current theme. More info: https://help.obsidian.md/Editing+and+formatting/Callouts",
-			)
+			.setDesc(calloutsDescription)
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.useCallout).onChange((value) => {
 					this.plugin.settings.useCallout = value;
@@ -152,8 +169,8 @@ export class SettingsTab extends PluginSettingTab {
 
 		if (!this.plugin.settings.useCallout) {
 			new Setting(containerEl)
-				.setName("Use quote element to render note previews")
-				.setDesc("Use `<blockquote>` element to render note previews")
+				.setName("Use quote element for note previews")
+				.setDesc("Format note previews using the HTML quote element")
 				.addToggle((toggle) =>
 					toggle.setValue(this.plugin.settings.useQuote).onChange((value) => {
 						this.plugin.settings.useQuote = value;
@@ -193,12 +210,26 @@ export class SettingsTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Open in new pane")
-			.setDesc("Open the notes in a new pane/tab")
+			.setDesc("Open the notes in a new pane/tab by default")
 			.addToggle((toggle) => {
 				toggle
 					.setValue(this.plugin.settings.openInNewPane)
 					.onChange((value) => {
 						this.plugin.settings.openInNewPane = value;
+						void this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Use notifications")
+			.setDesc(
+				"Use notifications (inside Obsidian) to let you know, when there are new journal entries to review. This will happen when Obsidian is focused and it's a new day.",
+			)
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.useNotifications)
+					.onChange((value) => {
+						this.plugin.settings.useNotifications = value;
 						void this.plugin.saveSettings();
 					});
 			});

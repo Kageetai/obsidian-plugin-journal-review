@@ -1,8 +1,10 @@
-import { Plugin } from "obsidian";
+import { moment, Notice, Plugin, WorkspaceLeaf } from "obsidian";
+import { getAllDailyNotes } from "obsidian-daily-notes-interface";
 
 import OnThisDayView from "./view";
 import {
 	DEFAULT_SETTINGS,
+	reduceTimeSpans,
 	Settings,
 	TimeSpan,
 	Unit,
@@ -15,6 +17,38 @@ const label = "Open 'On this day' view";
 
 export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
+
+	checkIsNewDay = () => {
+		if (moment(new Date()).isAfter(this.settings.date, "day")) {
+			this.settings.date = new Date().toISOString();
+			void this.saveSettings();
+
+			const noteCount = reduceTimeSpans(
+				this.settings.timeSpans,
+				getAllDailyNotes(),
+				this.settings.dayMargin,
+				this.settings.useHumanize,
+			).reduce((count, timeSpan) => count + timeSpan.notes.length, 0);
+
+			if (noteCount) {
+				new Notice(
+					`It's a new day! You have ${noteCount} journal entries to review. Open the "On this day" view to see them.`,
+					0,
+				);
+			}
+		}
+	};
+
+	setupFocusListener = () => {
+		if (this.settings.useNotifications) {
+			// setup event listener to check if it's a new day and fire notification if so
+			// need to wait for notes to be loaded
+			setTimeout(this.checkIsNewDay, 500);
+			addEventListener("focus", this.checkIsNewDay);
+		} else {
+			removeEventListener("focus", this.checkIsNewDay);
+		}
+	};
 
 	async onload() {
 		await this.loadSettings();
@@ -38,22 +72,33 @@ export default class JournalReviewPlugin extends Plugin {
 			VIEW_TYPE,
 			(leaf) => new OnThisDayView(leaf, this.settings),
 		);
+
+		this.setupFocusListener();
 	}
 
 	async activateView() {
-		this.app.workspace.detachLeavesOfType(VIEW_TYPE);
+		const { workspace } = this.app;
 
-		await this.app.workspace.getRightLeaf(false)?.setViewState({
-			type: VIEW_TYPE,
-			active: true,
-		});
+		let leaf: WorkspaceLeaf | null;
+		const leaves = workspace.getLeavesOfType(VIEW_TYPE);
 
-		this.app.workspace.revealLeaf(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0],
-		);
+		if (leaves.length > 0) {
+			// A leaf with our view already exists, use that
+			leaf = leaves[0];
+		} else {
+			// Our view could not be found in the workspace, create a new leaf
+			// in the right sidebar for it
+			leaf = workspace.getRightLeaf(false);
+			await leaf?.setViewState({ type: VIEW_TYPE, active: true });
+		}
+
+		// "Reveal" the leaf in case it is in a collapsed sidebar
+		workspace.revealLeaf(leaf!);
 	}
 
-	onunload() {}
+	onunload() {
+		removeEventListener("focus", this.checkIsNewDay);
+	}
 
 	async loadSettings() {
 		// the settings could be in an outdated format
@@ -81,6 +126,12 @@ export default class JournalReviewPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-		await this.activateView();
+
+		// rerender view
+		(
+			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0]?.view as OnThisDayView
+		)?.renderView();
+
+		this.setupFocusListener();
 	}
 }
