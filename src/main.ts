@@ -19,7 +19,10 @@ export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
 
 	checkIsNewDay = () => {
-		if (moment(new Date()).isAfter(this.settings.date, "day")) {
+		if (
+			!this.settings.date ||
+			moment(new Date()).isAfter(this.settings.date, "day")
+		) {
 			this.settings.date = new Date().toISOString();
 			void this.saveSettings();
 
