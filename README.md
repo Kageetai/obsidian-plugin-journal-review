@@ -41,6 +41,22 @@ given unit to look back to, either once or recurring.
 ];
 ```
 
+### Show Note Title with previews
+
+Render the note title above the preview text, when showing note previews.
+
+### Humanize Time Spans
+
+Use the 'humanization' feature from moment.js, when rendering the time spans titles.
+
+### Use Obsidian callouts for note previews
+
+Use callouts to render note previews, using their styles based on current theme.
+
+### Use quote element for note previews
+
+Format note previews using the HTML quote element
+
 ### Lookup Margin
 
 The number of days to include before and after the date being checked
@@ -52,3 +68,11 @@ The number of days to include before and after the date being checked
 Length of the preview text to show for each note
 
 **Default:** `200`
+
+### Open in new pane
+
+Open the notes in a new pane/tab by default
+
+### Use notifications
+
+Use notifications (inside Obsidian) to let you know, when there are new journal entries to review. This will happen when Obsidian is focused and it's a new day.
