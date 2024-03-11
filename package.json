@@ -14,7 +14,7 @@
 	"author": "Kageetai",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node": "^20.11.24",
+		"@types/node": "^20.11.25",
 		"@typescript-eslint/eslint-plugin": "^7.1.1",
 		"@typescript-eslint/parser": "^7.1.1",
 		"builtin-modules": "^3.3.0",
