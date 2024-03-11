@@ -8,7 +8,7 @@
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"lint": "eslint --ext .ts,.js .",
-		"generateNotes": "ts-node-esm ./scripts/generateNotes.ts vault 5"
+		"generateNotes": "ts-node-esm ./scripts/generateNotes.ts vault 5 3"
 	},
 	"keywords": [],
 	"author": "Kageetai",
