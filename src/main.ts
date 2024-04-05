@@ -46,7 +46,7 @@ export default class JournalReviewPlugin extends Plugin {
 		if (this.settings.useNotifications) {
 			// setup event listener to check if it's a new day and fire notification if so
 			// need to wait for notes to be loaded
-			setTimeout(this.checkIsNewDay, 500);
+			setTimeout(this.checkIsNewDay, 1000);
 			addEventListener("focus", this.checkIsNewDay);
 		} else {
 			removeEventListener("focus", this.checkIsNewDay);
