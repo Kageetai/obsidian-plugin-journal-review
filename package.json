@@ -29,6 +29,6 @@
 	},
 	"dependencies": {
 		"obsidian-daily-notes-interface": "^0.9.4",
-		"preact": "^10.20.1"
+		"preact": "^10.20.2"
 	}
 }
