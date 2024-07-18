@@ -17,7 +17,7 @@
 		"@types/node": "^20.14.10",
 		"@typescript-eslint/eslint-plugin": "^7.16.1",
 		"@typescript-eslint/parser": "^7.16.1",
-		"builtin-modules": "^3.3.0",
+		"builtin-modules": "^4.0.0",
 		"esbuild": "^0.23.0",
 		"esbuild-plugin-copy": "^2.1.1",
 		"eslint": "^8.57.0",
