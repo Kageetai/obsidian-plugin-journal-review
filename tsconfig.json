@@ -5,7 +5,7 @@
 		"inlineSourceMap": true,
 		"inlineSources": true,
 		"module": "ESNext",
-		"target": "ES6",
+		"target": "es2018",
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
 		"allowJs": true,

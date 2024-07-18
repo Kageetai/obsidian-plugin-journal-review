@@ -1,5 +1,3 @@
-import * as React from "preact";
-
 import TimeSpan from "./TimeSpan";
 import { RenderedTimeSpan } from "../constants";
 
@@ -13,12 +11,7 @@ const Main = ({ timeSpans }: Props) => (
 
 		<ul className="list">
 			{timeSpans.map(({ title, notes }) => (
-				<TimeSpan
-					key={title}
-					title={title}
-					notes={notes}
-					wrapper={<li />}
-				/>
+				<TimeSpan key={title} title={title} notes={notes} wrapper={<li />} />
 			))}
 		</ul>
 	</div>
