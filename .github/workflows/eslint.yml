@@ -11,12 +11,12 @@ name: ESLint
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "master" ]
+    branches: ["master"]
   schedule:
-    - cron: '37 9 * * 4'
+    - cron: "37 9 * * 4"
 
 jobs:
   eslint:
@@ -30,12 +30,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install ESLint
+      - name: Install
         run: |
-          npm install eslint@8.10.0
-          npm install @microsoft/eslint-formatter-sarif@2.1.7
+          npm install
 
-      - name: Run ESLint
-        run: npx eslint .
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+      - name: Run Lint
+        run: npm run lint
