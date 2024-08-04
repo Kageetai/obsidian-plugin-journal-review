@@ -1,4 +1,4 @@
-name: Build
+name: Lint
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     # The branches below must be a subset of the branches above
     branches: ["master"]
 #  schedule:
-#    - cron: '37 9 * * 4'
+#    - cron: "37 9 * * 4"
 
 jobs:
-  build:
-    name: Run Build
+  Lint:
+    name: Run Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,5 +20,5 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Run Build
-        run: npm run build
+      - name: Run Lint
+        run: npm run lint
