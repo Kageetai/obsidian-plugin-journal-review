@@ -96,7 +96,6 @@ export default class OnThisDayView extends ItemView {
 		);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/require-await
 	async onOpen() {
 		this.renderView();
 	}

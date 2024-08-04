@@ -1,6 +1,6 @@
 import { moment, TFile } from "obsidian";
 import {
-	getAllDailyNotes,
+	type getAllDailyNotes,
 	getDailyNote,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
