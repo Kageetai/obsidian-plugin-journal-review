@@ -113,7 +113,7 @@ export default class JournalReviewPlugin extends Plugin {
 		// check if v1 settings are loaded and convert them to v2
 		if (
 			loadedData?.timeSpans?.length &&
-			loadedData.timeSpans[0].hasOwnProperty("length")
+			Object.prototype.hasOwnProperty.call(loadedData.timeSpans[0], "length")
 		) {
 			parsedData.timeSpans = loadedData.timeSpans.map(
 				([number, unit]: [number, string]) => ({
