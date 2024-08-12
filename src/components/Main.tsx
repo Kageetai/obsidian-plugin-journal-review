@@ -9,13 +9,11 @@ interface Props {
 }
 
 const Main = ({ timeSpans, startDate }: Props) => {
-	const {
-		settings: { renderOnFileSwitch },
-	} = useContext();
+	const { settings } = useContext();
 
 	return (
 		<div id="journal-review">
-			{renderOnFileSwitch && startDate ? (
+			{settings.renderOnFileSwitch && startDate ? (
 				<h2>On {startDate.format("ll")}...</h2>
 			) : (
 				<h2>On today...</h2>
