@@ -85,29 +85,28 @@ const getTitle = (
 ) =>
 	useHumanize
 		? now.from(startDate)
-		: `${getTimeSpanTitle({
-				number: startDate.diff(now, unit),
-				unit,
-			})} ago`;
+		: `${getTimeSpanTitle({ number: startDate.diff(now, unit), unit })} ago`;
 
 const getNotesOverMargins = (
 	dayMargin: number,
 	mom: moment.Moment,
 	allDailyNotes: AllDailyNotes,
 ) =>
-	Array(dayMargin * 2 + 1)
-		.fill(0)
-		.map(
-			(_, i) =>
-				getDailyNote(
-					moment(mom).add(i - dayMargin, "days"),
-					allDailyNotes,
-				) as TFile,
-		)
-		.filter(Boolean);
+	Array.from(
+		{ length: dayMargin * 2 + 1 },
+		(_, i) =>
+			getDailyNote(
+				moment(mom).add(i - dayMargin, "days"),
+				allDailyNotes,
+			) as TFile,
+	).filter(Boolean);
+const sortRenderedTimeSpanByDateDesc = (
+	a: RenderedTimeSpan,
+	b: RenderedTimeSpan,
+) => (a.moment.isAfter(b.moment) ? -1 : 1);
 
 export const reduceTimeSpans = (
-	timeSpans: Array<TimeSpan>,
+	timeSpans: TimeSpan[],
 	allDailyNotes: AllDailyNotes,
 	useHumanize: boolean,
 	dayMargin: number,
@@ -146,5 +145,5 @@ export const reduceTimeSpans = (
 			},
 			{},
 		),
-	).sort((a, b) => (a.moment.isAfter(b.moment) ? -1 : 1));
+	).sort(sortRenderedTimeSpanByDateDesc);
 };
