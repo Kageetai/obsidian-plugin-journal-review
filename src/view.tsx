@@ -1,4 +1,4 @@
-import { ItemView, TFile, WorkspaceLeaf } from "obsidian";
+import { debounce, ItemView, TFile, WorkspaceLeaf } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
@@ -9,6 +9,7 @@ import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon } from "./main";
 import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
+import { Moment } from "moment";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -23,21 +24,31 @@ export default class OnThisDayView extends ItemView {
 		this.registerEvent(
 			this.app.vault.on("create", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
-					this.renderView();
+					this.debouncedRenderView();
 				}
 			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("delete", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
-					this.renderView();
+					this.debouncedRenderView();
 				}
 			}),
 		);
 		this.registerEvent(
 			this.app.vault.on("rename", (file: TFile) => {
 				if (getDateFromFile(file, "day")) {
-					this.renderView();
+					this.debouncedRenderView();
+				}
+			}),
+		);
+
+		this.registerEvent(
+			this.app.workspace.on("file-open", (file) => {
+				const dateFromFile = file && getDateFromFile(file, "day");
+
+				if (this.settings.renderOnFileSwitch && dateFromFile) {
+					this.debouncedRenderView(dateFromFile);
 				}
 			}),
 		);
@@ -63,7 +74,7 @@ export default class OnThisDayView extends ItemView {
 		return "On this day";
 	}
 
-	renderView() {
+	renderView(startDate?: Moment) {
 		const container = this.containerEl.children[1];
 		const hasDailyNotesPluginLoaded = appHasDailyNotesPluginLoaded();
 
@@ -78,8 +89,9 @@ export default class OnThisDayView extends ItemView {
 		const timeSpans = reduceTimeSpans(
 			this.settings.timeSpans,
 			getAllDailyNotes(),
-			this.settings.dayMargin,
 			this.settings.useHumanize,
+			this.settings.dayMargin,
+			startDate,
 		);
 
 		render(
@@ -90,14 +102,16 @@ export default class OnThisDayView extends ItemView {
 					settings: this.settings,
 				}}
 			>
-				<Main timeSpans={timeSpans} />
+				<Main timeSpans={timeSpans} startDate={startDate} />
 			</AppContext.Provider>,
 			container,
 		);
 	}
 
+	debouncedRenderView = debounce(this.renderView.bind(this), 500);
+
 	async onOpen() {
-		this.renderView();
+		this.debouncedRenderView();
 	}
 
 	async onClose() {}
