@@ -233,5 +233,17 @@ export class SettingsTab extends PluginSettingTab {
 						void this.plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl)
+			.setName("Date based on selected note")
+			.setDesc("Use the date of the currently open daily note.")
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.renderOnFileSwitch)
+					.onChange((value) => {
+						this.plugin.settings.renderOnFileSwitch = value;
+						void this.plugin.saveSettings();
+					});
+			});
 	}
 }

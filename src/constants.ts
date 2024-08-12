@@ -4,6 +4,7 @@ import {
 	getDailyNote,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
+import { Moment } from "moment";
 
 export const DEBOUNCE_DELAY = 1000;
 export const VIEW_TYPE = "on-this-day-view";
@@ -50,6 +51,7 @@ export interface Settings {
 	openInNewPane: boolean;
 	showNoteTitle: boolean;
 	useNotifications: boolean;
+	renderOnFileSwitch: boolean;
 	date: string;
 }
 
@@ -63,57 +65,71 @@ export const DEFAULT_SETTINGS: Settings = {
 	openInNewPane: false,
 	showNoteTitle: true,
 	useNotifications: true,
+	renderOnFileSwitch: false,
 	date: "",
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
 	`${recurring ? "every" : ""} ${number} ${unit}${number > 1 ? "s" : ""}`;
 
+const reduceToOldestNote = (oldestDate: Moment, currentNote: TFile) => {
+	const currentDate = getDateFromFile(currentNote, "day");
+	return currentDate?.isBefore(oldestDate) ? currentDate : oldestDate;
+};
+
+const getTitle = (
+	useHumanize: boolean,
+	now: Moment,
+	startDate: Moment,
+	unit: Unit,
+) =>
+	useHumanize
+		? now.from(startDate)
+		: `${getTimeSpanTitle({ number: startDate.diff(now, unit), unit })} ago`;
+
 const getNotesOverMargins = (
 	dayMargin: number,
 	mom: moment.Moment,
 	allDailyNotes: AllDailyNotes,
 ) =>
-	Array(dayMargin * 2 + 1)
-		.fill(0)
-		.map(
-			(_, i) =>
-				getDailyNote(
-					moment(mom).add(i - dayMargin, "days"),
-					allDailyNotes,
-				) as TFile,
-		)
-		.filter(Boolean);
+	Array.from(
+		{ length: dayMargin * 2 + 1 },
+		(_, i) =>
+			getDailyNote(
+				moment(mom).add(i - dayMargin, "days"),
+				allDailyNotes,
+			) as TFile,
+	).filter(Boolean);
+const sortRenderedTimeSpanByDateDesc = (
+	a: RenderedTimeSpan,
+	b: RenderedTimeSpan,
+) => (a.moment.isAfter(b.moment) ? -1 : 1);
 
 export const reduceTimeSpans = (
-	timeSpans: Array<TimeSpan>,
+	timeSpans: TimeSpan[],
 	allDailyNotes: AllDailyNotes,
-	dayMargin: number,
 	useHumanize: boolean,
+	dayMargin: number,
+	startDate: Moment = moment(),
 ): RenderedTimeSpan[] => {
 	const oldestNoteDate = Object.values(allDailyNotes).reduce(
-		(oldestDate, currentNote) => {
-			const currentDate = getDateFromFile(currentNote, "day");
-			return currentDate?.isBefore(oldestDate) ? currentDate : oldestDate;
-		},
-		moment(),
+		reduceToOldestNote,
+		startDate,
 	);
 
 	return Object.values(
 		timeSpans.reduce<Record<string, RenderedTimeSpan>>(
 			(acc, { number, unit, recurring }) => {
-				const mom = moment();
+				const mom = moment(startDate);
 
 				// if we have a recurring time span, we want to go back until we reach the oldest note
 				do {
+					// go back one unit of the timespan
 					mom.subtract(number, unit);
-					const title = useHumanize
-						? mom.fromNow()
-						: `${getTimeSpanTitle({
-								number: moment().diff(mom, unit),
-								unit,
-							})} ago`;
+
+					const title = getTitle(useHumanize, mom, startDate, unit);
 					const notes = getNotesOverMargins(dayMargin, mom, allDailyNotes);
+
 					if (notes.length) {
 						// used mapped object type to group notes together under same titles,
 						// even if they come from different time span settings
@@ -129,5 +145,5 @@ export const reduceTimeSpans = (
 			},
 			{},
 		),
-	).sort((a, b) => (a.moment.isAfter(b.moment) ? -1 : 1));
+	).sort(sortRenderedTimeSpanByDateDesc);
 };
