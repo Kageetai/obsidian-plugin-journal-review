@@ -14,7 +14,7 @@
 	"author": "Kageetai",
 	"license": "MIT",
 	"devDependencies": {
-		"@eslint/js": "^9.8.0",
+		"@eslint/js": "^9.9.0",
 		"@types/eslint__js": "^8.42.3",
 		"@types/node": "^22.3.0",
 		"builtin-modules": "^4.0.0",
