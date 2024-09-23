@@ -20,7 +20,7 @@
 		"builtin-modules": "^4.0.0",
 		"esbuild": "^0.23.0",
 		"esbuild-plugin-copy": "^2.1.1",
-		"eslint": "^9.9.0",
+		"eslint": "^9.11.0",
 		"globals": "^15.9.0",
 		"obsidian": "latest",
 		"prettier": "^3.2.5",
