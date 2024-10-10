@@ -1,11 +1,11 @@
 import TimeSpan from "./TimeSpan";
 import { RenderedTimeSpan } from "../constants";
 import useContext from "../hooks/useContext";
-import { Moment } from "moment";
+import { moment } from "obsidian";
 
 interface Props {
 	timeSpans: RenderedTimeSpan[];
-	startDate?: Moment;
+	startDate?: moment.Moment;
 }
 
 const Main = ({ timeSpans, startDate }: Props) => {

@@ -1,4 +1,4 @@
-import { debounce, ItemView, TFile, WorkspaceLeaf } from "obsidian";
+import { debounce, ItemView, moment, TFile, WorkspaceLeaf } from "obsidian";
 import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
@@ -9,7 +9,6 @@ import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon } from "./main";
 import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
-import { Moment } from "moment";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -74,7 +73,7 @@ export default class OnThisDayView extends ItemView {
 		return "On this day";
 	}
 
-	renderView(startDate?: Moment) {
+	renderView(startDate?: moment.Moment) {
 		const container = this.containerEl.children[1];
 		const hasDailyNotesPluginLoaded = appHasDailyNotesPluginLoaded();
 
