@@ -4,7 +4,6 @@ import {
 	getDailyNote,
 	getDateFromFile,
 } from "obsidian-daily-notes-interface";
-import { Moment } from "moment";
 
 export const DEBOUNCE_DELAY = 1000;
 export const VIEW_TYPE = "on-this-day-view";
@@ -72,15 +71,15 @@ export const DEFAULT_SETTINGS: Settings = {
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
 	`${recurring ? "every" : ""} ${number} ${unit}${number > 1 ? "s" : ""}`;
 
-const reduceToOldestNote = (oldestDate: Moment, currentNote: TFile) => {
+const reduceToOldestNote = (oldestDate: moment.Moment, currentNote: TFile) => {
 	const currentDate = getDateFromFile(currentNote, "day");
 	return currentDate?.isBefore(oldestDate) ? currentDate : oldestDate;
 };
 
 const getTitle = (
 	useHumanize: boolean,
-	now: Moment,
-	startDate: Moment,
+	now: moment.Moment,
+	startDate: moment.Moment,
 	unit: Unit,
 ) =>
 	useHumanize
@@ -110,7 +109,7 @@ export const reduceTimeSpans = (
 	allDailyNotes: AllDailyNotes,
 	useHumanize: boolean,
 	dayMargin: number,
-	startDate: Moment = moment(),
+	startDate: moment.Moment = moment(),
 ): RenderedTimeSpan[] => {
 	const oldestNoteDate = Object.values(allDailyNotes).reduce(
 		reduceToOldestNote,
