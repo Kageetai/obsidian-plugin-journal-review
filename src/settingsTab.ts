@@ -245,5 +245,19 @@ export class SettingsTab extends PluginSettingTab {
 						void this.plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl)
+			.setName("Note filtering regex")
+			.setDesc(
+				"Use any string or regex (without `/` at beginning and end or flags) to filter the note content before rendering.",
+			)
+			.addText((text) =>
+				text
+					.setValue(this.plugin.settings.noteMarkdownRegex)
+					.onChange((value) => {
+						this.plugin.settings.noteMarkdownRegex = value;
+						void this.plugin.saveSettings();
+					}),
+			);
 	}
 }
