@@ -96,7 +96,9 @@ export default class JournalReviewPlugin extends Plugin {
 		}
 
 		// "Reveal" the leaf in case it is in a collapsed sidebar
-		workspace.revealLeaf(leaf!);
+		await workspace.revealLeaf(leaf!);
+
+		this.renderView();
 	}
 
 	onunload() {
@@ -127,14 +129,17 @@ export default class JournalReviewPlugin extends Plugin {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, parsedData);
 	}
 
+	renderView() {
+		const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE).first();
+
+		if (leaf && leaf.view instanceof OnThisDayView) {
+			leaf.view.renderView();
+		}
+	}
+
 	async saveSettings() {
 		await this.saveData(this.settings);
-
-		// rerender view
-		(
-			this.app.workspace.getLeavesOfType(VIEW_TYPE)[0]?.view as OnThisDayView
-		)?.renderView();
-
+		this.renderView();
 		this.setupFocusListener();
 	}
 }

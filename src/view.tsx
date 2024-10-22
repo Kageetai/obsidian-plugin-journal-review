@@ -20,49 +20,51 @@ export default class OnThisDayView extends ItemView {
 
 		this.settings = settings;
 
-		this.registerEvent(
-			this.app.vault.on("create", (file: TFile) => {
-				if (getDateFromFile(file, "day")) {
-					this.debouncedRenderView();
-				}
-			}),
-		);
-		this.registerEvent(
-			this.app.vault.on("delete", (file: TFile) => {
-				if (getDateFromFile(file, "day")) {
-					this.debouncedRenderView();
-				}
-			}),
-		);
-		this.registerEvent(
-			this.app.vault.on("rename", (file: TFile) => {
-				if (getDateFromFile(file, "day")) {
-					this.debouncedRenderView();
-				}
-			}),
-		);
-
-		this.registerEvent(
-			this.app.workspace.on("file-open", (file) => {
-				const dateFromFile = file && getDateFromFile(file, "day");
-
-				if (this.settings.renderOnFileSwitch && dateFromFile) {
-					this.debouncedRenderView(dateFromFile);
-				}
-			}),
-		);
-
-		// rerender at midnight
-		this.registerInterval(
-			window.setInterval(
-				() => {
-					if (new Date().getHours() === 0) {
-						this.renderView();
+		this.app.workspace.onLayoutReady(() => {
+			this.registerEvent(
+				this.app.vault.on("create", (file: TFile) => {
+					if (getDateFromFile(file, "day")) {
+						this.debouncedRenderView();
 					}
-				},
-				60 * 60 * 1000,
-			),
-		);
+				}),
+			);
+			this.registerEvent(
+				this.app.vault.on("delete", (file: TFile) => {
+					if (getDateFromFile(file, "day")) {
+						this.debouncedRenderView();
+					}
+				}),
+			);
+			this.registerEvent(
+				this.app.vault.on("rename", (file: TFile) => {
+					if (getDateFromFile(file, "day")) {
+						this.debouncedRenderView();
+					}
+				}),
+			);
+
+			this.registerEvent(
+				this.app.workspace.on("file-open", (file) => {
+					const dateFromFile = file && getDateFromFile(file, "day");
+
+					if (this.settings.renderOnFileSwitch && dateFromFile) {
+						this.debouncedRenderView(dateFromFile);
+					}
+				}),
+			);
+
+			// rerender at midnight
+			this.registerInterval(
+				window.setInterval(
+					() => {
+						if (new Date().getHours() === 0) {
+							this.renderView();
+						}
+					},
+					60 * 60 * 1000,
+				),
+			);
+		});
 	}
 
 	getViewType() {
