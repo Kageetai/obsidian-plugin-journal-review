@@ -93,13 +93,8 @@ const getNotesOverMargins = (
 	mom: moment.Moment,
 	allDailyNotes: AllDailyNotes,
 ) =>
-	Array.from(
-		{ length: dayMargin * 2 + 1 },
-		(_, i) =>
-			getDailyNote(
-				moment(mom).add(i - dayMargin, "days"),
-				allDailyNotes,
-			) as TFile,
+	Array.from({ length: dayMargin * 2 + 1 }, (_, i) =>
+		getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes),
 	).filter(Boolean);
 const sortRenderedTimeSpanByDateDesc = (
 	a: RenderedTimeSpan,

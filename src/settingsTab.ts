@@ -32,14 +32,17 @@ export class SettingsTab extends PluginSettingTab {
 		const { containerEl } = this;
 
 		containerEl.empty();
-		containerEl.createEl("h1", { text: "Journal Review" });
-		containerEl.createEl("h2", { text: "Time Spans" });
-		containerEl.createEl("p", {
+		containerEl.addClass("journal-review-settings");
+
+		new Setting(containerEl).setName("Time Spans").setHeading();
+
+		const container = containerEl.createEl("ul");
+		container.addClasses(["setting-item", "time-spans-container"]);
+
+		container.createEl("li", {
 			cls: "setting-item-description",
 			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'",
 		});
-		const container = containerEl.createEl("ul");
-		container.addClass("time-spans-container");
 
 		this.plugin.settings.timeSpans.forEach(
 			({ number, unit, recurring }, index) => {
@@ -113,6 +116,49 @@ export class SettingsTab extends PluginSettingTab {
 		);
 
 		new Setting(containerEl)
+			.setName("Lookup Margin")
+			.setDesc(
+				"The number of days to include before and after the date being checked",
+			)
+			.addSlider((slider) => {
+				slider
+					.setValue(this.plugin.settings.dayMargin)
+					.setDynamicTooltip()
+					.onChange((value) => {
+						this.plugin.settings.dayMargin = value;
+						void this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Preview Length")
+			.setDesc("Length of the preview text to show for each note")
+			.addSlider((slider) => {
+				slider
+					.setValue(this.plugin.settings.previewLength)
+					.setDynamicTooltip()
+					.setLimits(0, 1000, 10)
+					.onChange((value) => {
+						this.plugin.settings.previewLength = value;
+						void this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Date based on selected note")
+			.setDesc("Use the date of the currently open daily note.")
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.renderOnFileSwitch)
+					.onChange((value) => {
+						this.plugin.settings.renderOnFileSwitch = value;
+						void this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl).setName("Previews").setHeading();
+
+		new Setting(containerEl)
 			.setName("Show Note Title with previews")
 			.setDesc(
 				"Render the note title above the preview text, when showing note previews.",
@@ -180,37 +226,8 @@ export class SettingsTab extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName("Lookup Margin")
-			.setDesc(
-				"The number of days to include before and after the date being checked",
-			)
-			.addSlider((slider) => {
-				slider
-					.setValue(this.plugin.settings.dayMargin)
-					.setDynamicTooltip()
-					.onChange((value) => {
-						this.plugin.settings.dayMargin = value;
-						void this.plugin.saveSettings();
-					});
-			});
-
-		new Setting(containerEl)
-			.setName("Preview Length")
-			.setDesc("Length of the preview text to show for each note")
-			.addSlider((slider) => {
-				slider
-					.setValue(this.plugin.settings.previewLength)
-					.setDynamicTooltip()
-					.setLimits(0, 1000, 10)
-					.onChange((value) => {
-						this.plugin.settings.previewLength = value;
-						void this.plugin.saveSettings();
-					});
-			});
-
-		new Setting(containerEl)
 			.setName("Open in new pane")
-			.setDesc("Open the notes in a new pane/tab by default")
+			.setDesc("Open the notes in a new pane/tab by default when clicking them")
 			.addToggle((toggle) => {
 				toggle
 					.setValue(this.plugin.settings.openInNewPane)
@@ -219,6 +236,8 @@ export class SettingsTab extends PluginSettingTab {
 						void this.plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl).setName("Other").setHeading();
 
 		new Setting(containerEl)
 			.setName("Use notifications")
@@ -230,18 +249,6 @@ export class SettingsTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.useNotifications)
 					.onChange((value) => {
 						this.plugin.settings.useNotifications = value;
-						void this.plugin.saveSettings();
-					});
-			});
-
-		new Setting(containerEl)
-			.setName("Date based on selected note")
-			.setDesc("Use the date of the currently open daily note.")
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.renderOnFileSwitch)
-					.onChange((value) => {
-						this.plugin.settings.renderOnFileSwitch = value;
 						void this.plugin.saveSettings();
 					});
 			});

@@ -1,34 +1,36 @@
-.mod-settings .time-spans-container {
-	padding: 0;
-}
-
-.mod-settings .time-spans-container > li {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	gap: 1rem;
-
-	&:not(:last-child) {
-		margin-block-end: 1rem;
+.journal-review-settings {
+	.time-spans-container {
+		display: block;
+		margin: 0;
 	}
 
-	& .setting-item {
-		flex-direction: column;
-		gap: 1rem;
-		padding-top: 0;
-		border-top: none;
+	.time-spans-container > li {
+		list-style: none;
+		margin: 0;
 
-		/* hide setting name */
-		& .setting-item-name {
-			display: none;
+		&:not(:last-child) {
+			margin-block-end: 1rem;
 		}
 
-		/* display description instead */
-		& .setting-item-description {
-			color: var(--text-normal);
-			font-size: var(--font-ui-medium);
-			padding-top: 0;
-			line-height: var(--line-height-normal);
+		& .setting-item {
+			& .setting-item-info {
+				display: flex;
+				flex-direction: row;
+				align-items: baseline;
+				gap: var(--size-4-4);
+				margin-inline-end: var(--size-4-8);
+
+				& .setting-item-description {
+					line-height: var(--line-height-tight);
+					padding-top: 0;
+				}
+			}
+		}
+	}
+
+	.setting-item {
+		h2 + & {
+			border-top: none;
 		}
 	}
 }

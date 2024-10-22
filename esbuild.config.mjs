@@ -17,6 +17,7 @@ const context = await esbuild.context({
 	},
 	entryPoints: ["src/main.ts", "src/styles.css"],
 	bundle: true,
+	minify: true,
 	external: [
 		"obsidian",
 		"electron",
