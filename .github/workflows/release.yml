@@ -20,6 +20,6 @@ jobs:
         uses: ncipollo/release-action@v1.13.0
         with:
           artifacts: "dist/**/*"
-          generate_release_notes: true
+          generateReleaseNotes: true
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
