@@ -52,6 +52,7 @@ export interface Settings {
 	useNotifications: boolean;
 	renderOnFileSwitch: boolean;
 	date: string;
+	noteMarkdownRegex: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -66,6 +67,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	useNotifications: true,
 	renderOnFileSwitch: false,
 	date: "",
+	noteMarkdownRegex: "",
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>

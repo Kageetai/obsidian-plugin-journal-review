@@ -15,6 +15,8 @@ const NotePreview = ({ note }: Props) => {
 		const slicedContent = (await app.vault.cachedRead(note))
 			// remove frontmatter
 			.replace(/---.*?---/s, "")
+			// remove custom regex
+			.replace(new RegExp(settings.noteMarkdownRegex, "sg"), "")
 			// restrict to chosen preview length
 			.substring(0, settings.previewLength);
 
