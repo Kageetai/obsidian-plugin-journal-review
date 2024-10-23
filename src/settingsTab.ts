@@ -53,9 +53,9 @@ export class SettingsTab extends PluginSettingTab {
 					.setDesc(getTimeSpanTitle({ number, unit, recurring }))
 					.addSlider((slider) =>
 						slider
-							.setValue(number)
 							.setLimits(1, getMaxTimeSpan(unit), 1)
 							.setDynamicTooltip()
+							.setValue(number)
 							.onChange(
 								debounce(
 									(value) => {
@@ -88,7 +88,7 @@ export class SettingsTab extends PluginSettingTab {
 							})
 							.setTooltip("Recurring?"),
 					)
-					.addButton((button) => {
+					.addButton((button) =>
 						button
 							.setButtonText("X")
 							.setIcon("delete")
@@ -97,8 +97,8 @@ export class SettingsTab extends PluginSettingTab {
 								this.plugin.settings.timeSpans.splice(index, 1);
 								void this.plugin.saveSettings();
 								this.display();
-							});
-					});
+							}),
+					);
 			},
 		);
 
@@ -120,29 +120,15 @@ export class SettingsTab extends PluginSettingTab {
 			.setDesc(
 				"The number of days to include before and after the date being checked",
 			)
-			.addSlider((slider) => {
+			.addSlider((slider) =>
 				slider
-					.setValue(this.plugin.settings.dayMargin)
 					.setDynamicTooltip()
+					.setValue(this.plugin.settings.dayMargin)
 					.onChange((value) => {
 						this.plugin.settings.dayMargin = value;
 						void this.plugin.saveSettings();
-					});
-			});
-
-		new Setting(containerEl)
-			.setName("Preview Length")
-			.setDesc("Length of the preview text to show for each note")
-			.addSlider((slider) => {
-				slider
-					.setValue(this.plugin.settings.previewLength)
-					.setDynamicTooltip()
-					.setLimits(0, 1000, 10)
-					.onChange((value) => {
-						this.plugin.settings.previewLength = value;
-						void this.plugin.saveSettings();
-					});
-			});
+					}),
+			);
 
 		new Setting(containerEl)
 			.setName("Date based on selected note")
@@ -157,6 +143,21 @@ export class SettingsTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl).setName("Previews").setHeading();
+
+		new Setting(containerEl)
+			.setName("Preview Length")
+			.setDesc("Length of the preview text to show for each note")
+			.addSlider((slider) =>
+				slider
+					.setLimits(0, 1000, 10)
+					.setDynamicTooltip()
+					.setValue(this.plugin.settings.previewLength)
+					.onChange((value) => {
+						console.log("preview length", value);
+						this.plugin.settings.previewLength = value;
+						void this.plugin.saveSettings();
+					}),
+			);
 
 		new Setting(containerEl)
 			.setName("Show Note Title with previews")
@@ -228,14 +229,14 @@ export class SettingsTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Open in new pane")
 			.setDesc("Open the notes in a new pane/tab by default when clicking them")
-			.addToggle((toggle) => {
+			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.openInNewPane)
 					.onChange((value) => {
 						this.plugin.settings.openInNewPane = value;
 						void this.plugin.saveSettings();
-					});
-			});
+					}),
+			);
 
 		new Setting(containerEl).setName("Other").setHeading();
 
@@ -244,14 +245,14 @@ export class SettingsTab extends PluginSettingTab {
 			.setDesc(
 				"Use notifications (inside Obsidian) to let you know, when there are new journal entries to review. This will happen when Obsidian is focused and it's a new day.",
 			)
-			.addToggle((toggle) => {
+			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.useNotifications)
 					.onChange((value) => {
 						this.plugin.settings.useNotifications = value;
 						void this.plugin.saveSettings();
-					});
-			});
+					}),
+			);
 
 		new Setting(containerEl)
 			.setName("Note filtering regex")
