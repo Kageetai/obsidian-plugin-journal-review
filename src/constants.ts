@@ -140,7 +140,7 @@ export const reduceTimeSpans = (
 										notes.filter(
 											(note) => !isDuplicateNote(note, acc[title].notes),
 										),
-									)
+								  )
 								: notes,
 						};
 					}
