@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-plugin-journal-review",
-	"version": "2.4.4",
+	"version": "2.5.0",
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\"\n\n",
 	"main": "main.js",
 	"scripts": {
@@ -25,6 +25,7 @@
 		"eslint": "^9.13.0",
 		"globals": "^15.11.0",
 		"knip": "^5.33.3",
+		"moment": "^2.30.1",
 		"obsidian": "latest",
 		"prettier": "^3.2.5",
 		"ts-node": "^10.9.2",
