@@ -101,6 +101,9 @@ const sortRenderedTimeSpanByDateDesc = (
 	b: RenderedTimeSpan,
 ) => (a.moment.isAfter(b.moment) ? -1 : 1);
 
+const isDuplicateNote = (note: TFile, notes: TFile[]) =>
+	notes.some((existingNote) => existingNote.path === note.path);
+
 export const reduceTimeSpans = (
 	timeSpans: TimeSpan[],
 	allDailyNotes: AllDailyNotes,
@@ -132,7 +135,13 @@ export const reduceTimeSpans = (
 						acc[title] = {
 							title,
 							moment: mom,
-							notes: acc[title] ? acc[title].notes.concat(notes) : notes,
+							notes: acc[title]
+								? acc[title].notes.concat(
+										notes.filter(
+											(note) => !isDuplicateNote(note, acc[title].notes),
+										),
+								  )
+								: notes,
 						};
 					}
 				} while (mom.isAfter(oldestNoteDate) && recurring);

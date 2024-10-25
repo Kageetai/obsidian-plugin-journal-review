@@ -41,7 +41,7 @@ export class SettingsTab extends PluginSettingTab {
 
 		container.createEl("li", {
 			cls: "setting-item-description",
-			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'",
+			text: "Define time spans to review, e.g. '1 month' or 'every 6 months'. Overlapping time spans may cause duplicate entries.",
 		});
 
 		this.plugin.settings.timeSpans.forEach(
