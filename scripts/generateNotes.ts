@@ -12,6 +12,7 @@ interface PeriodicNotesSettings {
 
 const vaultPath = `${process.cwd()}/${process.argv[2]}`;
 const years = process.argv[3];
+const notesPerDay = parseInt(process.argv[4]) || 1;
 const today = moment();
 const yearsAgo = moment().subtract(years, "years");
 const settingsPath = `${vaultPath}/.obsidian/plugins/periodic-notes/data.json`;
@@ -21,13 +22,18 @@ const settings = JSON.parse(
 const dailyPath = `${vaultPath}${settings.daily.folder || "/"}`;
 
 for (let m = yearsAgo; m.diff(today, "days") <= 0; m.add(1, "days")) {
-	const dailyNoteFormat = m.format(settings.daily.format);
-	mkdirSync(
-		`${dailyPath}${dailyNoteFormat.split("/").slice(0, -1).join("/")}`,
-		{ recursive: true },
-	);
-	writeFileSync(
-		`${dailyPath}${dailyNoteFormat}.md`,
-		`daily Note for ${dailyNoteFormat}`,
-	);
+	for (let i = 0; i < notesPerDay; i++) {
+		const innerM = m.clone().add(i, "hours");
+		const dailyNoteFormat = innerM.format(settings.daily.format);
+
+		mkdirSync(
+			`${dailyPath}${dailyNoteFormat.split("/").slice(0, -1).join("/")}`,
+			{ recursive: true },
+		);
+
+		writeFileSync(
+			`${dailyPath}${dailyNoteFormat}.md`,
+			`daily Note for ${dailyNoteFormat}`,
+		);
+	}
 }
