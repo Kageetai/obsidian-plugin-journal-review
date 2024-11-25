@@ -15,7 +15,7 @@ export enum Unit {
 	year = "year",
 }
 
-export type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
+type AllDailyNotes = ReturnType<typeof getAllDailyNotes>;
 
 /**
  * TimeSpan type to define possible time span user can define
