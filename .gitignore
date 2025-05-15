@@ -16,11 +16,11 @@ main.js
 # Exclude sourcemaps
 *.map
 
-# obsidian
-data.json
+# Obsidian
 workspace.json
 vault/**/*.md
 vault/.obsidian/plugins/
+vault/.obsidian/plugins/periodic-notes/data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store

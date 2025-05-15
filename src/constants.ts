@@ -40,6 +40,8 @@ export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.year, recurring: true },
 ];
 
+export type RandomNotePosition = "top" | "bottom";
+
 export interface Settings {
 	timeSpans: TimeSpan[];
 	dayMargin: number;
@@ -53,6 +55,8 @@ export interface Settings {
 	renderOnFileSwitch: boolean;
 	date: string;
 	noteMarkdownRegex: string;
+	showRandomNote: boolean;
+	randomNotePosition: RandomNotePosition;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -68,6 +72,8 @@ export const DEFAULT_SETTINGS: Settings = {
 	renderOnFileSwitch: false,
 	date: "",
 	noteMarkdownRegex: "",
+	showRandomNote: false,
+	randomNotePosition: "bottom",
 };
 
 export const getTimeSpanTitle = ({ number, unit, recurring }: TimeSpan) =>
@@ -104,11 +110,19 @@ const sortRenderedTimeSpanByDateDesc = (
 const isDuplicateNote = (note: TFile, notes: TFile[]) =>
 	notes.some((existingNote) => existingNote.path === note.path);
 
+const getRandomDailyNote = (allDailyNotes: AllDailyNotes) => {
+	if (!Object.keys(allDailyNotes).length) {
+		return null;
+	}
+
+	const dailyNotes = Object.values(allDailyNotes);
+	const randomIndex = Math.floor(Math.random() * dailyNotes.length);
+	return dailyNotes[randomIndex];
+};
+
 export const reduceTimeSpans = (
-	timeSpans: TimeSpan[],
 	allDailyNotes: AllDailyNotes,
-	useHumanize: boolean,
-	dayMargin: number,
+	settings: Settings,
 	startDate: moment.Moment = moment(),
 ): RenderedTimeSpan[] => {
 	const oldestNoteDate = Object.values(allDailyNotes).reduce(
@@ -116,8 +130,8 @@ export const reduceTimeSpans = (
 		startDate,
 	);
 
-	return Object.values(
-		timeSpans.reduce<Record<string, RenderedTimeSpan>>(
+	const renderedTimeSpans = Object.values(
+		settings.timeSpans.reduce<Record<string, RenderedTimeSpan>>(
 			(acc, { number, unit, recurring }) => {
 				const mom = moment(startDate);
 
@@ -126,8 +140,12 @@ export const reduceTimeSpans = (
 					// go back one unit of the timespan
 					mom.subtract(number, unit);
 
-					const title = getTitle(useHumanize, mom, startDate, unit);
-					const notes = getNotesOverMargins(dayMargin, mom, allDailyNotes);
+					const title = getTitle(settings.useHumanize, mom, startDate, unit);
+					const notes = getNotesOverMargins(
+						settings.dayMargin,
+						mom,
+						allDailyNotes,
+					);
 
 					if (notes.length) {
 						// used mapped object type to group notes together under same titles,
@@ -151,4 +169,23 @@ export const reduceTimeSpans = (
 			{},
 		),
 	).sort(sortRenderedTimeSpanByDateDesc);
+
+	// add a random note to the top or bottom of the list
+	// if the user has set the option
+	const randomNote = getRandomDailyNote(allDailyNotes);
+	if (settings.showRandomNote && randomNote) {
+		const randomNoteTimeSpan: RenderedTimeSpan = {
+			title: "a random day",
+			notes: [randomNote],
+			moment: moment(randomNote.stat.mtime),
+		};
+
+		if (settings.randomNotePosition === "top") {
+			renderedTimeSpans.unshift(randomNoteTimeSpan);
+		} else {
+			renderedTimeSpans.push(randomNoteTimeSpan);
+		}
+	}
+
+	return renderedTimeSpans;
 };

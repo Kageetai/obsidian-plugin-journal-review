@@ -27,10 +27,8 @@ export default class JournalReviewPlugin extends Plugin {
 			void this.saveSettings();
 
 			const noteCount = reduceTimeSpans(
-				this.settings.timeSpans,
 				getAllDailyNotes(),
-				this.settings.useHumanize,
-				this.settings.dayMargin,
+				this.settings,
 			).reduce((count, timeSpan) => count + timeSpan.notes.length, 0);
 
 			if (noteCount) {
