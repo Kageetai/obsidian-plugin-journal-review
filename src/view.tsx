@@ -88,10 +88,8 @@ export default class OnThisDayView extends ItemView {
 		}
 
 		const timeSpans = reduceTimeSpans(
-			this.settings.timeSpans,
 			getAllDailyNotes(),
-			this.settings.useHumanize,
-			this.settings.dayMargin,
+			this.settings,
 			startDate,
 		);
 

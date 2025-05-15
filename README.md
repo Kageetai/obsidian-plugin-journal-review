@@ -76,3 +76,11 @@ Open the notes in a new pane/tab by default
 ### Use notifications
 
 Use notifications (inside Obsidian) to let you know, when there are new journal entries to review. This will happen when Obsidian is focused and it's a new day.
+
+### Show Random Daily Note
+
+Enable/disable the random daily note feature.
+
+### Random Note Position
+
+Choose whether to show the random daily note on top or bottom.

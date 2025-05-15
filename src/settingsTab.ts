@@ -3,6 +3,7 @@ import {
 	DEBOUNCE_DELAY,
 	defaultTimeSpans,
 	getTimeSpanTitle,
+	RandomNotePosition,
 	Unit,
 } from "./constants";
 import JournalReviewPlugin from "./main";
@@ -142,11 +143,38 @@ export class SettingsTab extends PluginSettingTab {
 					});
 			});
 
+		new Setting(containerEl).setName("Random Daily Note").setHeading();
+
+		new Setting(containerEl)
+			.setName("Show Random Daily Note")
+			.setDesc("Show a random daily note besides the other notes.")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.showRandomNote)
+					.onChange((value) => {
+						this.plugin.settings.showRandomNote = value;
+						void this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName("Random Note Position")
+			.setDesc("Whether to show the random daily note on top or bottom.")
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({ top: "Top", bottom: "Bottom" })
+					.setValue(this.plugin.settings.randomNotePosition)
+					.onChange((value: RandomNotePosition) => {
+						this.plugin.settings.randomNotePosition = value;
+						void this.plugin.saveSettings();
+					}),
+			);
+
 		new Setting(containerEl).setName("Previews").setHeading();
 
 		new Setting(containerEl)
 			.setName("Preview Length")
-			.setDesc("Length of the preview text to show for each note")
+			.setDesc("Length of the preview text to show for each note.")
 			.addSlider((slider) =>
 				slider
 					.setLimits(0, 1000, 10)
@@ -228,7 +256,9 @@ export class SettingsTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Open in new pane")
-			.setDesc("Open the notes in a new pane/tab by default when clicking them")
+			.setDesc(
+				"Open the notes in a new pane/tab by default when clicking them.",
+			)
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.openInNewPane)
