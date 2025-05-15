@@ -111,6 +111,10 @@ const isDuplicateNote = (note: TFile, notes: TFile[]) =>
 	notes.some((existingNote) => existingNote.path === note.path);
 
 const getRandomDailyNote = (allDailyNotes: AllDailyNotes) => {
+	if (!Object.keys(allDailyNotes).length) {
+		return null;
+	}
+
 	const dailyNotes = Object.values(allDailyNotes);
 	const randomIndex = Math.floor(Math.random() * dailyNotes.length);
 	return dailyNotes[randomIndex];
@@ -168,8 +172,8 @@ export const reduceTimeSpans = (
 
 	// add a random note to the top or bottom of the list
 	// if the user has set the option
-	if (settings.showRandomNote) {
-		const randomNote = getRandomDailyNote(allDailyNotes);
+	const randomNote = getRandomDailyNote(allDailyNotes);
+	if (settings.showRandomNote && randomNote) {
 		const randomNoteTimeSpan: RenderedTimeSpan = {
 			title: "a random day",
 			notes: [randomNote],
