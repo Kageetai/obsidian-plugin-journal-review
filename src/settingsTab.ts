@@ -4,6 +4,7 @@ import {
 	defaultTimeSpans,
 	getTimeSpanTitle,
 	RandomNotePosition,
+	SortOrder,
 	Unit,
 } from "./constants";
 import JournalReviewPlugin from "./main";
@@ -130,6 +131,19 @@ export class SettingsTab extends PluginSettingTab {
 						void this.plugin.saveSettings();
 					}),
 			);
+
+		new Setting(containerEl)
+			.setName("Sort Order")
+			.setDesc("Order time spans and notes either by oldest or newest first.")
+			.addDropdown((dropdown) => {
+				dropdown
+					.addOptions({ asc: "Oldest first", desc: "Newest first" })
+					.setValue(this.plugin.settings.sortOrder)
+					.onChange((value: SortOrder) => {
+						this.plugin.settings.sortOrder = value;
+						void this.plugin.saveSettings();
+					});
+			});
 
 		new Setting(containerEl)
 			.setName("Date based on selected note")

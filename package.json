@@ -1,12 +1,12 @@
 {
 	"name": "obsidian-plugin-journal-review",
-	"version": "2.6.0",
+	"version": "2.7.0",
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\"\n\n",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
+		"version": "node version-bump.mjs && npm run format && git add manifest.json versions.json",
 		"lint": "eslint . && knip && prettier --check .",
 		"format": "prettier --write .",
 		"generateNotes": "ts-node ./scripts/generateNotes.ts vault 5",
