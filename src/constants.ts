@@ -110,12 +110,12 @@ const getNotesOverMargins = (
 const sortRenderedTimeSpanByDateAsc = (
 	a: RenderedTimeSpan,
 	b: RenderedTimeSpan,
-) => (a.moment.isBefore(b.moment) ? -1 : 1);
+) => a.moment.valueOf() - b.moment.valueOf();
 
 const sortRenderedTimeSpanByDateDesc = (
 	a: RenderedTimeSpan,
 	b: RenderedTimeSpan,
-) => (b.moment.isBefore(a.moment) ? -1 : 1);
+) => b.moment.valueOf() - a.moment.valueOf();
 
 const sortTFileByCtimeAsc = (a: TFile, b: TFile) => a.stat.ctime - b.stat.ctime;
 
@@ -168,19 +168,18 @@ export const reduceTimeSpans = (
 						acc[title] = {
 							title,
 							moment: mom.clone(),
-							notes: acc[title]
-								? acc[title].notes
-										.concat(
-											notes.filter(
-												(note) => !isDuplicateNote(note, acc[title].notes),
-											),
-										)
-										.sort(
-											settings.sortOrder === "asc"
-												? sortTFileByCtimeAsc
-												: sortTFileByCtimeDesc,
-										)
-								: notes,
+							notes: (acc[title]
+								? acc[title].notes.concat(
+										notes.filter(
+											(note) => !isDuplicateNote(note, acc[title].notes),
+										),
+									)
+								: notes
+							).sort(
+								settings.sortOrder === "asc"
+									? sortTFileByCtimeAsc
+									: sortTFileByCtimeDesc,
+							),
 						};
 					}
 				} while (mom.isAfter(oldestNoteDate) && recurring);
