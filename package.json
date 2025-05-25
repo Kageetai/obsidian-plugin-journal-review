@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
+		"version": "node version-bump.mjs && npm run format && git add manifest.json versions.json",
 		"lint": "eslint . && knip && prettier --check .",
 		"format": "prettier --write .",
 		"generateNotes": "ts-node ./scripts/generateNotes.ts vault 5",
