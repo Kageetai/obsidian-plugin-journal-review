@@ -34,17 +34,20 @@ export type RenderedTimeSpan = {
 	moment: moment.Moment;
 };
 
+export type RandomNotePosition = "top" | "bottom";
+
+export type SortOrder = "asc" | "desc";
+
 export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.month, recurring: false },
 	{ number: 6, unit: Unit.month, recurring: false },
 	{ number: 1, unit: Unit.year, recurring: true },
 ];
 
-export type RandomNotePosition = "top" | "bottom";
-
 export interface Settings {
 	timeSpans: TimeSpan[];
 	dayMargin: number;
+	sortOrder: SortOrder;
 	previewLength: number;
 	useHumanize: boolean;
 	useCallout: boolean;
@@ -62,6 +65,7 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
 	timeSpans: defaultTimeSpans,
 	dayMargin: 0,
+	sortOrder: "desc",
 	previewLength: 100,
 	useHumanize: true,
 	useCallout: true,
@@ -102,10 +106,21 @@ const getNotesOverMargins = (
 	Array.from({ length: dayMargin * 2 + 1 }, (_, i) =>
 		getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes),
 	).filter(Boolean);
+
+const sortRenderedTimeSpanByDateAsc = (
+	a: RenderedTimeSpan,
+	b: RenderedTimeSpan,
+) => a.moment.valueOf() - b.moment.valueOf();
+
 const sortRenderedTimeSpanByDateDesc = (
 	a: RenderedTimeSpan,
 	b: RenderedTimeSpan,
-) => (a.moment.isAfter(b.moment) ? -1 : 1);
+) => b.moment.valueOf() - a.moment.valueOf();
+
+const sortTFileByCtimeAsc = (a: TFile, b: TFile) => a.stat.ctime - b.stat.ctime;
+
+const sortTFileByCtimeDesc = (a: TFile, b: TFile) =>
+	b.stat.ctime - a.stat.ctime;
 
 const isDuplicateNote = (note: TFile, notes: TFile[]) =>
 	notes.some((existingNote) => existingNote.path === note.path);
@@ -152,14 +167,19 @@ export const reduceTimeSpans = (
 						// even if they come from different time span settings
 						acc[title] = {
 							title,
-							moment: mom,
-							notes: acc[title]
+							moment: mom.clone(),
+							notes: (acc[title]
 								? acc[title].notes.concat(
 										notes.filter(
 											(note) => !isDuplicateNote(note, acc[title].notes),
 										),
 									)
-								: notes,
+								: notes
+							).sort(
+								settings.sortOrder === "asc"
+									? sortTFileByCtimeAsc
+									: sortTFileByCtimeDesc,
+							),
 						};
 					}
 				} while (mom.isAfter(oldestNoteDate) && recurring);
@@ -168,7 +188,11 @@ export const reduceTimeSpans = (
 			},
 			{},
 		),
-	).sort(sortRenderedTimeSpanByDateDesc);
+	).sort(
+		settings.sortOrder === "asc"
+			? sortRenderedTimeSpanByDateAsc
+			: sortRenderedTimeSpanByDateDesc,
+	);
 
 	// add a random note to the top or bottom of the list
 	// if the user has set the option
