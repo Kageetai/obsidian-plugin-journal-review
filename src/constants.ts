@@ -34,17 +34,20 @@ export type RenderedTimeSpan = {
 	moment: moment.Moment;
 };
 
+export type RandomNotePosition = "top" | "bottom";
+
+export type SortOrder = "asc" | "desc";
+
 export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.month, recurring: false },
 	{ number: 6, unit: Unit.month, recurring: false },
 	{ number: 1, unit: Unit.year, recurring: true },
 ];
 
-export type RandomNotePosition = "top" | "bottom";
-
 export interface Settings {
 	timeSpans: TimeSpan[];
 	dayMargin: number;
+	sortOrder: SortOrder;
 	previewLength: number;
 	useHumanize: boolean;
 	useCallout: boolean;
@@ -62,6 +65,7 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
 	timeSpans: defaultTimeSpans,
 	dayMargin: 0,
+	sortOrder: "desc",
 	previewLength: 100,
 	useHumanize: true,
 	useCallout: true,
