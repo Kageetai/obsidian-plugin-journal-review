@@ -106,10 +106,21 @@ const getNotesOverMargins = (
 	Array.from({ length: dayMargin * 2 + 1 }, (_, i) =>
 		getDailyNote(moment(mom).add(i - dayMargin, "days"), allDailyNotes),
 	).filter(Boolean);
+
+const sortRenderedTimeSpanByDateAsc = (
+	a: RenderedTimeSpan,
+	b: RenderedTimeSpan,
+) => (a.moment.isBefore(b.moment) ? -1 : 1);
+
 const sortRenderedTimeSpanByDateDesc = (
 	a: RenderedTimeSpan,
 	b: RenderedTimeSpan,
-) => (a.moment.isAfter(b.moment) ? -1 : 1);
+) => (b.moment.isBefore(a.moment) ? -1 : 1);
+
+const sortTFileByCtimeAsc = (a: TFile, b: TFile) => a.stat.ctime - b.stat.ctime;
+
+const sortTFileByCtimeDesc = (a: TFile, b: TFile) =>
+	b.stat.ctime - a.stat.ctime;
 
 const isDuplicateNote = (note: TFile, notes: TFile[]) =>
 	notes.some((existingNote) => existingNote.path === note.path);
@@ -156,13 +167,19 @@ export const reduceTimeSpans = (
 						// even if they come from different time span settings
 						acc[title] = {
 							title,
-							moment: mom,
+							moment: mom.clone(),
 							notes: acc[title]
-								? acc[title].notes.concat(
-										notes.filter(
-											(note) => !isDuplicateNote(note, acc[title].notes),
-										),
-									)
+								? acc[title].notes
+										.concat(
+											notes.filter(
+												(note) => !isDuplicateNote(note, acc[title].notes),
+											),
+										)
+										.sort(
+											settings.sortOrder === "asc"
+												? sortTFileByCtimeAsc
+												: sortTFileByCtimeDesc,
+										)
 								: notes,
 						};
 					}
@@ -172,7 +189,11 @@ export const reduceTimeSpans = (
 			},
 			{},
 		),
-	).sort(sortRenderedTimeSpanByDateDesc);
+	).sort(
+		settings.sortOrder === "asc"
+			? sortRenderedTimeSpanByDateAsc
+			: sortRenderedTimeSpanByDateDesc,
+	);
 
 	// add a random note to the top or bottom of the list
 	// if the user has set the option
