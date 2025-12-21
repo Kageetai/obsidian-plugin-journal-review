@@ -135,10 +135,16 @@ export class SettingsTab extends PluginSettingTab {
 						slider
 							.setDynamicTooltip()
 							.setValue(this.plugin.settings.dayMargin)
-							.onChange((value) => {
-								this.plugin.settings.dayMargin = value;
-								void this.plugin.saveSettings();
-							}),
+							.onChange(
+								debounce(
+									(value) => {
+										this.plugin.settings.dayMargin = value;
+										void this.plugin.saveSettings();
+									},
+									DEBOUNCE_DELAY,
+									true,
+								),
+							),
 					);
 			})
 			.addSetting((setting) => {
@@ -214,10 +220,16 @@ export class SettingsTab extends PluginSettingTab {
 							.setLimits(0, 1000, 10)
 							.setDynamicTooltip()
 							.setValue(this.plugin.settings.previewLength)
-							.onChange((value) => {
-								this.plugin.settings.previewLength = value;
-								void this.plugin.saveSettings();
-							}),
+							.onChange(
+								debounce(
+									(value) => {
+										this.plugin.settings.previewLength = value;
+										void this.plugin.saveSettings();
+									},
+									DEBOUNCE_DELAY,
+									true,
+								),
+							),
 					);
 			})
 			.addSetting((setting) => {
