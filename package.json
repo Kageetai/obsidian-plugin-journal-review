@@ -34,7 +34,7 @@
 	},
 	"dependencies": {
 		"obsidian-daily-notes-interface": "^0.9.4",
-		"preact": "^10.28.2"
+		"preact": "^10.28.3"
 	},
 	"overrides": {
 		"obsidian-daily-notes-interface": {
