@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"test": "node --test --require ts-node/register/transpile-only tests/*.test.ts",
 		"version": "node version-bump.mjs && npm run format && git add manifest.json versions.json",
 		"lint": "eslint . && knip && prettier --check .",
 		"format": "prettier --write .",
