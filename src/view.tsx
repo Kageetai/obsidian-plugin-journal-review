@@ -38,8 +38,10 @@ export default class OnThisDayView extends ItemView {
 			);
 			this.registerEvent(
 				this.app.vault.on("rename", (file: TFile) => {
+					const activeFile = this.app.workspace.getActiveFile();
 					const renderDate = getDailyNoteRenderDate(
 						getDateFromFile(file, "day"),
+						activeFile && getDateFromFile(activeFile, "day"),
 						this.settings.renderOnFileSwitch,
 					);
 
