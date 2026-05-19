@@ -9,6 +9,7 @@ import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon } from "./main";
 import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
+import { getDailyNoteRenderDate } from "./renderDate";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -37,8 +38,15 @@ export default class OnThisDayView extends ItemView {
 			);
 			this.registerEvent(
 				this.app.vault.on("rename", (file: TFile) => {
-					if (getDateFromFile(file, "day")) {
-						this.debouncedRenderView();
+					const activeFile = this.app.workspace.getActiveFile();
+					const renderDate = getDailyNoteRenderDate(
+						getDateFromFile(file, "day"),
+						activeFile && getDateFromFile(activeFile, "day"),
+						this.settings.renderOnFileSwitch,
+					);
+
+					if (renderDate !== null) {
+						this.debouncedRenderView(renderDate);
 					}
 				}),
 			);

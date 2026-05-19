@@ -21,7 +21,8 @@
 		"transpileOnly": true,
 		"files": true,
 		"moduleTypes": {
-			"scripts/generateNotes.ts": "cjs"
+			"scripts/generateNotes.ts": "cjs",
+			"tests/**/*.ts": "cjs"
 		}
 	}
 }
