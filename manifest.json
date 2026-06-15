@@ -1,8 +1,8 @@
 {
 	"id": "journal-review",
 	"name": "Journal Review",
-	"version": "3.0.4",
-	"minAppVersion": "0.15.0",
+	"version": "3.1.0",
+	"minAppVersion": "1.11.0",
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\".",
 	"author": "Kageetai",
 	"authorUrl": "https://kageetai.net",
