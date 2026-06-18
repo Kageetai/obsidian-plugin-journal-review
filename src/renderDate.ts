@@ -11,3 +11,8 @@ export const getDailyNoteRenderDate = (
 
 	return renderOnFileSwitch ? activeFileDate || undefined : undefined;
 };
+
+export const getRenamedDailyNoteDate = (
+	newPathDate: moment.Moment | null,
+	oldPathDate: moment.Moment | null,
+) => newPathDate || oldPathDate;

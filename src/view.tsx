@@ -3,13 +3,14 @@ import {
 	appHasDailyNotesPluginLoaded,
 	getAllDailyNotes,
 	getDateFromFile,
+	getDateFromPath,
 } from "obsidian-daily-notes-interface";
 import { render } from "preact";
 import Main from "./components/Main";
 import AppContext from "./components/context";
 import { icon } from "./main";
 import { reduceTimeSpans, Settings, VIEW_TYPE } from "./constants";
-import { getDailyNoteRenderDate } from "./renderDate";
+import { getDailyNoteRenderDate, getRenamedDailyNoteDate } from "./renderDate";
 
 export default class OnThisDayView extends ItemView {
 	private readonly settings: Settings;
@@ -37,11 +38,23 @@ export default class OnThisDayView extends ItemView {
 				}),
 			);
 			this.registerEvent(
-				this.app.vault.on("rename", (file: TFile) => {
-					const activeFile = this.app.workspace.getActiveFile();
-					const renderDate = getDailyNoteRenderDate(
+				this.app.vault.on("rename", (file: TFile, oldPath: string) => {
+					const oldPathDate = getDateFromPath(oldPath, "day");
+					const renamedFileDate = getRenamedDailyNoteDate(
 						getDateFromFile(file, "day"),
-						activeFile && getDateFromFile(activeFile, "day"),
+						oldPathDate,
+					);
+					const activeFile = this.app.workspace.getActiveFile();
+					const activeFileDate =
+						activeFile === file
+							? getRenamedDailyNoteDate(
+									getDateFromFile(activeFile, "day"),
+									oldPathDate,
+								)
+							: activeFile && getDateFromFile(activeFile, "day");
+					const renderDate = getDailyNoteRenderDate(
+						renamedFileDate,
+						activeFileDate,
 						this.settings.renderOnFileSwitch,
 					);
 
