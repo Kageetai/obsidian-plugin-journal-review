@@ -20,8 +20,8 @@
 	"ts-node": {
 		"transpileOnly": true,
 		"files": true,
-		"moduleTypes": {
-			"scripts/generateNotes.ts": "cjs"
+		"compilerOptions": {
+			"module": "CommonJS"
 		}
 	}
 }
