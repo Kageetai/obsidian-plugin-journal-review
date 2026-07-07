@@ -28,6 +28,19 @@ export default defineConfig([
 		files: ["scripts/**/*.ts", "tests/**/*.ts"],
 		rules: {
 			"import/no-nodejs-modules": "off",
+			"no-restricted-imports": "off",
+		},
+	},
+	{
+		files: ["package.json"],
+		rules: {
+			"depend/ban-dependencies": [
+				"error",
+				{
+					presets: ["native", "microutilities", "preferred"],
+					allowed: ["moment"],
+				},
+			],
 		},
 	},
 	{

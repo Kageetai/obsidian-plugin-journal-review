@@ -1,5 +1,5 @@
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
-import { moment } from "obsidian";
+import * as moment from "moment";
 
 interface PeriodicNotesSettings {
 	daily: {
