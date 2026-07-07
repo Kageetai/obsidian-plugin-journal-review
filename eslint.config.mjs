@@ -24,8 +24,8 @@ export default defineConfig([
 		},
 	},
 	{
-		// Local utility scripts run in Node, not inside Obsidian's plugin runtime.
-		files: ["scripts/**/*.ts"],
+		// Local utility scripts and tests run in Node, not inside Obsidian's plugin runtime.
+		files: ["scripts/**/*.ts", "tests/**/*.ts"],
 		rules: {
 			"import/no-nodejs-modules": "off",
 		},
