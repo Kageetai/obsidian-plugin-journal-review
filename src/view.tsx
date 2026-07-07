@@ -128,7 +128,9 @@ export default class OnThisDayView extends ItemView {
 		);
 	}
 
-	debouncedRenderView = debounce(this.renderView.bind(this), 500);
+	debouncedRenderView = debounce((startDate?: moment.Moment) => {
+		this.renderView(startDate);
+	}, 500);
 
 	async onOpen() {
 		this.debouncedRenderView();
