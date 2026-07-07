@@ -111,7 +111,7 @@ export class SettingsTab extends PluginSettingTab {
 			setting.addButton((button) =>
 				button
 					.setCta()
-					.setButtonText("Add Time Span")
+					.setButtonText("Add time span")
 					.onClick(() => {
 						this.plugin.settings.timeSpans.push({
 							...defaultTimeSpans[0],
@@ -127,7 +127,7 @@ export class SettingsTab extends PluginSettingTab {
 			.setHeading("General")
 			.addSetting((setting) => {
 				setting
-					.setName("Lookup Margin")
+					.setName("Lookup margin")
 					.setDesc(
 						"The number of days to include before and after the date being checked",
 					)
@@ -149,7 +149,7 @@ export class SettingsTab extends PluginSettingTab {
 			})
 			.addSetting((setting) => {
 				setting
-					.setName("Sort Order")
+					.setName("Sort order")
 					.setDesc(
 						"Order time spans and notes either by oldest or newest first.",
 					)
@@ -182,7 +182,7 @@ export class SettingsTab extends PluginSettingTab {
 			.setHeading("Random Daily Note")
 			.addSetting((setting) => {
 				setting
-					.setName("Show Random Daily Note")
+					.setName("Show random daily note")
 					.setDesc("Show a random daily note besides the other notes.")
 					.addToggle((toggle) =>
 						toggle
@@ -195,7 +195,7 @@ export class SettingsTab extends PluginSettingTab {
 			})
 			.addSetting((setting) => {
 				setting
-					.setName("Random Note Position")
+					.setName("Random note position")
 					.setDesc("Whether to show the random daily note on top or bottom.")
 					.addDropdown((dropdown) =>
 						dropdown
@@ -213,7 +213,7 @@ export class SettingsTab extends PluginSettingTab {
 			.setHeading("Previews")
 			.addSetting((setting) => {
 				setting
-					.setName("Preview Length")
+					.setName("Preview length")
 					.setDesc("Length of the preview text to show for each note.")
 					.addSlider((slider) =>
 						slider
@@ -234,7 +234,7 @@ export class SettingsTab extends PluginSettingTab {
 			})
 			.addSetting((setting) => {
 				setting
-					.setName("Show Note Title with previews")
+					.setName("Show note title with previews")
 					.setDesc(
 						"Render the note title above the preview text, when showing note previews.",
 					)
@@ -259,7 +259,7 @@ export class SettingsTab extends PluginSettingTab {
 				});
 
 				setting
-					.setName("Humanize Time Spans")
+					.setName("Humanize time spans")
 					.setDesc(humanizeDescription)
 					.addToggle((toggle) =>
 						toggle

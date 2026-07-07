@@ -9,6 +9,7 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
 		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
 		"noImplicitAny": true,
 		"moduleResolution": "node",
 		"importHelpers": true,

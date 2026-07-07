@@ -17,6 +17,7 @@ const label = "Open 'On this day' view";
 
 export default class JournalReviewPlugin extends Plugin {
 	settings: Settings;
+	private checkIsNewDayTimeoutId: number | null = null;
 
 	checkIsNewDay = () => {
 		if (
@@ -41,10 +42,15 @@ export default class JournalReviewPlugin extends Plugin {
 	};
 
 	setupFocusListener = () => {
+		if (this.checkIsNewDayTimeoutId !== null) {
+			window.clearTimeout(this.checkIsNewDayTimeoutId);
+			this.checkIsNewDayTimeoutId = null;
+		}
+
 		if (this.settings.useNotifications) {
 			// setup event listener to check if it's a new day and fire notification if so
 			// need to wait for notes to be loaded
-			setTimeout(this.checkIsNewDay, 1000);
+			this.checkIsNewDayTimeoutId = window.setTimeout(this.checkIsNewDay, 1000);
 			addEventListener("focus", this.checkIsNewDay);
 		} else {
 			removeEventListener("focus", this.checkIsNewDay);
@@ -100,6 +106,11 @@ export default class JournalReviewPlugin extends Plugin {
 	}
 
 	onunload() {
+		if (this.checkIsNewDayTimeoutId !== null) {
+			window.clearTimeout(this.checkIsNewDayTimeoutId);
+			this.checkIsNewDayTimeoutId = null;
+		}
+
 		removeEventListener("focus", this.checkIsNewDay);
 	}
 
