@@ -31,6 +31,10 @@ export class SettingsTab extends PluginSettingTab {
 	}
 
 	display(): void {
+		this.renderSettings();
+	}
+
+	private renderSettings(): void {
 		const { containerEl } = this;
 
 		containerEl.empty();
@@ -58,14 +62,13 @@ export class SettingsTab extends PluginSettingTab {
 						.addSlider((slider) =>
 							slider
 								.setLimits(1, getMaxTimeSpan(unit), 1)
-								.setDynamicTooltip()
 								.setValue(number)
 								.onChange(
 									debounce(
 										(value) => {
 											this.plugin.settings.timeSpans[index].number = value;
 											void this.plugin.saveSettings();
-											this.display();
+											this.renderSettings();
 										},
 										DEBOUNCE_DELAY,
 										true,
@@ -79,7 +82,7 @@ export class SettingsTab extends PluginSettingTab {
 								.onChange((value) => {
 									this.plugin.settings.timeSpans[index].unit = value as Unit;
 									void this.plugin.saveSettings();
-									this.display();
+									this.renderSettings();
 								}),
 						)
 						.addToggle((toggle) =>
@@ -88,7 +91,7 @@ export class SettingsTab extends PluginSettingTab {
 								.onChange((value) => {
 									this.plugin.settings.timeSpans[index].recurring = value;
 									void this.plugin.saveSettings();
-									this.display();
+									this.renderSettings();
 								})
 								.setTooltip("Recurring?"),
 						)
@@ -100,7 +103,7 @@ export class SettingsTab extends PluginSettingTab {
 								.onClick(() => {
 									this.plugin.settings.timeSpans.splice(index, 1);
 									void this.plugin.saveSettings();
-									this.display();
+									this.renderSettings();
 								}),
 						);
 				});
@@ -117,7 +120,7 @@ export class SettingsTab extends PluginSettingTab {
 							...defaultTimeSpans[0],
 						});
 						void this.plugin.saveSettings();
-						this.display();
+						this.renderSettings();
 					}),
 			);
 		});
@@ -132,19 +135,16 @@ export class SettingsTab extends PluginSettingTab {
 						"The number of days to include before and after the date being checked",
 					)
 					.addSlider((slider) =>
-						slider
-							.setDynamicTooltip()
-							.setValue(this.plugin.settings.dayMargin)
-							.onChange(
-								debounce(
-									(value) => {
-										this.plugin.settings.dayMargin = value;
-										void this.plugin.saveSettings();
-									},
-									DEBOUNCE_DELAY,
-									true,
-								),
+						slider.setValue(this.plugin.settings.dayMargin).onChange(
+							debounce(
+								(value) => {
+									this.plugin.settings.dayMargin = value;
+									void this.plugin.saveSettings();
+								},
+								DEBOUNCE_DELAY,
+								true,
 							),
+						),
 					);
 			})
 			.addSetting((setting) => {
@@ -218,7 +218,6 @@ export class SettingsTab extends PluginSettingTab {
 					.addSlider((slider) =>
 						slider
 							.setLimits(0, 1000, 10)
-							.setDynamicTooltip()
 							.setValue(this.plugin.settings.previewLength)
 							.onChange(
 								debounce(
@@ -290,7 +289,7 @@ export class SettingsTab extends PluginSettingTab {
 							.onChange((value) => {
 								this.plugin.settings.useCallout = value;
 								void this.plugin.saveSettings();
-								this.display();
+								this.renderSettings();
 							}),
 					);
 			});
