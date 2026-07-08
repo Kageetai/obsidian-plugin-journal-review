@@ -6,7 +6,6 @@ import {
 	DEFAULT_SETTINGS,
 	reduceTimeSpans,
 	Settings,
-	TimeSpan,
 	Unit,
 	VIEW_TYPE,
 } from "./constants";
@@ -132,7 +131,7 @@ export default class JournalReviewPlugin extends Plugin {
 					unit: (unit.endsWith("s") ? unit.slice(0, -1) : unit) as Unit,
 					recurring: false,
 				}),
-			) as TimeSpan[];
+			);
 		}
 
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, parsedData);
