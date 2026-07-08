@@ -10,12 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@v4
       - name: npm build
         run: |
           npm ci
           npm run build --if-present
+      - name: Generate artifact attestations
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            dist/main.js
+            dist/styles.css
       - name: Plugin release
         uses: ncipollo/release-action@v1.13.0
         with:
