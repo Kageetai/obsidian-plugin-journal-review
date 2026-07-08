@@ -1,6 +1,7 @@
 # https://github.com/SilentVoid13/Templater/blob/master/.github/workflows/release.yml
 name: Plugin release
 on:
+  workflow_dispatch:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
