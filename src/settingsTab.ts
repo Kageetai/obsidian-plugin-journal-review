@@ -56,6 +56,15 @@ export class SettingsTab extends PluginSettingTab {
 		this.plugin.settings.timeSpans.forEach(
 			({ number, unit, recurring }, index) => {
 				timeSpansGroup.addSetting((setting) => {
+					const debouncedSave = debounce(
+						(value: number) => {
+							this.plugin.settings.timeSpans[index].number = value;
+							void this.plugin.saveSettings();
+						},
+						DEBOUNCE_DELAY,
+						true,
+					);
+
 					setting
 						.setName(`Time span #${index + 1}`)
 						.setDesc(getTimeSpanTitle({ number, unit, recurring }))
@@ -63,17 +72,12 @@ export class SettingsTab extends PluginSettingTab {
 							slider
 								.setLimits(1, getMaxTimeSpan(unit), 1)
 								.setValue(number)
-								.onChange(
-									debounce(
-										(value) => {
-											this.plugin.settings.timeSpans[index].number = value;
-											void this.plugin.saveSettings();
-											this.renderSettings();
-										},
-										DEBOUNCE_DELAY,
-										true,
-									),
-								),
+								.onChange((value) => {
+									setting.setDesc(
+										getTimeSpanTitle({ number: value, unit, recurring }),
+									);
+									debouncedSave(value);
+								}),
 						)
 						.addDropdown((dropdown) =>
 							dropdown
