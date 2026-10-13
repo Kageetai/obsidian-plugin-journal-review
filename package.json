@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-plugin-journal-review",
-	"version": "3.2.0",
+	"version": "3.2.1",
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\"\n\n",
 	"main": "main.js",
 	"scripts": {
@@ -17,21 +17,21 @@
 	"author": "Kageetai",
 	"license": "MIT",
 	"engines": {
-		"node": ">=20.11.0"
+		"node": ">=24.0.0"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.39.2",
-		"@types/node": "^25.2.0",
-		"@typescript-eslint/parser": "^8.61.0",
-		"esbuild": "^0.28.1",
+		"@eslint/js": "^9.39.5",
+		"@types/node": "^26.6.5",
+		"@typescript-eslint/parser": "^8.71.1",
+		"esbuild": "^0.28.2",
 		"esbuild-plugin-copy": "^2.1.1",
-		"eslint": "^9.39.4",
-		"eslint-plugin-obsidianmd": "^0.3.0",
-		"globals": "^17.3.0",
-		"knip": "^5.83.0",
+		"eslint": "^9.39.5",
+		"eslint-plugin-obsidianmd": "^0.4.2",
+		"globals": "^17.13.0",
+		"knip": "^5.88.1",
 		"moment": "^2.31.0",
 		"obsidian": "latest",
-		"prettier": "^3.8.1",
+		"prettier": "^3.9.10",
 		"ts-node": "^10.9.2",
 		"tslib": "^2.8.1",
 		"typescript": "^5.9.3"
@@ -41,6 +41,8 @@
 		"preact": "^10.29.8"
 	},
 	"overrides": {
+		"moment": "$moment",
+		"typescript": "$typescript",
 		"obsidian-daily-notes-interface": {
 			"obsidian": "$obsidian"
 		}

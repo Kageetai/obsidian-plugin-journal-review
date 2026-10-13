@@ -14,7 +14,7 @@ This repository is an Obsidian community plugin named `journal-review`. It rende
 
 ## Development Workflow
 
-- Use Node `>=20.11.0`; `.node-version` pins `20.11.0` for local version managers.
+- Use Node `>=24.0.0`; `.node-version` selects Node `24` for local version managers.
 - Install deps: `npm ci`
 - Dev build/watch: `npm run dev`
 - Production build: `npm run build`
