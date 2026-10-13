@@ -25,10 +25,15 @@ export default defineConfig([
 	},
 	{
 		// Local utility scripts and tests run in Node, not inside Obsidian's plugin runtime.
-		files: ["scripts/**/*.ts", "tests/**/*.ts"],
+		files: [
+			"scripts/**/*.ts",
+			"tests/**/*.ts",
+			"esbuild.config.mjs",
+			"version-bump.mjs",
+		],
 		rules: {
-			"import/no-nodejs-modules": "off",
-			"no-restricted-imports": "off",
+			"obsidianmd/no-nodejs-modules": "off",
+			"@typescript-eslint/no-restricted-imports": "off",
 		},
 	},
 	{
