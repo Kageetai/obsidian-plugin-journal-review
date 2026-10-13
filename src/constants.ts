@@ -34,9 +34,9 @@ export type RenderedTimeSpan = {
 	moment: moment.Moment;
 };
 
-export type RandomNotePosition = "top" | "bottom";
+type RandomNotePosition = "top" | "bottom";
 
-export type SortOrder = "asc" | "desc";
+type SortOrder = "asc" | "desc";
 
 export const defaultTimeSpans: TimeSpan[] = [
 	{ number: 1, unit: Unit.month, recurring: false },
