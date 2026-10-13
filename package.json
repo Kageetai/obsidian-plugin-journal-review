@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-plugin-journal-review",
-	"version": "3.2.0",
+	"version": "3.2.1",
 	"description": "Review your daily notes on their anniversaries, like \"what happened today last year\"\n\n",
 	"main": "main.js",
 	"scripts": {
@@ -41,6 +41,7 @@
 		"preact": "^10.29.8"
 	},
 	"overrides": {
+		"moment": "$moment",
 		"typescript": "$typescript",
 		"obsidian-daily-notes-interface": {
 			"obsidian": "$obsidian"
