@@ -7,6 +7,8 @@ the same day in previous time spans in a view, that can be activated via ribbon 
 
 ## Installation
 
+Requires Obsidian 1.13.0 or newer.
+
 1. Find the under "Journal Review" in the community plugins list in Obsidian
 2. Click "Install" and "Enable"
 3. Configure "Options" to your liking
