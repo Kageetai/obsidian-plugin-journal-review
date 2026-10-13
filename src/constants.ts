@@ -54,6 +54,7 @@ export interface Settings {
 	useQuote: boolean;
 	openInNewPane: boolean;
 	showNoteTitle: boolean;
+	useFrontmatterTitle: boolean;
 	useNotifications: boolean;
 	renderOnFileSwitch: boolean;
 	date: string;
@@ -72,6 +73,7 @@ export const DEFAULT_SETTINGS: Settings = {
 	useQuote: true,
 	openInNewPane: false,
 	showNoteTitle: true,
+	useFrontmatterTitle: false,
 	useNotifications: true,
 	renderOnFileSwitch: false,
 	date: "",

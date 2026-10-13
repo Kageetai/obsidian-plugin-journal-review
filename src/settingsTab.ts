@@ -251,6 +251,21 @@ export class SettingsTab extends PluginSettingTab {
 					);
 			})
 			.addSetting((setting) => {
+				setting
+					.setName("Use YAML title")
+					.setDesc(
+						"Use the note’s YAML title property when available. Otherwise, show the file name.",
+					)
+					.addToggle((toggle) =>
+						toggle
+							.setValue(this.plugin.settings.useFrontmatterTitle)
+							.onChange((value) => {
+								this.plugin.settings.useFrontmatterTitle = value;
+								void this.plugin.saveSettings();
+							}),
+					);
+			})
+			.addSetting((setting) => {
 				const humanizeDescription = new DocumentFragment();
 				humanizeDescription.textContent =
 					"Use the 'humanization' feature from moment.js, when rendering the time spans titles. ";

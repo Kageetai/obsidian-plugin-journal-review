@@ -2,6 +2,7 @@ import { Keymap, MarkdownRenderer, TFile } from "obsidian";
 import { Ref } from "preact";
 import { useRef } from "preact/hooks";
 import useContext from "../hooks/useContext";
+import NoteTitle from "./NoteTitle";
 
 interface Props {
 	note: TFile;
@@ -47,7 +48,9 @@ const NotePreview = ({ note }: Props) => {
 			<div className="callout" onMouseUp={onClick}>
 				{settings.showNoteTitle && (
 					<div className="callout-title">
-						<div className="callout-title-inner">{note.basename}</div>
+						<div className="callout-title-inner">
+							<NoteTitle note={note} />
+						</div>
 					</div>
 				)}
 
@@ -58,7 +61,11 @@ const NotePreview = ({ note }: Props) => {
 
 	return (
 		<div onMouseUp={onClick}>
-			{settings.showNoteTitle && <h4>{note.basename}</h4>}
+			{settings.showNoteTitle && (
+				<h4>
+					<NoteTitle note={note} />
+				</h4>
+			)}
 
 			<small className="markdown-rendered">
 				{settings.useQuote ? (

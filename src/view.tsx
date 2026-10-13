@@ -136,5 +136,10 @@ export default class OnThisDayView extends ItemView {
 		this.debouncedRenderView();
 	}
 
-	async onClose() {}
+	async onClose() {
+		// Prevent a queued refresh from remounting components after the view closes.
+		this.debouncedRenderView.cancel();
+		// Unmount Preact so effect cleanup removes the YAML-title metadata listeners.
+		render(null, this.containerEl.children[1]);
+	}
 }

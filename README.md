@@ -45,6 +45,20 @@ given unit to look back to, either once or recurring.
 
 Render the note title above the preview text, when showing note previews.
 
+### Use YAML title
+
+Use the note’s YAML `title` property above the preview instead of its file name. Disabled by default; **Show Note Title with previews** must also be enabled.
+
+For example, a note named `2024-10-17.md` can display “A walk in the mountains” using:
+
+```yaml
+---
+title: A walk in the mountains
+---
+```
+
+The property must be named `title` and contain nonempty text. Missing, blank, or non-text values fall back to the file name. Titles display as plain text and update when Obsidian indexes changes to the note.
+
 ### Humanize Time Spans
 
 Use the 'humanization' feature from moment.js, when rendering the time spans titles.
