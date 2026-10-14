@@ -9,7 +9,15 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      # Re-enable TS major updates once typescript-eslint supports the TS 7 API
+      # and ts-node is compatible or replaced; migrate tsconfig before upgrading.
+      - dependency-name: "typescript"
+        versions: [">=6"]
     groups:
+      typescript-parser:
+        patterns:
+          - "@typescript-eslint/parser"
       production-dependencies:
         dependency-type: "production"
       development-dependencies:
